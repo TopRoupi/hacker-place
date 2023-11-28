@@ -1,6 +1,15 @@
 {
   "name": "app",
   "private": "true",
+  "dependencies": {
+    "@hotwired/stimulus": "npm:@hotwired/stimulus",
+    "@hotwired/turbo-rails": "^7.3.0",
+    "@rails/actioncable": "^7.1.1",
+    "@rails/actiontext": "^7.1.1",
+    "@rails/activestorage": "^7.1.1",
+    "@rails/request.js": "^0.0.6",
+    "stimulus_reflex": "^3.5.0-rc2"
+  },
   "devDependencies": {
     "vite": "^5.0.0",
     "vite-plugin-ruby": "^5.0.0"

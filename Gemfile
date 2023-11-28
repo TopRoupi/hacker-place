@@ -43,3 +43,5 @@ group :test do
 end
 
 gem "redis-session-store", "~> 0.11.5"
+
+gem "sidekiq", "~> 7.2"

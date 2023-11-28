@@ -3,6 +3,18 @@
 // ./bin/rails generate stimulus controllerName
 
 import { application } from "./application"
+import StimulusReflex from "stimulus_reflex"
+import consumer from "../channels/consumer"
+import controller from "./application_controller"
+import CableReady from "cable_ready"
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+import CableFromController from "./cable_from_controller"
+application.register("cable-from", CableFromController)
+
+application.consumer = consumer
+
+StimulusReflex.initialize(application, { controller, isolate: true })
+StimulusReflex.debug = true
+CableReady.initialize({ consumer })

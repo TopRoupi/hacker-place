@@ -1,2 +1,18 @@
 <h1>Home#index</h1>
 <p>Find me in app/views/home/index.html.erb</p>
+
+<div data-controller="cable-from" data-cable-from-id-value="test"></div>
+
+<%= turbo_frame_tag :test do %>
+  <%= form_with(url: process_run_path, method: :post, remote: true) do |f| %>
+    <%= f.text_area(:code, value: "print(2)") %>
+    <%= f.submit(:run) %>
+  <% end %>
+<% end %>
+
+<hr>
+
+----STDOUT----
+<pre id="run_stdout">
+</pre> ---------------------- <br>
+<%= text_field(:run, :stdin) %>

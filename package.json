@@ -1,4 +1,8 @@
 {
   "name": "app",
-  "private": "true"
+  "private": "true",
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "vite-plugin-ruby": "^5.0.0"
+  }
 }

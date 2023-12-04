@@ -1,32 +1,39 @@
 package main
 
 import (
-  "strings"
+  // "strings"
   "fmt"
   "io/ioutil"
-  "github.com/yuin/gopher-lua"
-  "net"
+  lua "github.com/yuin/gopher-lua"
+  libs "github.com/vadv/gopher-lua-libs/inspect"
+  "encoding/json"
 )
 
-func serverFunc(message string) {
-  conn, err := net.Dial("tcp", "localhost:8069")
-  if err != nil {
-    fmt.Println("Error connecting to server:", err)
-  }
-  defer conn.Close()
+type LuaArg struct {
+  Value string `json:"value"`
+  Type string `json:"type"`
+}
 
-  fmt.Fprintf(conn, "%s\n", message)
+func rubyAction(action string, params []LuaArg) {
+  jsonData, err := json.Marshal(params)
+  if err != nil {
+    fmt.Println("Error:", err)
+    return
+  }
+
+  fmt.Println("RUBY: " + action)
+  fmt.Println(string(jsonData))
 }
 
 func customPrint(L *lua.LState) int {
-  args := []string{}
+  args := []LuaArg{}
+
   for i := 1; i <= L.GetTop(); i++ {
-    args = append(args, L.ToString(i))
+    arg := LuaArg{Value: L.Get(i).String(), Type: L.Get(i).Type().String()}
+    args = append(args, arg)
   }
 
-  serverFunc(strings.Join(args, " "))
-  // fmt.Fprintf(conn, "%s\n", strings.Join(args, " "))
-  // fmt.Println("\033[34m" + strings.Join(args, " ") + "\033[0m")
+  rubyAction("print", args)
 
   return 0 // Number of return values
 }
@@ -52,14 +59,6 @@ func concatStringAndNumber(L *lua.LState) int {
 }
 
 func DoScriptInSandbox(L *lua.LState, script string) error {
-  // io := L.GetGlobal("io").(*lua.LTable)
-  // orgopen := io.RawGetH(lua.LString("open"))
-  // defer io.RawSetH(lua.LString("open"), orgopen)
-  // sandboxfunc := L.NewFunction(func(L *lua.LState) int {
-  //   L.RaiseError("can not call in a sandbox environment.")
-  //   return 0
-  // })
-  // io.RawSetH(lua.LString("open"), sandboxfunc)
   L.SetGlobal("io", lua.LNil)
 
   err := L.DoString(script)
@@ -77,21 +76,17 @@ func runHscriptFromFile(fname string) {
   luaCode := string(content)
 
   L := lua.NewState()
+  libs.Preload(L)
   defer L.Close()
-
-  L.PreloadModule("io", func(L *lua.LState) int {
-    return 0
-  })
 
   L.SetGlobal("myGoFunction", L.NewFunction(myGoFunction))
   L.SetGlobal("concatStringAndNumber", L.NewFunction(concatStringAndNumber))
   L.SetGlobal("print", L.NewFunction(customPrint))
 
   if err := DoScriptInSandbox(L, luaCode); err != nil {
-    fmt.Println(err.Error())
+    // fmt.Println(err.Error())
+    rubyAction("print_error", []LuaArg{{err.Error(),"string"}})
   }
-
-  serverFunc("END")
 }
 
 func main() {

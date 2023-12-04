@@ -1,4 +1,4 @@
-require "socket"
+require "json"
 
 class RunProcessJob
   include Sidekiq::Job
@@ -17,33 +17,34 @@ class RunProcessJob
     f.puts code
     f.close
 
-    server = TCPServer.new(8069)
-
-    pid = Process.fork
-    if pid.nil?
-      exec "./app/lgo/lgo"
-    else
-      Process.detach(pid)
+    read_io, write_io = IO.pipe
+    fork do
+      system("./app/lgo/lgo", out: write_io, err: :out)
     end
+    write_io.close
+    read_io.each_slice(2) do |lines|
+      if lines.first[0..4] == "RUBY:"
+        method, value = [lines.first.split(" ")[1], JSON.parse(lines.last)]
+        p method, value
 
-    loop do
-      client = server.accept
-
-      data = client.gets
-      break if data == "END\n"
-
-
-      cable_ready[ApplicationChannel]
-        .append(
-          selector: "#run_stdout",
-          html: data
-        )
-        .broadcast_to("test")
-      puts data
-
-      client.close
+        case method
+        when "print"
+          client_stdout value.map { |i| i["value"] }.join(" ")
+        when "print_error"
+          client_stdout "\n" + value.first["value"]
+        end
+      end
     end
+  end
 
-    server.close
+  private
+
+  def client_stdout(text)
+    cable_ready[ApplicationChannel]
+      .append(
+        selector: "#run_stdout",
+        html: text
+      )
+      .broadcast_to("test")
   end
 end

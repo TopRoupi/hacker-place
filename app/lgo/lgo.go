@@ -38,6 +38,23 @@ func customPrint(L *lua.LState) int {
   return 0 // Number of return values
 }
 
+func gets(L *lua.LState) int {
+  args := []LuaArg{}
+
+  for i := 1; i <= L.GetTop(); i++ {
+    arg := LuaArg{Value: L.Get(i).String(), Type: L.Get(i).Type().String()}
+    args = append(args, arg)
+  }
+
+  rubyAction("gets", args)
+
+  result := "userinput"
+
+  L.Push(lua.LString(result))
+
+  return 1 // Number of return values
+}
+
 func myGoFunction(L *lua.LState) int {
   result := "Hello from Go!"
   L.Push(lua.LString(result))
@@ -80,6 +97,7 @@ func runHscriptFromFile(fname string) {
   defer L.Close()
 
   L.SetGlobal("myGoFunction", L.NewFunction(myGoFunction))
+  L.SetGlobal("gets", L.NewFunction(gets))
   L.SetGlobal("concatStringAndNumber", L.NewFunction(concatStringAndNumber))
   L.SetGlobal("print", L.NewFunction(customPrint))
 

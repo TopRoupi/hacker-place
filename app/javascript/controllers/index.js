@@ -12,6 +12,8 @@ import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 import CableFromController from "./cable_from_controller"
 application.register("cable-from", CableFromController)
+import TerminalController from "./terminal_controller"
+application.register("terminal", TerminalController)
 
 application.consumer = consumer
 

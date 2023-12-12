@@ -1,21 +1,16 @@
 import ApplicationController from "./application_controller"
-import CableReady from "cable_ready"
 
-/*
-Example usage:
-```html
-<div data-controller="cable-from" data-cable-from-id-value="test"></div>
- */
 export default class extends ApplicationController {
-  static values = {
-    id: String,
-  }
+  static targets = [ "code" ]
 
   connect() {
+    console.log("dwadwad")
+    console.log(this.codeTarget)
+
     this.channel = this.application.consumer.subscriptions.create(
       {
-        channel: "ApplicationChannel",
-        id: this.idValue,
+        channel: "TerminalChannel",
+        id: "test",
       },
       {
         received (data) {
@@ -23,6 +18,11 @@ export default class extends ApplicationController {
         }
       }
     )
+  }
+
+  run_script() {
+    console.log("run")
+    this.channel.send({ command: "run", args: [this.codeTarget.value] })
   }
 
   disconnect() {

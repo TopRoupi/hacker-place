@@ -4,10 +4,10 @@
 <div data-controller="cable-from" data-cable-from-id-value="test"></div>
 
 <%= turbo_frame_tag :test do %>
-  <%= form_with(url: process_run_path, method: :post, remote: true) do |f| %>
-    <%= f.text_area(:code, value: "print(2)") %>
-    <%= f.submit(:run) %>
-  <% end %>
+  <div data-controller="terminal">
+    <%= text_area(:code, :code, value: "print(\"2\")", data: { terminal_target: "code" }) %>
+    <button data-action="click->terminal#run_script">run</button>
+  </div>
 <% end %>
 
 <hr>

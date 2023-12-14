@@ -1,11 +1,12 @@
 import ApplicationController from "./application_controller"
 
 export default class extends ApplicationController {
-  static targets = [ "code" ]
+  static targets = [ "code", "stdinput" ]
 
   connect() {
     console.log("dwadwad")
     console.log(this.codeTarget)
+    console.log(this.stdinputTarget)
 
     this.channel = this.application.consumer.subscriptions.create(
       {
@@ -18,6 +19,11 @@ export default class extends ApplicationController {
         }
       }
     )
+  }
+
+  send_input() {
+    console.log("input")
+    this.channel.send({ command: "input", args: [this.stdinputTarget.value] })
   }
 
   run_script() {

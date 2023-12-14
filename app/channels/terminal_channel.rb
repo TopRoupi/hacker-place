@@ -8,6 +8,38 @@ class TerminalChannel < ApplicationCable::Channel
     send("command_#{data["command"]}", data["args"])
   end
 
+  def command_input(str)
+    @lgo.send_result(str[0])
+
+    cable_ready[TerminalChannel]
+      .append(
+        selector: "#run_stdout",
+        html: "#{str[0]}\n"
+      )
+      .inner_html(
+        selector: "#stdin_status",
+        html: ""
+      )
+      .set_attribute(
+        name: "disabled",
+        value: "",
+        selector: "#run_stdin"
+      )
+      .set_value(
+        name: "disabled",
+        value: "",
+        selector: "#run_stdin"
+      )
+      .set_attribute(
+        name: "disabled",
+        value: "",
+        selector: "#run_stdin_btn"
+      )
+      .broadcast_to("test")
+
+    exec_until_user_input
+  end
+
   def command_run(code)
     cable_ready[TerminalChannel]
       .inner_html(
@@ -20,35 +52,37 @@ class TerminalChannel < ApplicationCable::Channel
     f.puts code
     f.close
 
-    @read_io, @write_io = IO.pipe
-    fork do
-      system("./app/lgo/lgo", out: write_io, err: :out)
-    end
-    read_io.each_slice(2) do |lines|
-      if lines.first[0..4] == "RUBY:"
-        method, value = [lines.first.split(" ")[1], JSON.parse(lines.last)]
-        p method, value
-
-        case method
-        when "print"
-          client_stdout value.map { |i| i["value"] }.join(" ")
-        when "print_error"
-          client_stdout "\n" + value.first["value"]
-        when "gets"
-          puts "userinput"
-        end
-      end
-    end
+    @lgo = Lgo.new
+    exec_until_user_input
   end
 
-  private
+  def exec_until_user_input
+    loop do
+      r = @lgo.step_eval
+      if r.last_cmd.cmd == "input"
+        cable_ready[TerminalChannel]
+          .append(
+            selector: "#run_stdout",
+            html: @lgo.last_cmd.args[0]["value"].to_s
+          )
+          .inner_html(
+            selector: "#stdin_status",
+            html: "waiting for input: "
+          )
+          .remove_attribute(
+            name: "disabled",
+            selector: "#run_stdin"
+          )
+          .remove_attribute(
+            name: "disabled",
+            selector: "#run_stdin_btn"
+          )
+          .broadcast_to("test")
 
-  def client_stdout(text)
-    cable_ready[ApplicationChannel]
-      .append(
-        selector: "#run_stdout",
-        html: text + "\n"
-      )
-      .broadcast_to("test")
+        return :input
+      end
+      return :end if r.nil?
+      r.send_result(r.last_cmd.run)
+    end
   end
 end

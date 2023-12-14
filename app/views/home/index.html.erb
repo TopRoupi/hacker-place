@@ -3,16 +3,17 @@
 
 <div data-controller="cable-from" data-cable-from-id-value="test"></div>
 
-<%= turbo_frame_tag :test do %>
-  <div data-controller="terminal">
-    <%= text_area(:code, :code, value: "print(\"2\")", data: { terminal_target: "code" }) %>
-    <button data-action="click->terminal#run_script">run</button>
+<div data-controller="terminal">
+  <%= text_area(:code, :code, value: "print(\"2\")", data: { terminal_target: "code" }) %>
+  <button data-action="click->terminal#run_script">run</button>
+
+  <hr>
+
+  ----STDOUT----
+  <pre id="run_stdout">
+  </pre> ---------------------- <br>
+  <div id="stdin_status">
   </div>
-<% end %>
-
-<hr>
-
-----STDOUT----
-<pre id="run_stdout">
-</pre> ---------------------- <br>
-<%= text_field(:run, :stdin) %>
+  <%= text_field(:run, :stdin, disabled: true, data: { terminal_target: "stdinput" }) %>
+  <button id="run_stdin_btn" data-action="click->terminal#send_input" disabled="">send input</button>
+</div>

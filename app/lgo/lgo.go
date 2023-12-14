@@ -1,8 +1,8 @@
 package main
 
 import (
-  // "strings"
   "fmt"
+  "strconv"
   "io/ioutil"
   lua "github.com/yuin/gopher-lua"
   libs "github.com/vadv/gopher-lua-libs/inspect"
@@ -14,15 +14,22 @@ type LuaArg struct {
   Type string `json:"type"`
 }
 
-func rubyAction(action string, params []LuaArg) {
+var rubyCommandId = 0
+
+func rubyAction(action string, params []LuaArg) string {
+  rubyCommandId++
+
   jsonData, err := json.Marshal(params)
   if err != nil {
     fmt.Println("Error:", err)
-    return
+    return "ERROR"
   }
 
-  fmt.Println("RUBY: " + action)
-  fmt.Println(string(jsonData))
+  fmt.Println("RUBY(" + strconv.Itoa(rubyCommandId) + ") " + action + " " + string(jsonData))
+
+  var result string
+  fmt.Scan(&result)
+  return result
 }
 
 func customPrint(L *lua.LState) int {
@@ -38,25 +45,20 @@ func customPrint(L *lua.LState) int {
   return 0 // Number of return values
 }
 
-func gets(L *lua.LState) int {
-  args := []LuaArg{}
-
-  for i := 1; i <= L.GetTop(); i++ {
-    arg := LuaArg{Value: L.Get(i).String(), Type: L.Get(i).Type().String()}
-    args = append(args, arg)
-  }
-
-  rubyAction("gets", args)
-
-  result := "userinput"
-
-  L.Push(lua.LString(result))
-
-  return 1 // Number of return values
-}
-
 func myGoFunction(L *lua.LState) int {
   result := "Hello from Go!"
+  L.Push(lua.LString(result))
+  return 1
+}
+
+
+func input(L *lua.LState) int {
+  str := L.CheckString(1)
+
+  args := []LuaArg{}
+  args = append(args, LuaArg{Value: str, Type: "string"})
+  result := rubyAction("input", args)
+
   L.Push(lua.LString(result))
   return 1
 }
@@ -97,16 +99,17 @@ func runHscriptFromFile(fname string) {
   defer L.Close()
 
   L.SetGlobal("myGoFunction", L.NewFunction(myGoFunction))
-  L.SetGlobal("gets", L.NewFunction(gets))
   L.SetGlobal("concatStringAndNumber", L.NewFunction(concatStringAndNumber))
   L.SetGlobal("print", L.NewFunction(customPrint))
+  L.SetGlobal("input", L.NewFunction(input))
 
   if err := DoScriptInSandbox(L, luaCode); err != nil {
-    // fmt.Println(err.Error())
-    rubyAction("print_error", []LuaArg{{err.Error(),"string"}})
+    fmt.Println(err.Error())
+    fmt.Println("error")
   }
 }
 
 func main() {
   runHscriptFromFile("/home/me/hacker-place/app/lgo/in.lua")
+  fmt.Println("PROGRAM_END")
 }

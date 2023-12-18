@@ -3,10 +3,39 @@ require "pty"
 
 class Lgo
   attr_reader :write_io, :read_io
-  attr_accessor :last_line, :last_cmd, :last_cmd_result
+  attr_accessor :last_line, :last_cmd, :last_cmd_result, :code, :script_path
 
-  def initialize(script_path)
-    @read_io, @write_io, @pid = PTY.spawn("./app/lgo/lgo #{script_path}")
+  def initialize(code)
+    @code = code
+
+    run_script(code)
+  end
+
+  def step_eval
+    @exection_fiber.resume(self)
+  end
+
+  def send_result(str)
+    @write_io.printf("#{str}\n")
+  end
+
+  def run
+    loop do
+      break if step_eval.nil?
+      send_result last_cmd.run
+    end
+  end
+
+  private
+
+  def run_script(code)
+    # TODO make the paths random
+    @script_path = "/tmp/in.lua"
+    f = File.open(@script_path, "w")
+    f.puts code
+    f.close
+
+    @read_io, @write_io, @pid = PTY.spawn("./app/lgo/lgo #{@script_path}")
 
     @exection_fiber = Fiber.new do |lgo|
       loop do
@@ -19,14 +48,6 @@ class Lgo
         break
       end
     end
-  end
-
-  def step_eval
-    @exection_fiber.resume(self)
-  end
-
-  def send_result(str)
-    @write_io.printf("#{str}\n")
   end
 end
 
@@ -51,6 +72,8 @@ class Lgo::Cmd
 
   def cmd_print(args)
     text = args.map { |i| i["value"] }.join(" ")
+
+    puts text
 
     cable_ready[TerminalChannel]
       .append(

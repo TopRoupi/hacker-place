@@ -1,7 +1,36 @@
 require "json"
 require "pty"
 
-class Cmd
+class Lgo
+  attr_reader :write_io, :read_io
+  attr_accessor :last_line, :last_cmd, :last_cmd_result
+
+  def initialize(script_path)
+    @read_io, @write_io, @pid = PTY.spawn("./app/lgo/lgo #{script_path}")
+
+    @exection_fiber = Fiber.new do |lgo|
+      loop do
+        lgo.last_line = lgo.read_io.gets
+        if Lgo::Cmd.is_cmd?(lgo.last_line)
+          lgo.last_cmd = Lgo::Cmd.new(lgo)
+          Fiber.yield lgo
+        end
+      rescue Errno::EIO
+        break
+      end
+    end
+  end
+
+  def step_eval
+    @exection_fiber.resume(self)
+  end
+
+  def send_result(str)
+    @write_io.printf("#{str}\n")
+  end
+end
+
+class Lgo::Cmd
   include CableReady::Broadcaster
 
   attr_reader :id, :cmd, :args, :lgo
@@ -34,45 +63,7 @@ class Cmd
   end
 
   def cmd_input(args)
-    cable_ready[TerminalChannel]
-      .inner_html(
-        selector: "#stdin_status",
-        html: "waiting for input: "
-      )
-      .broadcast_to("test")
-
-    # puts args[0]["value"]
-    puts "LLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
-    # gets
-    "2"
-  end
-end
-
-class Lgo
-  attr_reader :write_io, :read_io
-  attr_accessor :last_line, :last_cmd, :last_cmd_result
-
-  def initialize
-    @read_io, @write_io, @pid = PTY.spawn("./app/lgo/lgo")
-
-    @exection_fiber = Fiber.new do |lgo|
-      loop do
-        lgo.last_line = lgo.read_io.gets
-        if Cmd.is_cmd?(lgo.last_line)
-          lgo.last_cmd = Cmd.new(lgo)
-          Fiber.yield lgo
-        end
-      rescue Errno::EIO
-        break
-      end
-    end
-  end
-
-  def step_eval
-    @exection_fiber.resume(self)
-  end
-
-  def send_result(str)
-    @write_io.printf("#{str}\n")
+    # logic for this command is splattered all over
+    # this api should be refactored
   end
 end

@@ -48,11 +48,11 @@ class TerminalChannel < ApplicationCable::Channel
       )
       .broadcast_to("test")
 
-    f = File.open("app/lgo/in.lua", "w")
+    f = File.open("/tmp/in.lua", "w")
     f.puts code
     f.close
 
-    @lgo = Lgo.new
+    @lgo = Lgo.new("/tmp/in.lua")
     exec_until_user_input
   end
 

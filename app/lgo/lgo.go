@@ -2,6 +2,7 @@ package main
 
 import (
   "fmt"
+  "os"
   "strconv"
   "io/ioutil"
   lua "github.com/yuin/gopher-lua"
@@ -110,6 +111,9 @@ func runHscriptFromFile(fname string) {
 }
 
 func main() {
-  runHscriptFromFile("/home/me/hacker-place/app/lgo/in.lua")
+  argsWithoutProg := os.Args[1:]
+  luaScriptPath := argsWithoutProg[0]
+
+  runHscriptFromFile(luaScriptPath)
   fmt.Println("PROGRAM_END")
 }

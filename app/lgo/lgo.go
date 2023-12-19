@@ -30,7 +30,14 @@ func rubyAction(action string, params []LuaArg) string {
 
   var result string
   fmt.Scan(&result)
-  return result
+
+  resultJson, err := json.Marshal(result)
+  if err != nil {
+    fmt.Println("Error:", err)
+    return "ERROR"
+  }
+
+  return string(resultJson)
 }
 
 func customPrint(L *lua.LState) int {

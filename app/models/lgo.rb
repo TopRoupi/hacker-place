@@ -15,8 +15,8 @@ class Lgo
     @exection_fiber.resume(self)
   end
 
-  def send_result(str)
-    @write_io.printf("#{str}\n")
+  def send_result(*params)
+    @write_io.printf("#{Lgo::ArgParser.dump(params)}\n")
   end
 
   def run
@@ -48,6 +48,23 @@ class Lgo
         break
       end
     end
+  end
+end
+
+class String
+  def lua_type = "string"
+end
+
+class Lgo::ArgParser
+  def self.dump(data)
+    data.map! do |obj|
+      {value: obj, type: obj.lua_type}
+    end
+    data.to_json
+  end
+
+  def self.load(data)
+    data
   end
 end
 

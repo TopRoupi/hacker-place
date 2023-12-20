@@ -57,10 +57,9 @@ end
 
 class Lgo::ArgParser
   def self.dump(data)
-    data.map! do |obj|
+    data.map do |obj|
       {value: obj, type: obj.lua_type}
-    end
-    data.to_json
+    end.to_json
   end
 
   def self.load(data)
@@ -105,5 +104,10 @@ class Lgo::Cmd
   def cmd_input(args)
     # logic for this command is splattered all over
     # this api should be refactored
+    if args.length > 0
+      print args[0]["value"]
+    end
+
+    gets
   end
 end

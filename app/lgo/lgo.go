@@ -17,27 +17,30 @@ type LuaArg struct {
 
 var rubyCommandId = 0
 
-func rubyAction(action string, params []LuaArg) string {
+func rubyAction(action string, params []LuaArg) []LuaArg {
   rubyCommandId++
 
   jsonData, err := json.Marshal(params)
   if err != nil {
     fmt.Println("Error:", err)
-    return "ERROR"
+    return make([]LuaArg, 0, 0)
   }
 
   fmt.Println("RUBY(" + strconv.Itoa(rubyCommandId) + ") " + action + " " + string(jsonData))
 
-  var result string
-  fmt.Scan(&result)
+  var result []LuaArg
+  var input string
+  fmt.Scan(&input)
 
-  resultJson, err := json.Marshal(result)
-  if err != nil {
-    fmt.Println("Error:", err)
-    return "ERROR"
+  var x []map[string]string
+  json.Unmarshal([]byte(input), &x)
+
+  for i := 0; i < len(x); i++ {
+    arg := LuaArg{Value: x[i]["value"], Type: x[i]["type"]}
+    result = append(result, arg)
   }
 
-  return string(resultJson)
+  return result
 }
 
 func customPrint(L *lua.LState) int {
@@ -59,15 +62,26 @@ func myGoFunction(L *lua.LState) int {
   return 1
 }
 
-
+// takes no params or a string as param and print the string
+// and waits for the user input and return string that the user
+// typed
 func input(L *lua.LState) int {
-  str := L.CheckString(1)
+  numArgs := L.GetTop()
 
   args := []LuaArg{}
-  args = append(args, LuaArg{Value: str, Type: "string"})
+  if numArgs >= 1 {
+    arg := L.Get(1)
+    if arg.Type() == lua.LTString {
+      args = append(args, LuaArg{Value: arg.String(), Type: "string"})
+    } else {
+      L.RaiseError("invalid param type")
+      return 0 // Invalid argument type, do nothing
+    }
+  }
+
   result := rubyAction("input", args)
 
-  L.Push(lua.LString(result))
+  L.Push(lua.LString(result[0].Value))
   return 1
 }
 

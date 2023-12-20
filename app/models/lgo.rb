@@ -1,6 +1,3 @@
-require "json"
-require "pty"
-
 class Lgo
   attr_reader :write_io, :read_io
   attr_accessor :last_line, :last_cmd, :last_cmd_result, :code, :script_path
@@ -48,66 +45,5 @@ class Lgo
         break
       end
     end
-  end
-end
-
-class String
-  def lua_type = "string"
-end
-
-class Lgo::ArgParser
-  def self.dump(data)
-    data.map do |obj|
-      {value: obj, type: obj.lua_type}
-    end.to_json
-  end
-
-  def self.load(data)
-    data
-  end
-end
-
-class Lgo::Cmd
-  include CableReady::Broadcaster
-
-  attr_reader :id, :cmd, :args, :lgo
-
-  def initialize(lgo)
-    @lgo = lgo
-    @id, @cmd = lgo.last_line.split(" ")
-    @args = JSON.parse(lgo.last_line.split(" ")[2..].join(" "))
-  end
-
-  def run
-    send("cmd_#{cmd}", args)
-  end
-
-  def self.is_cmd?(text)
-    text[0..3] == "RUBY"
-  end
-
-  def cmd_print(args)
-    text = args.map { |i| i["value"] }.join(" ")
-
-    puts text
-
-    cable_ready[TerminalChannel]
-      .append(
-        selector: "#run_stdout",
-        html: "#{text}\n"
-      )
-      .broadcast_to("test")
-
-    "true"
-  end
-
-  def cmd_input(args)
-    # logic for this command is splattered all over
-    # this api should be refactored
-    if args.length > 0
-      print args[0]["value"]
-    end
-
-    gets
   end
 end

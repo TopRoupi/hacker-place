@@ -7,6 +7,12 @@ module Lgo::TerminalIntrinsics
     "true"
   end
 
+  def cmd_print_error(error)
+    puts error
+
+    "true"
+  end
+
   def cmd_input(str)
     if str
       print str

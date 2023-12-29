@@ -26,7 +26,7 @@ func rubyAction(action string, params []LuaArg) []LuaArg {
     return make([]LuaArg, 0, 0)
   }
 
-  fmt.Println("RUBY(" + strconv.Itoa(rubyCommandId) + ") " + action + " " + string(jsonData))
+  fmt.Println("->RUBY(" + strconv.Itoa(rubyCommandId) + ") " + action + " " + string(jsonData))
 
   var result []LuaArg
   var input string
@@ -126,8 +126,9 @@ func runHscriptFromFile(fname string) {
   L.SetGlobal("input", L.NewFunction(input))
 
   if err := DoScriptInSandbox(L, luaCode); err != nil {
-    fmt.Println(err.Error())
-    fmt.Println("error")
+    args := []LuaArg{}
+    args = append(args, LuaArg{Value: err.Error(), Type: "string"})
+    rubyAction("print_error", args)
   }
 }
 
@@ -136,5 +137,5 @@ func main() {
   luaScriptPath := argsWithoutProg[0]
 
   runHscriptFromFile(luaScriptPath)
-  fmt.Println("PROGRAM_END")
+  fmt.Println("->PROGRAM_END")
 }

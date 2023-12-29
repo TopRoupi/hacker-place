@@ -36,7 +36,14 @@ class Lgo
 
     @exection_fiber = Fiber.new do |lgo|
       loop do
-        lgo.last_line = lgo.read_io.gets
+        last_line = lgo.read_io.gets
+        if last_line[0...2] == "->"
+          lgo.last_line = last_line[2..]
+        else
+          puts "go: #{last_line}"
+          next
+        end
+
         if Lgo::Cmd.is_cmd?(lgo.last_line)
           lgo.last_cmd = Lgo::Cmd.new(lgo)
           Fiber.yield lgo

@@ -1,7 +1,7 @@
 class Lgo::Cmd
-  include CableReady::Broadcaster
+  # include CableReady::Broadcaster
   # include Lgo::TerminalIntrinsics
-  include Lgo::CableIntrinsics
+  # include Lgo::CableIntrinsics
   include Lgo::CmdPreparation
 
   attr_reader :id, :cmd, :args, :lgo

@@ -1,8 +1,10 @@
-module Lgo::CableIntrinsics
-  def cmd_print(*args)
+class Lgo::CableIntrinsics
+  include CableReady::Broadcaster
+
+  def self.cmd_print(*args)
     text = args.join(" ")
 
-    cable_ready[TerminalChannel]
+    new.cable_ready[TerminalChannel]
       .append(
         selector: "#run_stdout",
         html: "#{text}\n"
@@ -12,8 +14,8 @@ module Lgo::CableIntrinsics
     "true"
   end
 
-  def cmd_print_error(error)
-    cable_ready[TerminalChannel]
+  def self.cmd_print_error(error)
+    new.cable_ready[TerminalChannel]
       .append(
         selector: "#run_stdout",
         html: "<span style='color: red'>#{error}</span>\n"
@@ -23,7 +25,7 @@ module Lgo::CableIntrinsics
     "true"
   end
 
-  def cmd_input(str)
+  def self.cmd_input(str)
     # active_cable input uses a bunch of internals hacking
     # so the normal input command is not used
     # should probably fix it later.... TODO

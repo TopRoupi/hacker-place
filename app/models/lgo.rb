@@ -1,9 +1,22 @@
 class Lgo
   attr_reader :write_io, :read_io
-  attr_accessor :last_line, :last_cmd, :last_cmd_result, :code, :script_path
+  attr_reader :intrinsics
 
-  def initialize(code)
+  attr_accessor :code, :script_path
+  attr_accessor :last_line, :last_cmd, :last_cmd_result
+
+  @@intrinsics = {
+    terminal: Lgo::TerminalIntrinsics,
+    cable: Lgo::CableIntrinsics,
+    unit_test: Lgo::UnitTestIntrinsics
+  }
+
+  def initialize(code, intrinsics: :cable)
     @code = code
+    @intrinsics = @@intrinsics[intrinsics]
+    if intrinsics == :unit_test
+      @intrinsics.out = ""
+    end
 
     run_script(code)
   end
@@ -40,7 +53,7 @@ class Lgo
         if last_line[0...2] == "->"
           lgo.last_line = last_line[2..]
         else
-          puts "go: #{last_line}"
+          # puts "go: #{last_line}"
           next
         end
 

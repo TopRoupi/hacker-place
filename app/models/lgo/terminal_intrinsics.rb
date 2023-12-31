@@ -1,5 +1,5 @@
-module Lgo::TerminalIntrinsics
-  def cmd_print(*args)
+class Lgo::TerminalIntrinsics
+  def self.cmd_print(*args)
     text = args.join(" ")
 
     puts text
@@ -7,13 +7,13 @@ module Lgo::TerminalIntrinsics
     "true"
   end
 
-  def cmd_print_error(error)
+  def self.cmd_print_error(error)
     puts error
 
     "true"
   end
 
-  def cmd_input(str)
+  def self.cmd_input(str)
     if str
       print str
     end

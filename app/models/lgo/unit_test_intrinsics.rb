@@ -1,6 +1,8 @@
 class Lgo::UnitTestIntrinsics
-  @@out = ""
   class << self
+    @@out = ""
+    @@in = ""
+
     def out
       @@out
     end
@@ -9,26 +11,40 @@ class Lgo::UnitTestIntrinsics
       @@out = str
     end
 
+    def in=(str)
+      @@in = str
+    end
+
     def cmd_print(*args)
       text = args.join(" ")
-
-      @@out << text + "\n"
-
+      write_to_out(text)
       "true"
     end
 
     def cmd_print_error(error)
-      puts error
-
+      write_to_out(error)
       "true"
     end
 
     def cmd_input(str)
       if str
-        print str
+        write_to_out(str)
       end
 
-      gets
+      read_from_in
+    end
+
+    private
+
+    def write_to_out(str)
+      @@out << str + "\n"
+    end
+
+    def read_from_in
+      r = @@in.lines.first
+      r = r[..-2] if r[-1] == "\n"
+      @@in = @@in.lines[1...].join
+      r
     end
   end
 end

@@ -56,10 +56,14 @@ class TerminalChannel < ApplicationCable::Channel
     loop do
       r = @lgo.step_eval
       if r.last_cmd.cmd == "input"
+        input_text = ""
+        if @lgo.last_cmd.args.length > 0
+          input_text = @lgo.last_cmd.args[0]["value"].to_s
+        end
         cable_ready[TerminalChannel]
           .append(
             selector: "#run_stdout",
-            html: @lgo.last_cmd.args[0]["value"].to_s
+            html: input_text
           )
           .inner_html(
             selector: "#stdin_status",

@@ -120,8 +120,6 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
-    jsbundling-rails (1.2.1)
-      railties (>= 6.0.0)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -277,7 +275,6 @@ DEPENDENCIES
   capybara
   debug
   jbuilder
-  jsbundling-rails
   puma (>= 5.0)
   rails (~> 7.1.2)
   redis-session-store (~> 0.11.5)

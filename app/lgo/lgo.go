@@ -31,6 +31,7 @@ func rubyAction(action string, params []LuaArg) []LuaArg {
   var result []LuaArg
   var input string
   fmt.Scan(&input)
+  input = input[2:]
 
   var x []map[string]string
   json.Unmarshal([]byte(input), &x)
@@ -56,12 +57,6 @@ func customPrint(L *lua.LState) int {
   return 0 // Number of return values
 }
 
-func myGoFunction(L *lua.LState) int {
-  result := "Hello from Go!"
-  L.Push(lua.LString(result))
-  return 1
-}
-
 // takes no params or a string as param and print the string
 // and waits for the user input and return string that the user
 // typed
@@ -85,20 +80,6 @@ func input(L *lua.LState) int {
   return 1
 }
 
-func concatStringAndNumber(L *lua.LState) int {
-  // Get the parameters from Lua
-  str := L.CheckString(1) // CheckString verifies that the argument is a string
-  num := L.CheckNumber(2) // CheckNumber verifies that the argument is a number
-
-  // Perform some operation
-  result := fmt.Sprintf("%s-%.2f", str, num)
-
-  // Push the result back to Lua
-  L.Push(lua.LString(result))
-
-  return 1 // Number of return values
-}
-
 func DoScriptInSandbox(L *lua.LState, script string) error {
   L.SetGlobal("io", lua.LNil)
 
@@ -120,8 +101,16 @@ func runHscriptFromFile(fname string) {
   libs.Preload(L)
   defer L.Close()
 
-  L.SetGlobal("myGoFunction", L.NewFunction(myGoFunction))
-  L.SetGlobal("concatStringAndNumber", L.NewFunction(concatStringAndNumber))
+
+  prms := rubyAction("params", []LuaArg{})
+  fmt.Println("DAAAAAAAAA")
+  fmt.Println(prms)
+
+  L.SetGlobal("params", L.NewTable())
+  for i := 1; i <= 5; i++ {
+    L.RawSet(L.GetGlobal("params").(*lua.LTable), lua.LNumber(i), lua.LString("DWADWA "))
+  }
+
   L.SetGlobal("print", L.NewFunction(customPrint))
   L.SetGlobal("input", L.NewFunction(input))
 

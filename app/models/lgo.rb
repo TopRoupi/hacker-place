@@ -11,7 +11,7 @@ class Lgo
     unit_test: Lgo::UnitTestIntrinsics
   }
 
-  def initialize(code, intrinsics: :cable)
+  def initialize(code, params: "", intrinsics: :cable)
     @code = code
     @intrinsics = @@intrinsics[intrinsics]
     if intrinsics == :unit_test
@@ -26,7 +26,7 @@ class Lgo
   end
 
   def send_result(*params)
-    @write_io.printf("#{Lgo::ArgParser.dump(params)}\n")
+    @write_io.printf("->#{Lgo::ArgParser.dump(params)}\n")
   end
 
   def run
@@ -53,7 +53,7 @@ class Lgo
         if last_line[0...2] == "->"
           lgo.last_line = last_line[2..]
         else
-          # puts "go: #{last_line}"
+          puts "go: #{last_line}"
           next
         end
 

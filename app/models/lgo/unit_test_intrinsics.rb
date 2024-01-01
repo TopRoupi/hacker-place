@@ -34,6 +34,10 @@ class Lgo::UnitTestIntrinsics
       read_from_in
     end
 
+    def cmd_params
+      "testdwads"
+    end
+
     private
 
     def write_to_out(str)

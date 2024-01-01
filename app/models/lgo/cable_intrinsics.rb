@@ -31,4 +31,8 @@ class Lgo::CableIntrinsics
     # should probably fix it later.... TODO
     raise
   end
+
+  def self.cmd_params
+    "testests"
+  end
 end

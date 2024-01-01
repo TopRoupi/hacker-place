@@ -16,4 +16,8 @@ module Lgo::CmdPreparation
 
     @lgo.intrinsics.send(:cmd_input, str)
   end
+
+  def pre_cmd_params(args)
+    @lgo.intrinsics.send(:cmd_params)
+  end
 end

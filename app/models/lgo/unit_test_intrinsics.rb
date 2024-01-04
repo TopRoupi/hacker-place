@@ -34,8 +34,8 @@ class Lgo::UnitTestIntrinsics
       read_from_in
     end
 
-    def cmd_params
-      "testdwads"
+    def cmd_params(params)
+      params
     end
 
     private

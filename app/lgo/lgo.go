@@ -3,7 +3,10 @@ package main
 import (
   "fmt"
   "os"
+  "strings"
   "strconv"
+  "bufio"
+  "log"
   "io/ioutil"
   lua "github.com/yuin/gopher-lua"
   libs "github.com/vadv/gopher-lua-libs/inspect"
@@ -29,8 +32,12 @@ func rubyAction(action string, params []LuaArg) []LuaArg {
   fmt.Println("->RUBY(" + strconv.Itoa(rubyCommandId) + ") " + action + " " + string(jsonData))
 
   var result []LuaArg
-  var input string
-  fmt.Scan(&input)
+
+  reader := bufio.NewReader(os.Stdin)
+  input, err := reader.ReadString('\n')
+  if err != nil {
+      log.Fatal(err)
+  }
   input = input[2:]
 
   var x []map[string]string
@@ -102,13 +109,12 @@ func runHscriptFromFile(fname string) {
   defer L.Close()
 
 
-  prms := rubyAction("params", []LuaArg{})
-  fmt.Println("DAAAAAAAAA")
-  fmt.Println(prms)
+  paramsString := rubyAction("params", []LuaArg{})[0].Value
+  paramsList := strings.Fields(paramsString)
 
   L.SetGlobal("params", L.NewTable())
-  for i := 1; i <= 5; i++ {
-    L.RawSet(L.GetGlobal("params").(*lua.LTable), lua.LNumber(i), lua.LString("DWADWA "))
+  for i := 0; i < len(paramsList); i++ {
+    L.RawSet(L.GetGlobal("params").(*lua.LTable), lua.LNumber(i), lua.LString(paramsList[i]))
   }
 
   L.SetGlobal("print", L.NewFunction(customPrint))

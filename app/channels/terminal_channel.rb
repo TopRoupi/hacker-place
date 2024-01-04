@@ -40,7 +40,8 @@ class TerminalChannel < ApplicationCable::Channel
     exec_until_user_input
   end
 
-  def command_run(code)
+  def command_run(args)
+    code, params = args
     cable_ready[TerminalChannel]
       .inner_html(
         selector: "#run_stdout",
@@ -48,7 +49,7 @@ class TerminalChannel < ApplicationCable::Channel
       )
       .broadcast_to("test")
 
-    @lgo = Lgo.new(code)
+    @lgo = Lgo.new(code, params: params)
     exec_until_user_input
   end
 

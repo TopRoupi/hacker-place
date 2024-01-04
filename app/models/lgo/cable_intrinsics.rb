@@ -32,7 +32,7 @@ class Lgo::CableIntrinsics
     raise
   end
 
-  def self.cmd_params
-    "testests"
+  def self.cmd_params(params)
+    params
   end
 end

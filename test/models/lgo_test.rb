@@ -70,4 +70,18 @@ class LgoTest < ActiveSupport::TestCase
 
     assert lgo.intrinsics.out.include? "ttt"
   end
+
+  test "params should be set inside the lua state" do
+    code = <<~EOS
+      for i = 0, #params do
+        print(params[i])
+      end
+    EOS
+
+    lgo = Lgo.new(code, params: "-v --lol", intrinsics: :unit_test)
+    lgo.run
+
+    assert lgo.intrinsics.out.include? "-v"
+    assert lgo.intrinsics.out.include? "--lol"
+  end
 end

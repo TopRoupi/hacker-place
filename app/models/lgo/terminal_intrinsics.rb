@@ -20,4 +20,8 @@ class Lgo::TerminalIntrinsics
 
     gets
   end
+
+  def self.cmd_params(params)
+    params
+  end
 end

@@ -2,7 +2,7 @@ class Lgo
   attr_reader :write_io, :read_io
   attr_reader :intrinsics
 
-  attr_accessor :code, :script_path
+  attr_accessor :code, :params, :script_path
   attr_accessor :last_line, :last_cmd, :last_cmd_result
 
   @@intrinsics = {
@@ -13,6 +13,7 @@ class Lgo
 
   def initialize(code, params: "", intrinsics: :cable)
     @code = code
+    @params = params
     @intrinsics = @@intrinsics[intrinsics]
     if intrinsics == :unit_test
       @intrinsics.out = ""

@@ -5,7 +5,7 @@ class Home::IndexView < ApplicationView
   include Phlex::Rails::Helpers::TextField
 
   def template
-    h1 { "Hodwme#index" }
+    h1(class: "text-blue-600") { "Hodwme#index" }
 
     p { "Find me in app/views/home/index.html.erb" }
 

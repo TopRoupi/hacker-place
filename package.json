@@ -11,6 +11,7 @@
     "stimulus_reflex": "^3.5.0-rc2"
   },
   "devDependencies": {
+    "daisyui": "^3.9.4",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/typography": "^0.5.9",
     "install": "^0.13.0",

@@ -40,3 +40,42 @@ func Input(L *lua.LState) int {
   L.Push(lua.LString(result[0].Value))
   return 1
 }
+
+// TODO: 1 - add File type, 2 - add Computer type, 3 - compose the 2 types
+
+func CreateFile(L *lua.LState) int {
+  name := L.CheckString(1)
+  content := L.CheckString(2)
+
+  args := []bridge.LuaArg{}
+  args = append(args, bridge.LuaArg{Value: name, Type: "string"})
+  args = append(args, bridge.LuaArg{Value: content, Type: "string"})
+
+  bridge.RubyAction("createfile", args)
+
+  return 0
+}
+
+func EditFile(L *lua.LState) int {
+  name := L.CheckString(1)
+  content := L.CheckString(2)
+
+  args := []bridge.LuaArg{}
+  args = append(args, bridge.LuaArg{Value: name, Type: "string"})
+  args = append(args, bridge.LuaArg{Value: content, Type: "string"})
+
+  bridge.RubyAction("editfile", args)
+
+  return 0
+}
+
+func DeleteFile(L *lua.LState) int {
+  name := L.CheckString(1)
+
+  args := []bridge.LuaArg{}
+  args = append(args, bridge.LuaArg{Value: name, Type: "string"})
+
+  bridge.RubyAction("deletefile", args)
+
+  return 0
+}

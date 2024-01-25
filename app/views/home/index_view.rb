@@ -4,7 +4,12 @@ class Home::IndexView < ApplicationView
   include Phlex::Rails::Helpers::TextArea
   include Phlex::Rails::Helpers::TextField
 
+  def initialize(computer:)
+    @computer = computer
+  end
+
   def template
+    render FileExplorerComponent.new(@computer)
     div(data_controller: "cable-from", data_cable_from_id_value: "test")
 
     div(data_controller: "terminal") do

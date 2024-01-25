@@ -20,4 +20,20 @@ module Lgo::CmdPreparation
   def pre_cmd_params(args)
     @lgo.intrinsics.send(:cmd_params, @lgo.params)
   end
+
+  def pre_cmd_createfile(args)
+    name, content = args.map { |o| o["value"] }
+
+    @lgo.intrinsics.send(:cmd_createfile, name, content)
+  end
+
+  def pre_cmd_editfile(args)
+    name, content = args.map { |o| o["value"] }
+
+    @lgo.intrinsics.send(:cmd_editfile, name, content)
+  end
+
+  def pre_cmd_deletefile(args)
+    @lgo.intrinsics.send(:cmd_deletefile, args[0]["value"])
+  end
 end

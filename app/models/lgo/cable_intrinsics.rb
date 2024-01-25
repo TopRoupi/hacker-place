@@ -1,6 +1,10 @@
 class Lgo::CableIntrinsics
   include CableReady::Broadcaster
 
+  class << self
+    include Lgo::Apis::File
+  end
+
   def self.cmd_print(*args)
     text = args.join(" ")
 

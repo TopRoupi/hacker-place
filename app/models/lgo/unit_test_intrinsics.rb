@@ -1,5 +1,6 @@
 class Lgo::UnitTestIntrinsics
   class << self
+    include Lgo::Apis::File
     @@out = ""
     @@in = ""
 

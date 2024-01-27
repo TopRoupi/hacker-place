@@ -99,6 +99,16 @@ class LgoTest < ActiveSupport::TestCase
     assert_equal comp.v_files.count, 1
     assert_equal comp.v_files.last.name, "test"
     assert_equal comp.v_files.last.content, "111"
+
+    code = <<~EOS
+      createfile("test", "111")
+    EOS
+
+    lgo = Lgo.new(code, intrinsics: :unit_test)
+    lgo.run
+
+    assert_equal comp.v_files.count, 1
+    assert lgo.intrinsics.out.include? "ERROR"
   end
 
   test "editfile should edit the file with the same name on the default(last) computer" do

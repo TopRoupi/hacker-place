@@ -51,7 +51,10 @@ func CreateFile(L *lua.LState) int {
   args = append(args, bridge.LuaArg{Value: name, Type: "string"})
   args = append(args, bridge.LuaArg{Value: content, Type: "string"})
 
-  bridge.RubyAction("createfile", args)
+  result := bridge.RubyAction("createfile", args)[0].Value
+  if(len(result) > 0) {
+    L.RaiseError(result)
+  }
 
   return 0
 }

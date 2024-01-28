@@ -47,3 +47,5 @@ gem "redis-session-store", "~> 0.11.5"
 gem "sidekiq", "~> 7.2"
 
 gem "phlex-rails", "~> 1.1"
+
+gem "devise", "~> 4.9"

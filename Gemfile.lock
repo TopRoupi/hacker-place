@@ -149,6 +149,7 @@ GEM
     nio4r (2.6.1)
     nokogiri (1.15.5-x86_64-linux)
       racc (~> 1.4)
+    pg (1.5.4)
     phlex (1.9.0)
       concurrent-ruby (~> 1.2)
       erb (>= 4)
@@ -234,7 +235,6 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    sqlite3 (1.6.9-x86_64-linux)
     stimulus-rails (1.3.0)
       railties (>= 6.0.0)
     stimulus_reflex (3.5.0.rc3)
@@ -286,6 +286,7 @@ DEPENDENCIES
   capybara
   debug
   jbuilder
+  pg
   phlex-rails (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.1.2)
@@ -293,7 +294,6 @@ DEPENDENCIES
   selenium-webdriver
   sidekiq (~> 7.2)
   sprockets-rails
-  sqlite3 (~> 1.4)
   stimulus-rails
   stimulus_reflex (= 3.5.0.rc3)
   turbo-rails

@@ -14,6 +14,8 @@ import CableFromController from "./cable_from_controller"
 application.register("cable-from", CableFromController)
 import TerminalController from "./terminal_controller"
 application.register("terminal", TerminalController)
+import CodeEditorController from "./code_editor_controller"
+application.register("code-editor", CodeEditorController)
 
 application.consumer = consumer
 

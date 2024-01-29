@@ -12,21 +12,18 @@ class Home::IndexView < ApplicationView
     render FileExplorerComponent.new(@computer)
     div(data_controller: "cable-from", data_cable_from_id_value: "test")
 
+
     div(data_controller: "terminal") do
       p do
         plain " params "
         text_field(:code, :params, data: { terminal_target: "codeparams" })
       end
-      whitespace
-      text_area(
-        :code,
-        :code,
-        value: "print(\"2\")",
-        data: {
-          terminal_target: "code"
-        }
-      )
-      whitespace
+      div(
+        data_controller: "code-editor",
+        data_code_editor_language_value: "lua"
+      ) do
+        textarea(data_code_editor_target: "editor", data_terminal_target: "code")
+      end
       button(data_action: " click->terminal#run_script") { "run" }
       hr
       plain " ----STDOUT---- "
@@ -34,7 +31,6 @@ class Home::IndexView < ApplicationView
       plain "---------------------- "
       br
       div(id: "stdin_status")
-      whitespace
       text_field(
         :run,
         :stdin,
@@ -43,7 +39,6 @@ class Home::IndexView < ApplicationView
           terminal_target: "stdinput"
         }
       )
-      whitespace
       button(
         id: "run_stdin_btn",
         data_action: " click->terminal#send_input",

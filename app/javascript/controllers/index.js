@@ -16,6 +16,8 @@ import TerminalController from "./terminal_controller"
 application.register("terminal", TerminalController)
 import CodeEditorController from "./code_editor_controller"
 application.register("code-editor", CodeEditorController)
+import DesktopController from "./desktop_controller"
+application.register("desktop", DesktopController)
 
 application.consumer = consumer
 

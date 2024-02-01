@@ -20,7 +20,7 @@ class Home::IndexView < ApplicationView
     ) do
       div(
         id: "desktop-open-apps",
-        class: "flex-1",
+        class: "flex-1 flex",
         data: {
           desktop_target: "desktop"
         }

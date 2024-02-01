@@ -1,10 +1,15 @@
 class Desktop::TaskbarAppComponent < ApplicationComponent
-  def initialize(name)
+  def initialize(name:, app_id:)
     @name = name
+    @app_id = app_id
   end
 
   def template
-    button(class: "p-2 bg-white/10") do
+    button(
+      data_id: @app_id,
+      data_reflex: "click->DesktopReflex#focus",
+      class: "p-2 bg-white/10"
+    ) do
       @name
     end
   end

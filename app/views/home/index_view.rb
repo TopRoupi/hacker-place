@@ -11,14 +11,20 @@ class Home::IndexView < ApplicationView
     div(data_controller: "cable-from", data_cable_from_id_value: "test")
 
     div(
+      id: "desktop",
       class: "flex flex-col min-h-screen",
       data: {
-        controller: "desktop"
+        controller: "desktop",
+        desktop_reset_value: "true"
       }
     ) do
-      div(class: "flex-1") do
-        render FileExplorerComponent.new(@computer)
-        render TerminalComponent.new
+      div(
+        id: "desktop-open-apps",
+        class: "flex-1",
+        data: {
+          desktop_target: "desktop"
+        }
+      ) do
       end
       div(class: "bg-secondary flex") do
         div(class: "dropdown dropdown-top") do
@@ -30,13 +36,15 @@ class Home::IndexView < ApplicationView
           ) do
             @apps.each do |app|
               li do
-                button { app }
+                button(
+                  data_reflex: "click->DesktopReflex#open",
+                  data_app: app
+                ) { app }
               end
             end
           end
         end
         div(id: "taskbar-open-apps", class: "flex") do
-          render Desktop::TaskbarAppComponent.new("Files")
         end
       end
     end

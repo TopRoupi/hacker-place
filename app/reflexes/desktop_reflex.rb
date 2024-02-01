@@ -1,4 +1,5 @@
 class DesktopReflex < ApplicationReflex
+  # gabage code most of this logic should be in a stimulus controller
   def open
     app_id = "app-#{SecureRandom.hex}"
     app = element.dataset[:app]
@@ -39,6 +40,20 @@ class DesktopReflex < ApplicationReflex
       .remove_css_class(
         selector: "##{app_id}",
         name: "hidden"
+      )
+
+    morph :nothing
+  end
+
+  def close
+    app_id = element.dataset[:id]
+
+    cable_ready
+      .remove(
+        selector: "##{app_id}"
+      )
+      .remove(
+        selector: "##{app_id}-taskbar"
       )
 
     morph :nothing

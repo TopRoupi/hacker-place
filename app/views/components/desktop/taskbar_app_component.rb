@@ -6,6 +6,7 @@ class Desktop::TaskbarAppComponent < ApplicationComponent
 
   def template
     button(
+      id: @app_id + "-taskbar",
       data_id: @app_id,
       data_reflex: "click->DesktopReflex#focus",
       class: "p-2 bg-white/10"

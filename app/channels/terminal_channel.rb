@@ -1,7 +1,11 @@
 class TerminalChannel < ApplicationCable::Channel
   attr_accessor :read_io, :write_io
+  attr_reader :broadcaster
+
   def subscribed
     stream_for params[:id]
+
+    @broadcaster = Broadcast::Terminal.new
   end
 
   def receive(data)
@@ -11,43 +15,14 @@ class TerminalChannel < ApplicationCable::Channel
   def command_input(str)
     @lgo.send_result(str[0])
 
-    cable_ready[TerminalChannel]
-      .append(
-        selector: "#run_stdout",
-        html: "#{str[0]}\n"
-      )
-      .inner_html(
-        selector: "#stdin_status",
-        html: ""
-      )
-      .set_attribute(
-        name: "disabled",
-        value: "",
-        selector: "#run_stdin"
-      )
-      .set_value(
-        name: "disabled",
-        value: "",
-        selector: "#run_stdin"
-      )
-      .set_attribute(
-        name: "disabled",
-        value: "",
-        selector: "#run_stdin_btn"
-      )
-      .broadcast_to("test")
+    broadcaster.disable_input(str[0])
 
     exec_until_user_input
   end
 
   def command_run(args)
     code, params = args
-    cable_ready[TerminalChannel]
-      .inner_html(
-        selector: "#run_stdout",
-        html: ""
-      )
-      .broadcast_to("test")
+    broadcaster.clear_terminal
 
     @lgo = Lgo.new(code, params: params)
     exec_until_user_input
@@ -61,24 +36,8 @@ class TerminalChannel < ApplicationCable::Channel
         if @lgo.last_cmd.args.length > 0
           input_text = @lgo.last_cmd.args[0]["value"].to_s
         end
-        cable_ready[TerminalChannel]
-          .append(
-            selector: "#run_stdout",
-            html: input_text
-          )
-          .inner_html(
-            selector: "#stdin_status",
-            html: "waiting for input: "
-          )
-          .remove_attribute(
-            name: "disabled",
-            selector: "#run_stdin"
-          )
-          .remove_attribute(
-            name: "disabled",
-            selector: "#run_stdin_btn"
-          )
-          .broadcast_to("test")
+
+        broadcaster.enable_input(input_text)
 
         return :input
       end

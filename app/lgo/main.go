@@ -26,7 +26,9 @@ func runHscriptFromFile(fname string) {
     return
   }
 
-  luaCode := string(content)
+  append_code := "local inspect = require(\"inspect\")\n"
+
+  luaCode := append_code + string(content)
 
   L := lua.NewState()
   libs.Preload(L)
@@ -38,7 +40,7 @@ func runHscriptFromFile(fname string) {
 
   L.SetGlobal("params", L.NewTable())
   for i := 0; i < len(paramsList); i++ {
-    L.RawSet(L.GetGlobal("params").(*lua.LTable), lua.LNumber(i), lua.LString(paramsList[i]))
+    L.RawSet(L.GetGlobal("params").(*lua.LTable), lua.LNumber(i + 1), lua.LString(paramsList[i]))
   }
 
   L.SetGlobal("print", L.NewFunction(intrinsics.CustomPrint))

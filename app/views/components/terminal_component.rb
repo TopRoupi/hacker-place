@@ -6,7 +6,7 @@ class TerminalComponent < ApplicationComponent
     div(data_controller: "terminal") do
       p do
         plain " params "
-        text_field(:code, :params, data: { terminal_target: "codeparams" })
+        text_field(:code, :params, data: {terminal_target: "codeparams"})
       end
       div(
         data_controller: "code-editor",

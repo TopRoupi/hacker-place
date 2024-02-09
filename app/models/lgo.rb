@@ -11,13 +11,10 @@ class Lgo
     unit_test: Lgo::UnitTestIntrinsics
   }
 
-  def initialize(code, params: "", intrinsics: :cable)
+  def initialize(code, params: "", intrinsics: :cable, intrinsics_args: {})
     @code = code
     @params = params
-    @intrinsics = @@intrinsics[intrinsics]
-    if intrinsics == :unit_test
-      @intrinsics.out = ""
-    end
+    @intrinsics = @@intrinsics[intrinsics].new(**intrinsics_args)
 
     run_script(code)
   end

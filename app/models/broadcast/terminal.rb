@@ -4,7 +4,29 @@ module Broadcast
     include ActionView::RecordIdentifier
     include CableReady::Broadcaster
 
-    attr_reader :lgo
+    attr_reader :id
+
+    def initialize(id)
+      @id = id
+    end
+
+    def print(text)
+      cable_ready[TerminalChannel]
+        .append(
+          selector: "#run_stdout",
+          html: "#{text}\n"
+        )
+        .broadcast_to(id)
+    end
+
+    def print_error(error)
+      cable_ready[TerminalChannel]
+        .append(
+          selector: "#run_stdout",
+          html: "<span style='color: red'>#{error}</span>\n"
+        )
+        .broadcast_to(id)
+    end
 
     def clear_terminal
       cable_ready[TerminalChannel]
@@ -12,7 +34,7 @@ module Broadcast
           selector: "#run_stdout",
           html: ""
         )
-        .broadcast_to("test")
+        .broadcast_to(id)
     end
 
     # input_text is the string passed to the lua input() method
@@ -34,7 +56,7 @@ module Broadcast
           name: "disabled",
           selector: "#run_stdin_btn"
         )
-        .broadcast_to("test")
+        .broadcast_to(id)
     end
 
     # inputed_text is the value the user typed
@@ -63,7 +85,7 @@ module Broadcast
           value: "",
           selector: "#run_stdin_btn"
         )
-        .broadcast_to("test")
+        .broadcast_to(id)
     end
   end
 end

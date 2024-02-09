@@ -2,12 +2,20 @@ import ApplicationController from "./application_controller"
 
 export default class extends ApplicationController {
   static targets = [ "code", "codeparams", "stdinput" ]
+  static values = {
+    computerId: String,
+    appId: String
+  }
 
   connect() {
+    console.log(this.computerIdValue)
+    console.log(this.appIdValue)
     this.channel = this.application.consumer.subscriptions.create(
       {
         channel: "TerminalChannel",
         id: "test",
+        computerId: this.computerIdValue,
+        appId: this.appIdValue
       },
       {
         received (data) {

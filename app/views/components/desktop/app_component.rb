@@ -4,7 +4,7 @@ class Desktop::AppComponent < ApplicationComponent
     @id = id
 
     @components_map = {
-      "terminal" => TerminalComponent.new,
+      "terminal" => TerminalComponent.new(computer_id: Computer.last.id, app_id: @id),
       "files" => FileExplorerComponent.new(Computer.last)
     }
 

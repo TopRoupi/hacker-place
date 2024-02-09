@@ -3,9 +3,11 @@ class TerminalChannel < ApplicationCable::Channel
   attr_reader :broadcaster
 
   def subscribed
-    stream_for params[:id]
+    @computer_id = params[:computer_id]
+    @app_id = params[:app_id]
+    stream_for @app_id
 
-    @broadcaster = Broadcast::Terminal.new
+    @broadcaster = Broadcast::Terminal.new(@app_id)
   end
 
   def receive(data)
@@ -24,8 +26,10 @@ class TerminalChannel < ApplicationCable::Channel
     code, params = args
     broadcaster.clear_terminal
 
-    @lgo = Lgo.new(code, params: params)
+    @lgo = Lgo.new(code, params: params, intrinsics_args: {broadcaster: broadcaster})
     exec_until_user_input
+  rescue => error
+    p error.message
   end
 
   def exec_until_user_input

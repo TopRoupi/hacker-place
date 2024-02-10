@@ -1,4 +1,4 @@
-class TerminalComponent < ApplicationComponent
+class IdeComponent < ApplicationComponent
   include Phlex::Rails::Helpers::TextArea
   include Phlex::Rails::Helpers::TextField
 
@@ -10,22 +10,22 @@ class TerminalComponent < ApplicationComponent
   def template
     div(
       data: {
-        controller: "terminal",
-        terminal_computer_id_value: @computer_id,
-        terminal_app_id_value: @app_id
+        controller: "ide",
+        ide: @computer_id,
+        ide_app_id_value: @app_id
       }
     ) do
       p do
         plain " params "
-        text_field(:code, :params, data: {terminal_target: "codeparams"})
+        text_field(:code, :params, data: {ide_target: "codeparams"})
       end
       div(
         data_controller: "code-editor",
         data_code_editor_language_value: "lua"
       ) do
-        textarea(data_code_editor_target: "editor", data_terminal_target: "code")
+        textarea(data_code_editor_target: "editor", data_ide_target: "code")
       end
-      button(data_action: " click->terminal#run_script") { "run" }
+      button(data_action: " click->ide#run_script") { "run" }
       hr
       plain " ----STDOUT---- "
       pre(id: "#{@app_id}-run_stdout")
@@ -38,12 +38,12 @@ class TerminalComponent < ApplicationComponent
         id: "#{@app_id}-run-stdin-input",
         disabled: true,
         data: {
-          terminal_target: "stdinput"
+          ide_target: "stdinput"
         }
       )
       button(
         id: "#{@app_id}-run_stdin_btn",
-        data_action: " click->terminal#send_input",
+        data_action: " click->ide#send_input",
         disabled: true
       ) { "send input" }
     end

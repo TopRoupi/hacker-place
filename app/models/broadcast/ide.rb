@@ -1,5 +1,5 @@
 module Broadcast
-  class Terminal
+  class Ide
     include Rails.application.routes.url_helpers
     include ActionView::RecordIdentifier
     include CableReady::Broadcaster
@@ -11,7 +11,7 @@ module Broadcast
     end
 
     def print(text)
-      cable_ready[TerminalChannel]
+      cable_ready[IdeChannel]
         .append(
           selector: "##{id}-run_stdout",
           html: "#{text}\n"
@@ -20,7 +20,7 @@ module Broadcast
     end
 
     def print_error(error)
-      cable_ready[TerminalChannel]
+      cable_ready[IdeChannel]
         .append(
           selector: "##{id}-run_stdout",
           html: "<span style='color: red'>#{error}</span>\n"
@@ -29,7 +29,7 @@ module Broadcast
     end
 
     def clear_terminal
-      cable_ready[TerminalChannel]
+      cable_ready[IdeChannel]
         .inner_html(
           selector: "##{id}-run_stdout",
           html: ""
@@ -39,7 +39,7 @@ module Broadcast
 
     # input_text is the string passed to the lua input() method
     def enable_input(input_text)
-      cable_ready[TerminalChannel]
+      cable_ready[IdeChannel]
         .append(
           selector: "##{id}-run_stdout",
           html: input_text
@@ -61,7 +61,7 @@ module Broadcast
 
     # inputed_text is the value the user typed
     def disable_input(inputed_text)
-      cable_ready[TerminalChannel]
+      cable_ready[IdeChannel]
         .append(
           selector: "##{id}-run_stdout",
           html: "#{inputed_text}\n"

@@ -1,4 +1,4 @@
-class TerminalChannel < ApplicationCable::Channel
+class IdeChannel < ApplicationCable::Channel
   attr_accessor :read_io, :write_io
   attr_reader :broadcaster
 
@@ -7,7 +7,7 @@ class TerminalChannel < ApplicationCable::Channel
     @app_id = params["appId"]
     stream_for @app_id
 
-    @broadcaster = Broadcast::Terminal.new(@app_id)
+    @broadcaster = Broadcast::Ide.new(@app_id)
   end
 
   def receive(data)

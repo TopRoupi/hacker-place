@@ -3,8 +3,6 @@
 class Home::IndexView < ApplicationView
   def initialize(computer:)
     @computer = computer
-
-    @apps = [:terminal, :files]
   end
 
   def template
@@ -34,7 +32,7 @@ class Home::IndexView < ApplicationView
             class:
             "dropdown-content z-[1] menu p-2 shadow bg-base-200 w-52"
           ) do
-            @apps.each do |app|
+            Desktop::AppFactory::APPS.each do |app|
               li do
                 button(
                   data_reflex: "click->DesktopReflex#open",

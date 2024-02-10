@@ -1,14 +1,16 @@
 class Desktop::AppComponent < ApplicationComponent
-  def initialize(app:, id:)
+  def initialize(app:, id:, component:)
     @app = app
     @id = id
+    @app_component = component
 
-    @components_map = {
-      "terminal" => TerminalComponent.new(computer_id: Computer.last.id, app_id: @id),
-      "files" => FileExplorerComponent.new(Computer.last)
-    }
+    # @components_map = {
+    #   "ide" => IdeComponent.new(computer_id: Computer.last.id, app_id: @id),
+    #   "files" => FileExplorerComponent.new(Computer.last)
+    # }
+    #
+    # Desktop::AppFactory.get_app_component(@app,)
 
-    @app_component = @components_map[@app]
   end
 
   def template

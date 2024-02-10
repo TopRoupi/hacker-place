@@ -12,8 +12,8 @@ import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 import CableFromController from "./cable_from_controller"
 application.register("cable-from", CableFromController)
-import TerminalController from "./terminal_controller"
-application.register("terminal", TerminalController)
+import IdeController from "./ide_controller"
+application.register("ide", IdeController)
 import CodeEditorController from "./code_editor_controller"
 application.register("code-editor", CodeEditorController)
 import DesktopController from "./desktop_controller"

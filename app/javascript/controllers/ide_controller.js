@@ -12,7 +12,7 @@ export default class extends ApplicationController {
     console.log(this.appIdValue)
     this.channel = this.application.consumer.subscriptions.create(
       {
-        channel: "TerminalChannel",
+        channel: "IdeChannel",
         id: "test",
         computerId: this.computerIdValue,
         appId: this.appIdValue

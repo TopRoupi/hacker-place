@@ -4,7 +4,12 @@ class DesktopReflex < ApplicationReflex
     app_id = "app-#{SecureRandom.hex}"
     app = element.dataset[:app]
 
-    app_component = render(Desktop::AppComponent.new(app: app, id: app_id))
+    component = Desktop::AppFactory.get_app_component(
+      app, {computer_id: Computer.last.id, app_id: app_id}
+    )
+
+    app_component = render(Desktop::AppComponent.new(app: app, id: app_id, component: component))
+    app_taskbar_component = render(Desktop::TaskbarAppComponent.new(name: app, app_id: app_id))
 
     cable_ready
       .set_attribute(
@@ -16,7 +21,7 @@ class DesktopReflex < ApplicationReflex
     cable_ready
       .append(
         selector: "#taskbar-open-apps",
-        html: render(Desktop::TaskbarAppComponent.new(name: app, app_id: app_id))
+        html: app_taskbar_component
       )
       .append(
         selector: "#desktop-open-apps",

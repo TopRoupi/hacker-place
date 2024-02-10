@@ -3,8 +3,8 @@ class TerminalChannel < ApplicationCable::Channel
   attr_reader :broadcaster
 
   def subscribed
-    @computer_id = params[:computer_id]
-    @app_id = params[:app_id]
+    @computer_id = params["computerId"]
+    @app_id = params["appId"]
     stream_for @app_id
 
     @broadcaster = Broadcast::Terminal.new(@app_id)

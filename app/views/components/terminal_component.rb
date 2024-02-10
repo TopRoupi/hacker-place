@@ -12,7 +12,7 @@ class TerminalComponent < ApplicationComponent
       data: {
         controller: "terminal",
         terminal_computer_id_value: @computer_id,
-        terminal_app_id_value: @app_id,
+        terminal_app_id_value: @app_id
       }
     ) do
       p do
@@ -28,20 +28,21 @@ class TerminalComponent < ApplicationComponent
       button(data_action: " click->terminal#run_script") { "run" }
       hr
       plain " ----STDOUT---- "
-      pre(id: "run_stdout")
+      pre(id: "#{@app_id}-run_stdout")
       plain "---------------------- "
       br
-      div(id: "stdin_status")
+      div(id: "#{@app_id}-stdin_status")
       text_field(
         :run,
         :stdin,
+        id: "#{@app_id}-run-stdin-input",
         disabled: true,
         data: {
           terminal_target: "stdinput"
         }
       )
       button(
-        id: "run_stdin_btn",
+        id: "#{@app_id}-run_stdin_btn",
         data_action: " click->terminal#send_input",
         disabled: true
       ) { "send input" }

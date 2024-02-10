@@ -13,7 +13,7 @@ module Broadcast
     def print(text)
       cable_ready[TerminalChannel]
         .append(
-          selector: "#run_stdout",
+          selector: "##{id}-run_stdout",
           html: "#{text}\n"
         )
         .broadcast_to(id)
@@ -22,7 +22,7 @@ module Broadcast
     def print_error(error)
       cable_ready[TerminalChannel]
         .append(
-          selector: "#run_stdout",
+          selector: "##{id}-run_stdout",
           html: "<span style='color: red'>#{error}</span>\n"
         )
         .broadcast_to(id)
@@ -31,7 +31,7 @@ module Broadcast
     def clear_terminal
       cable_ready[TerminalChannel]
         .inner_html(
-          selector: "#run_stdout",
+          selector: "##{id}-run_stdout",
           html: ""
         )
         .broadcast_to(id)
@@ -41,20 +41,20 @@ module Broadcast
     def enable_input(input_text)
       cable_ready[TerminalChannel]
         .append(
-          selector: "#run_stdout",
+          selector: "##{id}-run_stdout",
           html: input_text
         )
         .inner_html(
-          selector: "#stdin_status",
+          selector: "##{id}-stdin_status",
           html: "waiting for input: "
         )
         .remove_attribute(
           name: "disabled",
-          selector: "#run_stdin"
+          selector: "##{id}-run-stdin-input"
         )
         .remove_attribute(
           name: "disabled",
-          selector: "#run_stdin_btn"
+          selector: "##{id}-run_stdin_btn"
         )
         .broadcast_to(id)
     end
@@ -63,27 +63,27 @@ module Broadcast
     def disable_input(inputed_text)
       cable_ready[TerminalChannel]
         .append(
-          selector: "#run_stdout",
+          selector: "##{id}-run_stdout",
           html: "#{inputed_text}\n"
         )
         .inner_html(
-          selector: "#stdin_status",
+          selector: "##{id}-stdin_status",
           html: ""
         )
         .set_attribute(
           name: "disabled",
           value: "",
-          selector: "#run_stdin"
+          selector: "##{id}-run-stdin-input"
         )
         .set_value(
           name: "disabled",
           value: "",
-          selector: "#run_stdin"
+          selector: "##{id}-run-stdin-input"
         )
         .set_attribute(
           name: "disabled",
           value: "",
-          selector: "#run_stdin_btn"
+          selector: "##{id}-run_stdin_btn"
         )
         .broadcast_to(id)
     end

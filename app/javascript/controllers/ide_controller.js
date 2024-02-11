@@ -1,15 +1,13 @@
 import ApplicationController from "./application_controller"
 
 export default class extends ApplicationController {
-  static targets = [ "code", "codeparams", "stdinput" ]
+  static targets = [ "code", "codeparams", "stdinput", "programDialog" ]
   static values = {
     computerId: String,
     appId: String
   }
 
   connect() {
-    console.log(this.computerIdValue)
-    console.log(this.appIdValue)
     this.channel = this.application.consumer.subscriptions.create(
       {
         channel: "IdeChannel",
@@ -31,6 +29,7 @@ export default class extends ApplicationController {
   }
 
   run_script() {
+    this.programDialogTarget.showModal()
     console.log("run")
     console.log(this.codeparamsTarget.value)
     this.channel.send({ command: "run", args: [this.codeTarget.value, this.codeparamsTarget.value] })

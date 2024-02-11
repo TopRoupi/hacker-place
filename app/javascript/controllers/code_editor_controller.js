@@ -23,7 +23,7 @@ export default class extends ApplicationController {
 
     this.jar = CodeJar(this.editor_element, this.highlight, {addClosing: false})
     this.editorTarget.style.display = "none"
-    // this.editor_element.style.height = "500px"
+    this.editor_element.style.height = "100%"
     this.jar.updateCode(this.editorTarget.value)
     this.jar.onUpdate(code => {
       this.editorTarget.value = code

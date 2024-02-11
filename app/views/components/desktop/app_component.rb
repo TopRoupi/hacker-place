@@ -14,7 +14,7 @@ class Desktop::AppComponent < ApplicationComponent
   end
 
   def template
-    div(id: @id, class: "p-4 flex-1 flex flex-col") {
+    div(id: @id, class: "p-4 grow flex flex-col") {
       div(class: "flex rounded-t bg-base-200 py-2 px-4 border-b border-base-100 items-center") {
         span { @app }
         button(
@@ -23,7 +23,7 @@ class Desktop::AppComponent < ApplicationComponent
           data_reflex: "click->DesktopReflex#close"
         )
       }
-      div(class: "rounded-b p-4 bg-base-200 flex-1") {
+      div(class: "rounded-b p-4 bg-base-200 grow") {
         render(@app_component)
       }
     }

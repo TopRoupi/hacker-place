@@ -1,5 +1,4 @@
-# HackerPlace
-![art](https://i.imgur.com/ud6G6yh.jpeg "art")
+![banner](https://i.imgur.com/ATeNIR9.png "banner")
 
 # Description
 
@@ -11,9 +10,21 @@ The main problem is that Greyhack lacks multiplayer features to make the game mo
 
 And Hacker Experience 2? Well, it never saw the light of day, but it had a pretty good vision for a multiplayer hacker game, and I plan to improve and use them in Hacker Place.
 
-And hacker experience 2??? well, it never saw the light of day, but it had a pretty good vision for a good multiplayer hacker game, and i plan to improve and implement them in hacker place.
+### Demo
+
+the current state of the game is very very VERY basic
+
+[![Demo](https://i.imgur.com/BLuFcNG.gif)](https://youtu.be/nH8yHv3BHE4)
+
+click the gif to watch the video
 
 # Requirements
+
+```
+ ruby 3.2.2
+ nodejs 18.2.0
+ go 1.21.4
+```
 
 * **Dev setup**
 
@@ -25,4 +36,17 @@ And hacker experience 2??? well, it never saw the light of day, but it had a pre
 
   podman pull docker.io/redis
   podman run -d --name redis_server -p 6379:6379 redis
+```
+
+* **Run**
+
+```bash
+  foreman start -f Procfile.dev 
+```
+
+* **Build go bindings**
+
+```bash
+  cd app/lgo
+  go build
 ```

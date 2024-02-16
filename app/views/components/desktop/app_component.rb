@@ -10,12 +10,21 @@ class Desktop::AppComponent < ApplicationComponent
     # }
     #
     # Desktop::AppFactory.get_app_component(@app,)
-
   end
 
   def template
-    div(id: @id, class: "p-4 grow flex flex-col") {
-      div(class: "flex rounded-t bg-base-200 py-2 px-4 border-b border-base-100 items-center") {
+    div(
+      id: @id,
+      class: "p-4 grow flex flex-col absolute w-[300px]",
+      data: {
+        controller: "app-window"
+      }
+    ) {
+      div(
+        class: "flex rounded-t bg-base-200 py-2 px-4 border-b border-base-100 items-center",
+        data_app_window_target: "titleBar",
+        data_action: "mousedown->app-window#dragMouseDown mousemove@document->app-window#drag mouseup@document->app-window#closeDrag"
+      ) {
         span { @app }
         button(
           class: "ml-auto bg-error text-error-content p-2 rounded-full w-5 h-5",

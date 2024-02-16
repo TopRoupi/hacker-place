@@ -18,6 +18,8 @@ import CodeEditorController from "./code_editor_controller"
 application.register("code-editor", CodeEditorController)
 import DesktopController from "./desktop_controller"
 application.register("desktop", DesktopController)
+import AppWindowController from "./app_window_controller"
+application.register("app-window", AppWindowController)
 
 application.consumer = consumer
 

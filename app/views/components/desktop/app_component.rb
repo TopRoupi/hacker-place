@@ -3,13 +3,6 @@ class Desktop::AppComponent < ApplicationComponent
     @app = app
     @id = id
     @app_component = component
-
-    # @components_map = {
-    #   "ide" => IdeComponent.new(computer_id: Computer.last.id, app_id: @id),
-    #   "files" => FileExplorerComponent.new(Computer.last)
-    # }
-    #
-    # Desktop::AppFactory.get_app_component(@app,)
   end
 
   def template
@@ -22,8 +15,10 @@ class Desktop::AppComponent < ApplicationComponent
     ) {
       div(
         class: "flex rounded-t bg-base-200 py-2 px-4 border-b border-base-100 items-center",
-        data_app_window_target: "titleBar",
-        data_action: "mousedown->app-window#dragMouseDown mousemove@document->app-window#drag mouseup@document->app-window#closeDrag"
+        data: {
+          app_window_target: "titleBar",
+          action: "mousedown->app-window#dragMouseDown mousemove@document->app-window#drag mouseup@document->app-window#closeDrag"
+        }
       ) {
         span { @app }
         button(
@@ -32,7 +27,11 @@ class Desktop::AppComponent < ApplicationComponent
           data_reflex: "click->DesktopReflex#close"
         )
       }
-      div(class: "rounded-b p-4 bg-base-200 grow") {
+      div(
+        class: "rounded-b p-4 bg-base-200 grow",
+        data_app_window_target: "window",
+        data_action: "mousemove->app-window#checkResize mousemove@document->app-window#resetCursor mousemove@document->app-window#resize mousedown->app-window#startResize mouseup@document->app-window#stopResize"
+      ) {
         render(@app_component)
       }
     }

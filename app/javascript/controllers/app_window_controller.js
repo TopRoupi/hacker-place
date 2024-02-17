@@ -90,8 +90,16 @@ export default class extends ApplicationController {
         el.style.width = width + pos1 * -1 + 'px'
       }
       if(this.resizeD.includes("w")) {
+        let minWidth = Number(el.style.minWidth.slice(0, -2))
+
         el.style.width = width + pos1 + 'px'
-        el.style.left = el.offsetLeft + pos1 * -1 + 'px'
+
+        if(width > minWidth || (width == minWidth && pos1 > 0)) {
+          if(width + pos1 < minWidth && pos1 < 0) {
+            pos1 = (width - minWidth) * -1
+          }
+          el.style.left = el.offsetLeft + pos1 * -1 + 'px'
+        }
       }
     } else {
       this.initialX = e.clientX

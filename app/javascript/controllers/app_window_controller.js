@@ -1,5 +1,45 @@
 import ApplicationController from "./application_controller"
 
+class ResizeDirection {
+  constructor(rect, e) {
+    this.dragFrameSize = 7
+
+    this.cursorX = e.clientX - rect.left
+    this.cursorY = e.clientY - rect.top
+    this.elementWidth = rect.width
+    this.elementHeight = rect.height
+  }
+
+  direction() {
+    if(this.cursorY > this.elementHeight - this.dragFrameSize && this.cursorX > this.elementWidth - this.dragFrameSize)
+      return "se"
+    if(this.cursorY > this.elementHeight - this.dragFrameSize && this.cursorX < this.dragFrameSize)
+      return "sw"
+    if(this.cursorY > this.elementHeight - this.dragFrameSize)
+      return "s"
+    if(this.cursorX > this.elementWidth - this.dragFrameSize)
+      return "e"
+    if(this.cursorX < this.dragFrameSize)
+      return "w"
+
+    return ""
+  }
+
+  setCursorToDrag(element) {
+    var mapping = {
+      "se": "se-resize",
+      "sw": "sw-resize",
+      "s": "s-resize",
+      "w": "w-resize",
+      "e": "e-resize",
+      "": "default",
+    }
+
+    element.style.cursor = mapping[this.direction()];
+  }
+}
+
+
 export default class extends ApplicationController {
   static targets = ["titleBar", "window"]
 
@@ -10,34 +50,16 @@ export default class extends ApplicationController {
   }
 
   checkResize(e) {
-    var rect = this.windowTarget.getBoundingClientRect()
-
-    var x = e.clientX - rect.left
-    var y = e.clientY - rect.top
-    var w = rect.width
-    var h = rect.height
+    let resize = new ResizeDirection(this.windowTarget.getBoundingClientRect(), e);
 
     if(this.resizing == false){
-      if(y > h - 7) {
-        this.element.style.cursor = "s-resize";
-        this.resizeD = "s"
-      } else if(x > w - 7){
-        this.element.style.cursor = "e-resize";
-        this.resizeD = "e"
-      } else if(x < 7){
-        this.element.style.cursor = "w-resize";
-        this.resizeD = "w"
-      }
-      else {
-        this.resizeD = ""
-        this.element.style.cursor = "default"
-      }
+      this.resizeD = resize.direction()
+      resize.setCursorToDrag(this.element)
     }
   }
 
   startResize(e) {
     if(this.resizeD != "") {
-      console.log("start")
       this.resizing = true
     }
   }
@@ -61,13 +83,13 @@ export default class extends ApplicationController {
       var height = el.offsetHeight
       var width = el.offsetWidth
 
-      if(this.resizeD == "s") {
+      if(this.resizeD.includes("s")) {
         el.style.height = height + pos2 * -1 + 'px'
       }
-      if(this.resizeD == "e") {
+      if(this.resizeD.includes("e")) {
         el.style.width = width + pos1 * -1 + 'px'
       }
-      if(this.resizeD == "w") {
+      if(this.resizeD.includes("w")) {
         el.style.width = width + pos1 + 'px'
         el.style.left = el.offsetLeft + pos1 * -1 + 'px'
       }

@@ -8,7 +8,7 @@ class Desktop::AppComponent < ApplicationComponent
   def template
     div(
       id: @id,
-      class: "p-4 grow flex flex-col absolute w-[300px]",
+      class: "grow flex flex-col absolute w-[300px]",
       data: {
         controller: "app-window"
       }

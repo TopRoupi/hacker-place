@@ -115,7 +115,6 @@ GEM
       warden (~> 1.2.3)
     drb (2.2.0)
       ruby2_keywords
-    dry-cli (1.0.0)
     erb (4.0.4)
       cgi (>= 0.3.3)
     erubi (1.12.0)
@@ -123,6 +122,10 @@ GEM
       activesupport (>= 6.1)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
+    importmap-rails (2.0.1)
+      actionpack (>= 6.0.0)
+      activesupport (>= 6.0.0)
+      railties (>= 6.0.0)
     io-console (0.6.0)
     irb (1.9.1)
       rdoc
@@ -173,8 +176,6 @@ GEM
       nio4r (~> 2.0)
     racc (1.7.3)
     rack (3.0.8)
-    rack-proxy (0.7.7)
-      rack
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
@@ -268,13 +269,6 @@ GEM
       railties (>= 6.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    vite_rails (3.0.17)
-      railties (>= 5.1, < 8)
-      vite_ruby (~> 3.0, >= 3.2.2)
-    vite_ruby (3.5.0)
-      dry-cli (>= 0.7, < 2)
-      rack-proxy (~> 0.6, >= 0.6.1)
-      zeitwerk (~> 2.2)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.1)
@@ -299,6 +293,7 @@ DEPENDENCIES
   capybara
   debug
   devise (~> 4.9)
+  importmap-rails (~> 2.0)
   jbuilder
   pg
   phlex-rails (~> 1.1)
@@ -312,7 +307,6 @@ DEPENDENCIES
   stimulus_reflex (= 3.5.0.rc3)
   turbo-rails
   tzinfo-data
-  vite_rails
   web-console
 
 RUBY VERSION

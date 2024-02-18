@@ -4,7 +4,7 @@ ruby ">= 3.2.2"
 
 gem "rails", "~> 7.1.2"
 gem "sprockets-rails"
-gem "vite_rails"
+# gem "vite_rails"
 gem "stimulus_reflex", "= 3.5.0.rc3"
 gem "pg"
 gem "puma", ">= 5.0"
@@ -13,6 +13,12 @@ gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"
 gem "bootsnap", require: false
+
+gem "redis-session-store", "~> 0.11.5"
+gem "sidekiq", "~> 7.2"
+gem "phlex-rails", "~> 1.1"
+gem "devise", "~> 4.9"
+gem "importmap-rails", "~> 2.0"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
@@ -41,11 +47,3 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
-
-gem "redis-session-store", "~> 0.11.5"
-
-gem "sidekiq", "~> 7.2"
-
-gem "phlex-rails", "~> 1.1"
-
-gem "devise", "~> 4.9"

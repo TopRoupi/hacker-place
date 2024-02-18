@@ -6,6 +6,7 @@ class Home::IndexView < ApplicationView
   end
 
   def template
+    div(data_controller: "hello")
     div(data_controller: "cable-from", data_cable_from_id_value: "test")
 
     div(

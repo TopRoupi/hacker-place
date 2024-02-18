@@ -7,9 +7,12 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/brewer.min.css">
     <%# <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-    <%= vite_client_tag %>
-    <%= vite_javascript_tag 'application' %>
+    <%# <%= vite_client_tag %>
+    <%# <%= vite_javascript_tag 'application' %>
+    <%= javascript_importmap_tags %>
 
   </head>
 

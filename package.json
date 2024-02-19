@@ -2,15 +2,6 @@
   "name": "app",
   "private": "true",
   "dependencies": {
-    "@hotwired/stimulus": "npm:@hotwired/stimulus",
-    "@hotwired/turbo-rails": "^7.3.0",
-    "@rails/actioncable": "^7.1.1",
-    "@rails/actiontext": "^7.1.1",
-    "@rails/activestorage": "^7.1.1",
-    "@rails/request.js": "^0.0.6",
-    "codejar": "^4.2.0",
-    "highlight.js": "^11.9.0",
-    "stimulus_reflex": "^3.5.0-rc2"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
@@ -19,8 +10,6 @@
     "install": "^0.13.0",
     "postcss": "^8.4.23",
     "rollup-plugin-gzip": "^3.1.0",
-    "tailwindcss": "^3.3.2",
-    "vite": "^5.0.0",
-    "vite-plugin-ruby": "^5.0.0"
+    "tailwindcss": "^3.3.2"
   }
 }

@@ -8,6 +8,7 @@ default: &default
 
 development:
   <<: *default
+  host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
   database: hacker_place_development
 
 # Warning: The database defined as "test" will be erased and

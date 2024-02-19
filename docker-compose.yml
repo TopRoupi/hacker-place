@@ -1,0 +1,38 @@
+version: '3'
+services:
+  redis:
+    image: redis:7.2.4
+    ports:
+      - "6379:6379"
+  db:
+    image: postgres:14.2-alpine
+    container_name: myapp-postgres-14.2
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    command: "postgres -c 'max_connections=500'"
+    environment:
+      # POSTGRES_DB: hacker_place_development
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+  myrailsapp:
+    build: .
+    command: "foreman start -f Procfile.dev"
+    environment:
+      DB_HOST: db
+      REDIS_URL: redis://redis:6379/1
+    volumes:
+      - .:/app:cached
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    depends_on:
+      - db
+      - redis
+volumes:
+  postgres_data: {}
+networks:
+  default:
+    external: true
+    name: myapp_default

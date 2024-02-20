@@ -19,10 +19,13 @@ class Desktop::AppComponent < ApplicationComponent
   def template
     div(
       id: @id,
-      class: "grow flex flex-col absolute",
+      class: "grow flex flex-col absolute hidden",
       style: @container_style,
       data: {
-        controller: "app-window"
+        controller: "app-window",
+        de_target: "desktopApp",
+        id: @id,
+        name: @app
       }
     ) {
       header_bar

@@ -12,6 +12,11 @@ class DesktopReflex < ApplicationReflex
     app_taskbar_component = render(Desktop::TaskbarAppComponent.new(name: app, app_id: app_id))
 
     cable_ready
+      .set_attribute(
+        selector: "#de",
+        name: "data-de-active-app-value",
+        value: app_id
+      )
       .append(
         selector: "#taskbar-open-apps",
         html: app_taskbar_component

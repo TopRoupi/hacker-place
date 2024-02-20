@@ -16,8 +16,8 @@ import IdeController from "./ide_controller"
 application.register("ide", IdeController)
 import CodeEditorController from "./code_editor_controller"
 application.register("code-editor", CodeEditorController)
-import DesktopController from "./desktop_controller"
-application.register("desktop", DesktopController)
+import DEController from "./de_controller"
+application.register("de", DEController)
 import AppWindowController from "./app_window_controller"
 application.register("app-window", AppWindowController)
 

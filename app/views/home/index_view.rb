@@ -9,22 +9,23 @@ class Home::IndexView < ApplicationView
     div(data_controller: "cable-from", data_cable_from_id_value: "test")
 
     div(
-      id: "desktop",
+      id: "de",
       class: "flex flex-col min-h-screen",
       data: {
-        controller: "desktop",
-        desktop_reset_value: "true"
+        controller: "de",
+        de_reset_value: "true",
+        de_activeApp_value: ""
       }
     ) do
       div(
         id: "desktop-open-apps",
         class: "flex-1 flex",
         data: {
-          desktop_target: "desktop"
+          de_target: "desktop"
         }
       ) do
       end
-      div(class: "bg-secondary flex") do
+      div(class: "bg-secondary flex", data: {de_target: "taskbar"}) do
         div(class: "dropdown dropdown-top") do
           button(class: "bg-primary text-primary-content px-2 py-2") { "Apps" }
           ul(

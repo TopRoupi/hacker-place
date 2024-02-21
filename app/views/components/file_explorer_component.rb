@@ -1,7 +1,12 @@
 class FileExplorerComponent < ApplicationComponent
   include Phlex::Rails::Helpers::ContentTag
-  def initialize(computer)
+
+  attr_reader :app, :app_id
+
+  def initialize(computer, app_id: nil)
     @computer = computer
+    @app_id = app_id || "app-#{SecureRandom.hex}"
+    @app = :files
   end
 
   def template

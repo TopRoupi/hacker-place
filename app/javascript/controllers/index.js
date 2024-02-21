@@ -20,6 +20,8 @@ import DEController from "./de_controller"
 application.register("de", DEController)
 import AppWindowController from "./app_window_controller"
 application.register("app-window", AppWindowController)
+import TerminalController from "./terminal_controller"
+application.register("terminal", TerminalController)
 
 application.consumer = consumer
 

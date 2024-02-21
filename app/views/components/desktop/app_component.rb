@@ -1,7 +1,9 @@
 class Desktop::AppComponent < ApplicationComponent
-  def initialize(app:, id:, component:, width: 400, min_width: 300, height: 200, min_height: 200)
-    @app = app
-    @id = id
+  attr_reader :app, :app_id, :component
+
+  def initialize(component:, width: 400, min_width: 300, height: 200, min_height: 200)
+    @app = component.app
+    @app_id = component.app_id
     @app_component = component
     @width = width
     @height = height
@@ -18,13 +20,13 @@ class Desktop::AppComponent < ApplicationComponent
 
   def template
     div(
-      id: @id,
+      id: @app_id,
       class: "grow flex flex-col absolute hidden",
       style: @container_style,
       data: {
         controller: "app-window",
         de_target: "desktopApp",
-        id: @id,
+        id: @app_id,
         name: @app
       }
     ) {
@@ -44,7 +46,7 @@ class Desktop::AppComponent < ApplicationComponent
       span { @app }
       button(
         class: "ml-auto bg-error text-error-content p-2 rounded-full w-5 h-5",
-        data_id: @id,
+        data_id: @app_id,
         data_reflex: "click->DesktopReflex#close"
       )
     }

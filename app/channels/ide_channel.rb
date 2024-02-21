@@ -1,13 +1,12 @@
 class IdeChannel < ApplicationCable::Channel
   attr_accessor :read_io, :write_io
-  attr_reader :broadcaster, :de_broadcaster
+  attr_reader :terminal_broadcaster, :de_broadcaster
 
   def subscribed
     @computer_id = params["computerId"]
     @app_id = params["appId"]
     stream_for @app_id
 
-    @broadcaster = Broadcast::Ide.new(@app_id)
     @de_broadcaster = Broadcast::DE.new(@computer_id)
   end
 
@@ -18,20 +17,28 @@ class IdeChannel < ApplicationCable::Channel
   def command_input(str)
     @lgo.send_result(str[0])
 
-    broadcaster.disable_input(str[0])
+    terminal_broadcaster.disable_input(str[0])
 
     exec_until_user_input
   end
 
   def command_run(args)
-    code, params = args
-    de_broadcaster.open_app ""
-    broadcaster.clear_terminal
+    component = Desktop::AppFactory.get_app_component(
+      :terminal, {computer_id: @computer_id}
+    )
+    app_component = Desktop::AppComponent.new(component: component)
 
-    @lgo = Lgo.new(code, params: params, intrinsics_args: {broadcaster: broadcaster})
+    @terminal_broadcaster = Broadcast::Ide.new(@app_id, app_component.app_id)
+    de_broadcaster.open_app app_component
+
+    terminal_broadcaster.clear_terminal
+
+    code, params = args
+    @lgo = Lgo.new(code, params: params, intrinsics_args: {broadcaster: terminal_broadcaster})
     exec_until_user_input
   rescue => error
     p error.message
+    puts error.backtrace.join("\n")
   end
 
   def exec_until_user_input
@@ -43,7 +50,7 @@ class IdeChannel < ApplicationCable::Channel
           input_text = @lgo.last_cmd.args[0]["value"].to_s
         end
 
-        broadcaster.enable_input(input_text)
+        terminal_broadcaster.enable_input(input_text)
 
         return :input
       end

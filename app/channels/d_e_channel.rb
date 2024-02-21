@@ -1,6 +1,5 @@
 class DEChannel < ApplicationCable::Channel
   def subscribed
-    puts "______________"
     @computer_id = params["computerId"]
     puts @computer_id
     stream_for @computer_id

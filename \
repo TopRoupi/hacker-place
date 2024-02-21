@@ -12,14 +12,14 @@ module Broadcast
 
       app_taskbar_component = Desktop::TaskbarAppComponent.new(
         name: app_component.app,
-        app_id: app_component.app_id
+        app_id: app_component.id
       )
 
       cable_ready[DEChannel]
         .set_attribute(
           selector: "#de",
           name: "data-de-active-app-value",
-          value: app_component.app_id
+          value: app_component.id
         )
         .append(
           selector: "#taskbar-open-apps",
@@ -28,6 +28,12 @@ module Broadcast
         .append(
           selector: "#desktop-open-apps",
           html: render(app_component)
+        )
+        .broadcast_to(computer_id)
+
+      cable_ready[DEChannel]
+        .console_log(
+          message: "test"
         )
         .broadcast_to(computer_id)
     end

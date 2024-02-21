@@ -2,9 +2,12 @@ class IdeComponent < ApplicationComponent
   include Phlex::Rails::Helpers::TextArea
   include Phlex::Rails::Helpers::TextField
 
-  def initialize(computer_id:, app_id:)
+  attr_reader :app, :app_id
+
+  def initialize(computer_id:, app_id: nil)
     @computer_id = computer_id
-    @app_id = app_id
+    @app_id = app_id || "app-#{SecureRandom.hex}"
+    @app = :ide
   end
 
   def template

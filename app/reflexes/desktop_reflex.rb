@@ -1,14 +1,13 @@
 class DesktopReflex < ApplicationReflex
   # gabage code most of this logic should be in a stimulus controller
   def open
-    app_id = "app-#{SecureRandom.hex}"
     app = element.dataset[:app]
-
     component = Desktop::AppFactory.get_app_component(
-      app, {computer_id: Computer.last.id, app_id: app_id}
+      app, {computer_id: Computer.last.id}
     )
+    app_id = component.app_id
 
-    app_component = render(Desktop::AppComponent.new(app: app, id: app_id, component: component))
+    app_component = render(Desktop::AppComponent.new(component: component))
     app_taskbar_component = render(Desktop::TaskbarAppComponent.new(name: app, app_id: app_id))
 
     cable_ready

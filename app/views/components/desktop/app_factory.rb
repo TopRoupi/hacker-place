@@ -12,4 +12,8 @@ class Desktop::AppFactory
   def self.files_factory(args)
     FileExplorerComponent.new(Computer.last)
   end
+
+  def self.terminal_factory(args)
+    TerminalComponent.new(computer_id: args[:computer_id])
+  end
 end

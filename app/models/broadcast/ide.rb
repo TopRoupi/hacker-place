@@ -1,19 +1,16 @@
 module Broadcast
-  class Ide
-    include Rails.application.routes.url_helpers
-    include ActionView::RecordIdentifier
-    include CableReady::Broadcaster
-
+  class Ide < ApplicationBroadcast
     attr_reader :id
 
-    def initialize(id)
+    def initialize(id, terminal_id)
       @id = id
+      @terminal_id = terminal_id
     end
 
     def print(text)
       cable_ready[IdeChannel]
         .append(
-          selector: "##{id}-run_stdout",
+          selector: "##{@terminal_id}-run_stdout",
           html: "#{text}\n"
         )
         .broadcast_to(id)
@@ -22,7 +19,7 @@ module Broadcast
     def print_error(error)
       cable_ready[IdeChannel]
         .append(
-          selector: "##{id}-run_stdout",
+          selector: "##{@terminal_id}-run_stdout",
           html: "<span style='color: red'>#{error}</span>\n"
         )
         .broadcast_to(id)
@@ -31,7 +28,7 @@ module Broadcast
     def clear_terminal
       cable_ready[IdeChannel]
         .inner_html(
-          selector: "##{id}-run_stdout",
+          selector: "##{@terminal_id}-run_stdout",
           html: ""
         )
         .broadcast_to(id)
@@ -41,20 +38,20 @@ module Broadcast
     def enable_input(input_text)
       cable_ready[IdeChannel]
         .append(
-          selector: "##{id}-run_stdout",
+          selector: "##{@terminal_id}-run_stdout",
           html: input_text
         )
         .inner_html(
-          selector: "##{id}-stdin_status",
+          selector: "##{@terminal_id}-stdin_status",
           html: "waiting for input: "
         )
         .remove_attribute(
           name: "disabled",
-          selector: "##{id}-run-stdin-input"
+          selector: "##{@terminal_id}-run-stdin-input"
         )
         .remove_attribute(
           name: "disabled",
-          selector: "##{id}-run_stdin_btn"
+          selector: "##{@terminal_id}-run_stdin_btn"
         )
         .broadcast_to(id)
     end
@@ -63,27 +60,27 @@ module Broadcast
     def disable_input(inputed_text)
       cable_ready[IdeChannel]
         .append(
-          selector: "##{id}-run_stdout",
+          selector: "##{@terminal_id}-run_stdout",
           html: "#{inputed_text}\n"
         )
         .inner_html(
-          selector: "##{id}-stdin_status",
+          selector: "##{@terminal_id}-stdin_status",
           html: ""
         )
         .set_attribute(
           name: "disabled",
           value: "",
-          selector: "##{id}-run-stdin-input"
+          selector: "##{@terminal_id}-run-stdin-input"
         )
         .set_value(
           name: "disabled",
           value: "",
-          selector: "##{id}-run-stdin-input"
+          selector: "##{@terminal_id}-run-stdin-input"
         )
         .set_attribute(
           name: "disabled",
           value: "",
-          selector: "##{id}-run_stdin_btn"
+          selector: "##{@terminal_id}-run_stdin_btn"
         )
         .broadcast_to(id)
     end

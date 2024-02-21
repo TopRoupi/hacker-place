@@ -11,7 +11,7 @@ class IdeComponent < ApplicationComponent
     div(
       data: {
         controller: "ide",
-        ide: @computer_id,
+        ide_computer_id_value: @computer_id,
         ide_app_id_value: @app_id
       },
       class: "h-full flex flex-col"

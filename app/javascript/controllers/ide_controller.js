@@ -8,10 +8,9 @@ export default class extends ApplicationController {
   }
 
   connect() {
-    this.channel = this.application.consumer.subscriptions.create(
+    this.ideChannel = this.application.consumer.subscriptions.create(
       {
         channel: "IdeChannel",
-        id: "test",
         computerId: this.computerIdValue,
         appId: this.appIdValue
       },
@@ -25,14 +24,14 @@ export default class extends ApplicationController {
 
   send_input() {
     console.log("input")
-    this.channel.send({ command: "input", args: [this.stdinputTarget.value] })
+    this.ideChannel.send({ command: "input", args: [this.stdinputTarget.value] })
   }
 
   run_script() {
     this.programDialogTarget.showModal()
     console.log("run")
     console.log(this.codeparamsTarget.value)
-    this.channel.send({ command: "run", args: [this.codeTarget.value, this.codeparamsTarget.value] })
+    this.ideChannel.send({ command: "run", args: [this.codeTarget.value, this.codeparamsTarget.value] })
   }
 
   disconnect() {

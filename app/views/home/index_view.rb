@@ -13,8 +13,8 @@ class Home::IndexView < ApplicationView
       class: "flex flex-col min-h-screen",
       data: {
         controller: "de",
-        de_reset_value: "true",
-        de_activeApp_value: ""
+        de_computer_id_value: @computer.id,
+        de_active_app_value: ""
       }
     ) do
       div(

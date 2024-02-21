@@ -1,6 +1,6 @@
 class IdeChannel < ApplicationCable::Channel
   attr_accessor :read_io, :write_io
-  attr_reader :broadcaster
+  attr_reader :broadcaster, :de_broadcaster
 
   def subscribed
     @computer_id = params["computerId"]
@@ -8,6 +8,7 @@ class IdeChannel < ApplicationCable::Channel
     stream_for @app_id
 
     @broadcaster = Broadcast::Ide.new(@app_id)
+    @de_broadcaster = Broadcast::DE.new(@computer_id)
   end
 
   def receive(data)
@@ -24,6 +25,7 @@ class IdeChannel < ApplicationCable::Channel
 
   def command_run(args)
     code, params = args
+    de_broadcaster.open_app ""
     broadcaster.clear_terminal
 
     @lgo = Lgo.new(code, params: params, intrinsics_args: {broadcaster: broadcaster})

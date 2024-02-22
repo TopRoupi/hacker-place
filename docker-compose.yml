@@ -18,7 +18,7 @@ services:
       - "5432:5432"
   myrailsapp:
     build: .
-    command: "foreman start -f Procfile.dev"
+    command: "foreman start -f Procfile.docker"
     environment:
       DB_HOST: db
       REDIS_URL: redis://redis:6379/1

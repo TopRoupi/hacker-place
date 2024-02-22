@@ -14,4 +14,6 @@ RUN gem install foreman
 
 RUN yarn install
 
+RUN bin/rails assets:precompile 
+
 CMD [ "/bin/bash" ]

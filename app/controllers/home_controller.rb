@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_action :authenticate_player!, only: [:index]
+  # before_action :authenticate_player!, only: [:index]
 
   def index
     # HACK

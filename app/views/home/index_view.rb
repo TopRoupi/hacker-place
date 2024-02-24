@@ -11,6 +11,7 @@ class Home::IndexView < ApplicationView
     div(
       id: "de",
       class: "flex flex-col min-h-screen",
+      style: "background-image: url(\"#{image_url("wallpaper.png")}\"); background-size: cover;",
       data: {
         controller: "de",
         de_computer_id_value: @computer.id,
@@ -25,7 +26,7 @@ class Home::IndexView < ApplicationView
         }
       ) do
       end
-      div(class: "bg-secondary flex", data: {de_target: "taskbar"}) do
+      div(class: "bg-secondary flex z-10", data: {de_target: "taskbar"}) do
         div(class: "dropdown dropdown-top") do
           button(class: "bg-primary text-primary-content px-2 py-2") { "Apps" }
           ul(

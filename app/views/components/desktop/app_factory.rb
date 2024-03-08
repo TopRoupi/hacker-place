@@ -10,15 +10,15 @@ class Desktop::AppFactory
   end
 
   def self.files_factory(args)
-    FileExplorerComponent.new(
+    FileExplorerComponent.new(computer_id: args[:computer_id], app_id: args[:app_id])
+  end
+
+  def self.terminal_factory(args)
+    TerminalComponent.new(
       computer_id: args[:computer_id],
       app_id: args[:app_id],
       code: args[:code],
       args: args[:args]
     )
-  end
-
-  def self.terminal_factory(args)
-    TerminalComponent.new(computer_id: args[:computer_id])
   end
 end

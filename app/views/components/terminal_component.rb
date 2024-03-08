@@ -21,6 +21,15 @@ class TerminalComponent < ApplicationComponent
         terminal_app_id_value: @app_id
       }
     ) do
+      textarea(
+        class: "hidden",
+        data_terminal_target: "code"
+      ) { @code }
+      textarea(
+        class: "hidden",
+        data_terminal_target: "params"
+      ) { @args }
+
       div(
         class: "bg-black h-full overflow-scroll"
       ) {

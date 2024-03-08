@@ -13,7 +13,6 @@ class DEChannel < ApplicationCable::Channel
   def command_open(args)
     # HACK opening terminal is hard coded
     # the app should be generated using the args
-
     component = Desktop::AppFactory.get_app_component(
       :terminal, {
         computer_id: @computer_id,

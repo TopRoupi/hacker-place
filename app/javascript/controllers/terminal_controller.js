@@ -1,14 +1,13 @@
 import ApplicationController from "./application_controller"
 
 export default class extends ApplicationController {
-  static targets = [ "stdinput" ]
+  static targets = [ "code", "params", "stdinput" ]
   static values = {
     computerId: String,
     appId: String
   }
 
   connect() {
-    console.log("terminal")
     this.terminalChannel = this.application.consumer.subscriptions.create(
       {
         channel: "TerminalChannel",
@@ -21,6 +20,21 @@ export default class extends ApplicationController {
         }
       }
     )
+
+
+    var args = [
+      this.appIdValue,
+      this.codeTarget.value,
+      this.paramsTarget.value
+    ]
+    console.log("AAAAAAAAAAAAAAAAAAAAAA")
+    console.log(args)
+    setTimeout(() => {
+      this.terminalChannel.send({
+        command: "run",
+        args: args
+      })
+    }, "500");
   }
 
   send_input() {

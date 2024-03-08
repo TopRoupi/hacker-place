@@ -6,8 +6,6 @@ class TerminalChannel < ApplicationCable::Channel
     @computer_id = params["computerId"]
     @app_id = params["appId"]
     stream_for @app_id
-
-    @de_broadcaster = Broadcast::DE.new(@computer_id)
   end
 
   def receive(data)
@@ -23,17 +21,11 @@ class TerminalChannel < ApplicationCable::Channel
   end
 
   def command_run(args)
-    component = Desktop::AppFactory.get_app_component(
-      :terminal, {computer_id: @computer_id}
-    )
-    app_component = Desktop::AppComponent.new(component: component)
+    app_id, code, params = args
 
-    @terminal_broadcaster = Broadcast::Terminal.new(@app_id, app_component.app_id)
-    de_broadcaster.open_app app_component
-
+    @terminal_broadcaster = Broadcast::Terminal.new(app_id, app_id)
     terminal_broadcaster.clear_terminal
 
-    code, params = args
     @lgo = Lgo.new(code, params: params, intrinsics_args: {broadcaster: terminal_broadcaster})
     exec_until_user_input
   rescue => error

@@ -8,30 +8,23 @@ export default class extends ApplicationController {
   }
 
   connect() {
-    this.ideChannel = this.application.consumer.subscriptions.create(
-      {
-        channel: "IdeChannel",
-        computerId: this.computerIdValue,
-        appId: this.appIdValue
-      },
-      {
-        received (data) {
-          if (data.cableReady) CableReady.perform(data.operations)
-        }
-      }
-    )
-  }
-
-  send_input() {
-    console.log("input")
-    this.ideChannel.send({ command: "input", args: [this.stdinputTarget.value] })
   }
 
   run_script() {
     // this.programDialogTarget.showModal()
+    //
     console.log("run")
-    console.log(this.codeparamsTarget.value)
-    this.ideChannel.send({ command: "run", args: [this.codeTarget.value, this.codeparamsTarget.value] })
+    this.dispatch("open", {
+      detail: {
+        app: "terminal",
+        args: {
+          code: this.codeTarget.value,
+          args: this.codeparamsTarget.value
+        }
+      }
+    })
+    // console.log(this.codeparamsTarget.value)
+    // this.deChannel.send({ command: "run", args: [this.codeTarget.value, this.codeparamsTarget.value] })
   }
 
   disconnect() {

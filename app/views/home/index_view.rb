@@ -13,6 +13,7 @@ class Home::IndexView < ApplicationView
       class: "flex flex-col min-h-screen",
       style: "background-image: url(\"#{image_url("wallpaper.png")}\"); background-size: cover;",
       data: {
+        action: "ide:open->de#open",
         controller: "de",
         de_computer_id_value: @computer.id,
         de_active_app_value: ""

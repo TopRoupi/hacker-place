@@ -1,4 +1,4 @@
-class IdeChannel < ApplicationCable::Channel
+class TerminalChannel < ApplicationCable::Channel
   attr_accessor :read_io, :write_io
   attr_reader :terminal_broadcaster, :de_broadcaster
 
@@ -28,7 +28,7 @@ class IdeChannel < ApplicationCable::Channel
     )
     app_component = Desktop::AppComponent.new(component: component)
 
-    @terminal_broadcaster = Broadcast::Ide.new(@app_id, app_component.app_id)
+    @terminal_broadcaster = Broadcast::Terminal.new(@app_id, app_component.app_id)
     de_broadcaster.open_app app_component
 
     terminal_broadcaster.clear_terminal

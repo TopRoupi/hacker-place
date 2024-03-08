@@ -21,6 +21,11 @@ export default class extends ApplicationController {
     )
   }
 
+  open({ detail: { app, args } }) {
+    this.deChannel.send({ command: "open", args: [app, args] })
+    console.log(app)
+  }
+
   activeAppValueChanged () {
     if(this.activeAppValue == "")
       return

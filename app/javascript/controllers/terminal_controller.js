@@ -8,9 +8,10 @@ export default class extends ApplicationController {
   }
 
   connect() {
-    this.ideChannel = this.application.consumer.subscriptions.create(
+    console.log("terminal")
+    this.terminalChannel = this.application.consumer.subscriptions.create(
       {
-        channel: "IdeChannel",
+        channel: "TerminalChannel",
         computerId: this.computerIdValue,
         appId: this.appIdValue
       },
@@ -23,8 +24,7 @@ export default class extends ApplicationController {
   }
 
   send_input() {
-    console.log("input")
-    this.ideChannel.send({ command: "input", args: [this.stdinputTarget.value] })
+    this.terminalChannel.send({ command: "input", args: [this.stdinputTarget.value] })
   }
 
   disconnect() {

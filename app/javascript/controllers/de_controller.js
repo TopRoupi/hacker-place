@@ -27,6 +27,7 @@ export default class extends ApplicationController {
 
   close({ detail: { app }}) {
     document.getElementById(app).remove()
+    document.getElementById(app + "-taskbar").remove()
   }
 
   focus({ detail: { app } }) {

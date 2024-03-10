@@ -52,7 +52,16 @@ export default class extends ApplicationController {
   focus() {
     this.dispatch("focus", {
       detail: {
-        appId: this.element.id,
+        app: this.element.id,
+      }
+    })
+  }
+
+
+  close() {
+    this.dispatch("close", {
+      detail: {
+        app: this.element.id,
       }
     })
   }

@@ -25,12 +25,16 @@ export default class extends ApplicationController {
     this.deChannel.send({ command: "open", args: [app, args] })
   }
 
-  focus({ detail: { appId } }) {
+  close({ detail: { app }}) {
+    document.getElementById(app).remove()
+  }
+
+  focus({ detail: { app } }) {
     this.desktopAppTargets.forEach((e) => {
       e.classList.remove("z-10")
     })
 
-    document.getElementById(appId).classList.add("z-10")
+    document.getElementById(app).classList.add("z-10")
   }
 
   activeAppValueChanged () {

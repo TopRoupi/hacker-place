@@ -48,7 +48,7 @@ class Desktop::AppComponent < ApplicationComponent
       button(
         class: "ml-auto bg-error text-error-content p-2 rounded-full w-5 h-5",
         data_id: @app_id,
-        data_reflex: "click->DesktopReflex#close"
+        data_action: "click->app-window#close"
       )
     }
   end

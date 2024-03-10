@@ -10,10 +10,7 @@ export default class extends ApplicationController {
   connect() {
   }
 
-  run_script() {
-    // this.programDialogTarget.showModal()
-    //
-    console.log("run")
+  runScript() {
     this.dispatch("open", {
       detail: {
         app: "terminal",
@@ -23,8 +20,6 @@ export default class extends ApplicationController {
         }
       }
     })
-    // console.log(this.codeparamsTarget.value)
-    // this.deChannel.send({ command: "run", args: [this.codeTarget.value, this.codeparamsTarget.value] })
   }
 
   disconnect() {

@@ -22,6 +22,8 @@ import AppWindowController from "./app_window_controller"
 application.register("app-window", AppWindowController)
 import TerminalController from "./terminal_controller"
 application.register("terminal", TerminalController)
+import TaskbarController from "./taskbar_controller"
+application.register("taskbar", TaskbarController)
 
 application.consumer = consumer
 

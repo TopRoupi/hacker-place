@@ -4,7 +4,7 @@ class IdeComponent < ApplicationComponent
 
   attr_reader :app, :app_id
 
-  def initialize(computer_id:, app_id: nil)
+  def initialize(computer_id:, app_id: nil, args: [])
     @computer_id = computer_id
     @app_id = app_id || "app-#{SecureRandom.hex}"
     @app = :ide
@@ -21,51 +21,6 @@ class IdeComponent < ApplicationComponent
     ) do
       code_editor
       ide_bottom_nav
-
-      program_dialog
-    end
-  end
-
-  def program_dialog
-    dialog(
-      id: "#{@app_id}-program-dialog",
-      class: "modal",
-      data_ide_target: "programDialog"
-    ) do
-      div(class: "modal-box w-11/12 max-w-5xl bg-accent") do
-        form(method: "dialog") do
-          button(
-            class: "btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          ) { "✕" }
-        end
-        div(
-          class: "bg-black h-[300px] overflow-scroll"
-        ) {
-          pre(id: "#{@app_id}-run_stdout")
-        }
-
-        div(id: "#{@app_id}-stdin_status")
-        div(
-          class: "flex mt-2"
-        ) {
-          text_field(
-            :run,
-            :stdin,
-            id: "#{@app_id}-run-stdin-input",
-            class: "input input-bordered input-sm w-full max-w-xs",
-            disabled: true,
-            data: {
-              ide_target: "stdinput"
-            }
-          )
-          button(
-            id: "#{@app_id}-run_stdin_btn",
-            class: "btn btn-sm btn-ghost ml-auto",
-            data_action: " click->ide#send_input",
-            disabled: true
-          ) { "send input" }
-        }
-      end
     end
   end
 
@@ -92,7 +47,7 @@ class IdeComponent < ApplicationComponent
 
       button(
         class: "ml-auto btn btn-sm btn-primary",
-        data_action: " click->ide#run_script"
+        data_action: " click->ide#runScript"
       ) { "run" }
     }
   end

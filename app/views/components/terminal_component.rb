@@ -4,12 +4,11 @@ class TerminalComponent < ApplicationComponent
 
   attr_reader :app, :app_id
 
-  def initialize(computer_id:, app_id: nil, code: "", args: "")
+  def initialize(computer_id:, app_id: nil, args: [])
     @computer_id = computer_id
     @app_id = app_id || "app-#{SecureRandom.hex}"
     @app = :terminal
-    @code = code
-    @args = args
+    @code, @args = args
   end
 
   def template

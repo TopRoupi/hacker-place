@@ -23,7 +23,14 @@ export default class extends ApplicationController {
 
   open({ detail: { app, args } }) {
     this.deChannel.send({ command: "open", args: [app, args] })
-    console.log(app)
+  }
+
+  focus({ detail: { appId } }) {
+    this.desktopAppTargets.forEach((e) => {
+      e.classList.remove("z-10")
+    })
+
+    document.getElementById(appId).classList.add("z-10")
   }
 
   activeAppValueChanged () {
@@ -31,6 +38,5 @@ export default class extends ApplicationController {
       return
 
     document.getElementById(this.activeAppValue).classList.remove("hidden")
-    console.log(this.activeAppValue)
   }
 }

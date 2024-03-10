@@ -3,7 +3,7 @@ class FileExplorerComponent < ApplicationComponent
 
   attr_reader :app, :app_id
 
-  def initialize(computer_id:, app_id: nil)
+  def initialize(computer_id:, app_id: nil, args: [])
     @computer = Computer.find(computer_id)
     @app_id = app_id || "app-#{SecureRandom.hex}"
     @app = :files

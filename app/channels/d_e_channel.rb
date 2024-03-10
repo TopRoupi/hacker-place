@@ -14,10 +14,10 @@ class DEChannel < ApplicationCable::Channel
     # HACK opening terminal is hard coded
     # the app should be generated using the args
     component = Desktop::AppFactory.get_app_component(
-      :terminal, {
+      args[0].to_sym,
+      {
         computer_id: @computer_id,
-        code: args[1]["code"],
-        args: args[1]["args"]
+        args: [args[1]["code"], args[1]["args"]]
       }
     )
     app_component = Desktop::AppComponent.new(component: component)

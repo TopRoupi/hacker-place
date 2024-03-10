@@ -49,6 +49,14 @@ export default class extends ApplicationController {
     this.resizing = false
   }
 
+  focus() {
+    this.dispatch("focus", {
+      detail: {
+        appId: this.element.id,
+      }
+    })
+  }
+
   checkResize(e) {
     let resize = new ResizeDirection(this.windowTarget.getBoundingClientRect(), e);
 

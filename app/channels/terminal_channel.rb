@@ -36,6 +36,7 @@ class TerminalChannel < ApplicationCable::Channel
   def exec_until_user_input
     loop do
       r = @lgo.step_eval
+      return :end if r.nil?
       if r.last_cmd.cmd == "input"
         input_text = ""
         if @lgo.last_cmd.args.length > 0
@@ -46,7 +47,6 @@ class TerminalChannel < ApplicationCable::Channel
 
         return :input
       end
-      return :end if r.nil?
       r.send_result(r.last_cmd.run)
     end
   end

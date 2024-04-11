@@ -1,22 +1,28 @@
 module Lgo::Apis::File
   def cmd_createfile(name, content)
-    if VFile.find_by(name: name, computer: Computer.last)
+    computer = Computer.default_pc
+
+    if VFile.find_by(name: name, computer: computer)
       return "ERROR: file already exists"
     end
 
-    VFile.create(name: name, content: content, computer: Computer.last)
+    VFile.create(name: name, content: content, computer: computer)
 
     ""
   end
 
   def cmd_editfile(name, content)
-    VFile.find_by(name: name, computer: Computer.last).update(content: content)
+    computer = Computer.default_pc
+
+    VFile.find_by(name: name, computer: computer).update(content: content)
 
     ""
   end
 
   def cmd_deletefile(name)
-    VFile.find_by(name: name, computer: Computer.last).destroy
+    computer = Computer.default_pc
+
+    VFile.find_by(name: name, computer: computer).destroy
 
     ""
   end

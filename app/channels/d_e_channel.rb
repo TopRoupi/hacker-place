@@ -7,17 +7,18 @@ class DEChannel < ApplicationCable::Channel
   end
 
   def receive(data)
-    send(:"command_#{data["command"]}", data["args"])
   end
 
-  def command_open(args)
+  def open(args)
+    args.symbolize_keys => {app:, args:}
+
     # HACK opening terminal is hard coded
     # the app should be generated using the args
     component = Desktop::AppFactory.get_app_component(
-      args[0].to_sym,
+      app,
       {
         computer_id: @computer_id,
-        args: [args[1]["code"], args[1]["args"]]
+        args: [args["code"], args["args"]]
       }
     )
     app_component = Desktop::AppComponent.new(component: component)
@@ -25,6 +26,6 @@ class DEChannel < ApplicationCable::Channel
     @broadcaster.open_app(app_component)
   end
 
-  def command_close(args)
+  def close(args)
   end
 end

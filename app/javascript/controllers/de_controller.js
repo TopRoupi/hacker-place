@@ -22,7 +22,11 @@ export default class extends ApplicationController {
   }
 
   open({ detail: { app, args } }) {
-    this.deChannel.send({ command: "open", args: [app, args] })
+    this.deChannel.perform("open", {
+      app: app,
+      args: args
+    })
+    console.log(app)
   }
 
   close({ detail: { app }}) {

@@ -6,18 +6,18 @@ export default class extends ApplicationController {
     computerId: String,
     appId: String
   }
+  static outlets = [ "de" ]
 
   connect() {
+    this.deController = this.application.getControllerForElementAndIdentifier(this.deOutlet.element, 'de')
   }
 
   runScript() {
-    this.dispatch("open", {
-      detail: {
-        app: "terminal",
-        args: {
-          code: this.codeTarget.value,
-          args: this.codeparamsTarget.value
-        }
+    this.deController.open({
+      app: "terminal",
+      args: {
+        code: this.codeTarget.value,
+        args: this.codeparamsTarget.value
       }
     })
   }

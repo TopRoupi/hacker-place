@@ -26,6 +26,7 @@ class Desktop::AppComponent < ApplicationComponent
       data: {
         controller: "app-window",
         de_target: "desktopApp",
+        app_window_de_outlet: "#de",
         action: "mousedown->app-window#focus",
         id: @app_id,
         name: @app

@@ -15,7 +15,8 @@ class IdeComponent < ApplicationComponent
       data: {
         controller: "ide",
         ide_computer_id_value: @computer_id,
-        ide_app_id_value: @app_id
+        ide_app_id_value: @app_id,
+        ide_de_outlet: "#de"
       },
       class: "h-full flex flex-col"
     ) do

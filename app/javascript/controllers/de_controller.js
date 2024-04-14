@@ -21,20 +21,19 @@ export default class extends ApplicationController {
     )
   }
 
-  open({ detail: { app, args } }) {
+  open({ app, args }) {
     this.deChannel.perform("open", {
       app: app,
       args: args
     })
-    console.log(app)
   }
 
-  close({ detail: { app }}) {
+  close({ app }) {
     document.getElementById(app).remove()
     document.getElementById(app + "-taskbar").remove()
   }
 
-  focus({ detail: { app } }) {
+  focus({ app }) {
     this.desktopAppTargets.forEach((e) => {
       e.classList.remove("z-10")
     })

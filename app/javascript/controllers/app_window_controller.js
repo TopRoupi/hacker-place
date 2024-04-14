@@ -42,28 +42,23 @@ class ResizeDirection {
 
 export default class extends ApplicationController {
   static targets = ["titleBar", "window"]
+  static outlets = [ "de" ]
 
   connect() {
+    this.deController = this.application.getControllerForElementAndIdentifier(this.deOutlet.element, 'de')
+
     this.dragging = false
     this.resizeD = ""
     this.resizing = false
   }
 
   focus() {
-    this.dispatch("focus", {
-      detail: {
-        app: this.element.id,
-      }
-    })
+    this.deController.focus({app : this.element.id})
   }
 
 
   close() {
-    this.dispatch("close", {
-      detail: {
-        app: this.element.id,
-      }
-    })
+    this.deController.close({app : this.element.id})
   }
 
   checkResize(e) {

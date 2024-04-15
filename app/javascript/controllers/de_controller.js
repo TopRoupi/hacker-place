@@ -8,6 +8,8 @@ export default class extends ApplicationController {
   }
 
   connect () {
+    this.appIdStack = []
+
     this.deChannel = this.application.consumer.subscriptions.create(
       {
         channel: "DEChannel",
@@ -19,6 +21,29 @@ export default class extends ApplicationController {
         }
       }
     )
+
+    document.addEventListener('register-app-window', this.registerAppWindow)
+  }
+
+  registerAppWindow = (e) => {
+    var { appId } = e.detail
+    this.appIdStack.push(appId)
+    this.setAppStackStyles()
+  }
+
+  setAppStackStyles() {
+    let i = 2
+    this.appIdStack.forEach((id) => {
+      document.getElementById(id).style.zIndex = `${i}`;
+      i++
+    })
+  }
+
+  focus({ app }) {
+    this.appIdStack.slice(this.appIdStack.indexOf(app))
+    this.appIdStack.push(app)
+
+    this.setAppStackStyles()
   }
 
   open({ app, args }) {
@@ -31,14 +56,9 @@ export default class extends ApplicationController {
   close({ app }) {
     document.getElementById(app).remove()
     document.getElementById(app + "-taskbar").remove()
-  }
 
-  focus({ app }) {
-    this.desktopAppTargets.forEach((e) => {
-      e.classList.remove("z-10")
-    })
-
-    document.getElementById(app).classList.add("z-10")
+    this.appIdStack.slice(this.appIdStack.indexOf(app))
+    this.setAppStackStyles()
   }
 
   activeAppValueChanged () {

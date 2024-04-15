@@ -29,6 +29,12 @@ module Broadcast
           selector: "#desktop-open-apps",
           html: render(app_component)
         )
+        .dispatch_event(
+          name: "register-app-window",
+          detail: {
+            appId: app_component.app_id
+          }
+        )
         .broadcast_to(computer_id)
     end
 

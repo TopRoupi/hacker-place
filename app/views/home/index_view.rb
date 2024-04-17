@@ -28,7 +28,8 @@ class Home::IndexView < ApplicationView
       data: {
         de_target: "desktop"
       }
-    ) {}
+    ) {
+    }
   end
 
   def taskbar

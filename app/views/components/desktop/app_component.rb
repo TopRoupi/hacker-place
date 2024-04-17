@@ -21,7 +21,7 @@ class Desktop::AppComponent < ApplicationComponent
   def template
     div(
       id: @app_id,
-      class: "grow flex flex-col absolute hidden",
+      class: "grow flex flex-col absolute",
       style: @container_style,
       data: {
         controller: "app-window",

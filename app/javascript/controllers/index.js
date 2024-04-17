@@ -24,6 +24,8 @@ import TerminalController from "./terminal_controller"
 application.register("terminal", TerminalController)
 import TaskbarController from "./taskbar_controller"
 application.register("taskbar", TaskbarController)
+import MonacoController from "./monaco_controller"
+application.register("monaco", MonacoController)
 
 application.consumer = consumer
 

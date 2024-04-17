@@ -14,7 +14,7 @@ And Hacker Experience 2? Well, it never saw the light of day, but it had a prett
 
 the current state of the game is very very VERY basic
 
-[![Demo](https://i.imgur.com/BLuFcNG.gif)](https://youtu.be/nH8yHv3BHE4)
+[![Demo](https://i.imgur.com/BLuFcNG.gif)](https://youtu.be/VftUaKUQNSQ)
 
 click the gif to watch the video
 

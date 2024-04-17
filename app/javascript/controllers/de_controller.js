@@ -34,7 +34,9 @@ export default class extends ApplicationController {
   setAppStackStyles() {
     let i = 2
     this.appIdStack.forEach((id) => {
-      document.getElementById(id).style.zIndex = `${i}`;
+      let elem = document.getElementById(id)
+      if(elem == null) return
+      elem.style.zIndex = `${i}`;
       i++
     })
   }
@@ -54,10 +56,10 @@ export default class extends ApplicationController {
   }
 
   close({ app }) {
+    this.appIdStack.slice(this.appIdStack.indexOf(app))
     document.getElementById(app).remove()
     document.getElementById(app + "-taskbar").remove()
 
-    this.appIdStack.slice(this.appIdStack.indexOf(app))
     this.setAppStackStyles()
   }
 

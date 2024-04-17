@@ -1,5 +1,7 @@
 # Pin npm packages by running ./bin/importmap
 
+pin "monaco-editor", to: "https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/+esm"
+
 pin "@hotwired/turbo-rails", to: "@hotwired--turbo-rails.js" # @8.0.2
 pin "@hotwired/turbo", to: "@hotwired--turbo.js" # @8.0.2
 pin "@rails/actioncable/src", to: "@rails--actioncable--src.js" # @7.1.3

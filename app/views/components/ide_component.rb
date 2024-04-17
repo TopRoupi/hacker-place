@@ -27,12 +27,10 @@ class IdeComponent < ApplicationComponent
 
   def code_editor
     div(
-      data_controller: "code-editor",
-      data_code_editor_language_value: "lua",
-      class: "grow"
-    ) {
-      textarea(data_code_editor_target: "editor", data_ide_target: "code")
-    }
+      class: "grow",
+      data_controller: "monaco",
+      data_ide_target: "code"
+    ) {}
   end
 
   def ide_bottom_nav

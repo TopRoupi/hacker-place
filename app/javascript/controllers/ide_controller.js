@@ -16,7 +16,7 @@ export default class extends ApplicationController {
     this.deController.open({
       app: "terminal",
       args: {
-        code: this.codeTarget.value,
+        code: this.codeTarget.editor.getValue(),
         args: this.codeparamsTarget.value
       }
     })

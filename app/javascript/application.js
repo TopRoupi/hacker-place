@@ -9,6 +9,3 @@ import * as Turbo from '@hotwired/turbo'
 Turbo.start()
 
 window.Turbo = Turbo
-
-import hljs from "highlight.js"
-window.hljs = hljs

@@ -14,11 +14,9 @@ pin "@rails/activestorage", to: "activestorage.esm.js"
 pin "@rails/actiontext", to: "actiontext.esm.js"
 pin "@rails/request.js", to: "actiontext.esm.js"
 
-pin "highlight.js", to: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/es/highlight.min.js"
 pin "stimulus_reflex" # @3.5.0
 pin "cable_ready" # @5.0.3
 pin "morphdom" # @2.6.1
-pin "codejar" # @4.2.0
 
 pin_all_from "app/javascript/config", under: "config"
 pin_all_from "app/javascript/controllers", under: "controllers"

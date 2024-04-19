@@ -99,7 +99,6 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    cgi (0.4.1)
     concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
     crass (1.0.6)
@@ -114,8 +113,6 @@ GEM
       responders
       warden (~> 1.2.3)
     drb (2.2.1)
-    erb (4.0.4)
-      cgi (>= 0.3.3)
     erubi (1.12.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -160,10 +157,7 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pg (1.5.6)
-    phlex (1.9.0)
-      concurrent-ruby (~> 1.2)
-      erb (>= 4)
-      zeitwerk (~> 2.6)
+    phlex (1.10.1)
     phlex-rails (1.1.1)
       phlex (~> 1.9)
       railties (>= 6.1, < 8)
@@ -297,6 +291,7 @@ DEPENDENCIES
   importmap-rails (~> 2.0)
   jbuilder
   pg
+  phlex (>= 1.9.2)
   phlex-rails (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.1.2)

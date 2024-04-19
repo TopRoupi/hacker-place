@@ -17,6 +17,7 @@ gem "bootsnap", require: false
 gem "redis-session-store", "~> 0.11.5"
 gem "sidekiq", "~> 7.2"
 gem "phlex-rails", "~> 1.1"
+gem "phlex", ">= 1.9.2"
 gem "devise", "~> 4.9"
 gem "importmap-rails", "~> 2.0"
 

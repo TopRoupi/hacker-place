@@ -26,11 +26,18 @@ class IdeComponent < ApplicationComponent
   end
 
   def code_editor
-    div(
-      class: "grow",
-      data_controller: "monaco",
-      data_ide_target: "code"
-    ) {}
+    div(class: "grow flex", data_controller: "responsive-box") {
+      div(
+        class: "absolute",
+        data_controller: "monaco",
+        data_responsive_box_target: "el",
+        data_ide_target: "code"
+      ) {}
+      div(
+        class: "grow",
+        data_responsive_box_target: "shadowEl"
+      ) {}
+    }
   end
 
   def ide_bottom_nav

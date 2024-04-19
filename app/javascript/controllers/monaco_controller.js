@@ -7,7 +7,7 @@ export default class extends ApplicationController {
       value: `a = 2\nprint(a)`,
       language: 'lua',
       theme: 'vs-dark',
-        automaticLayout: true,
+      automaticLayout: true,
     })
   }
 }

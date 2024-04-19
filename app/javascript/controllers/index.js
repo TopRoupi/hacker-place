@@ -26,6 +26,8 @@ import TaskbarController from "./taskbar_controller"
 application.register("taskbar", TaskbarController)
 import MonacoController from "./monaco_controller"
 application.register("monaco", MonacoController)
+import ResponsiveBoxController from "./responsive_box_controller"
+application.register("responsive-box", ResponsiveBoxController)
 
 application.consumer = consumer
 

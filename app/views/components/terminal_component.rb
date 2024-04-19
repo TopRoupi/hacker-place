@@ -29,10 +29,16 @@ class TerminalComponent < ApplicationComponent
         data_terminal_target: "params"
       ) { @args }
 
-      div(
-        class: "bg-black h-full overflow-scroll"
-      ) {
-        pre(id: "#{@app_id}-run_stdout")
+      div(class: "h-full bg-black", data_controller: "responsive-box") {
+        pre(
+          id: "#{@app_id}-run_stdout",
+          class: "absolute overflow-scroll",
+          data_responsive_box_target: "el"
+        )
+        div(
+          class: "h-full",
+          data_responsive_box_target: "shadowEl"
+        ) {}
       }
 
       div(id: "#{@app_id}-stdin_status")

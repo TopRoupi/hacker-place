@@ -8,14 +8,10 @@ import consumer from "../channels/consumer"
 import controller from "./application_controller"
 import CableReady from "cable_ready"
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
 import CableFromController from "./cable_from_controller"
 application.register("cable-from", CableFromController)
 import IdeController from "./ide_controller"
 application.register("ide", IdeController)
-import CodeEditorController from "./code_editor_controller"
-application.register("code-editor", CodeEditorController)
 import DEController from "./de_controller"
 application.register("de", DEController)
 import AppWindowController from "./app_window_controller"

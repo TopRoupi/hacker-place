@@ -8,6 +8,7 @@ export default class extends ApplicationController {
       language: 'lua',
       theme: 'vs-dark',
       automaticLayout: true,
+      minimap: { enabled: false },
     })
   }
 }

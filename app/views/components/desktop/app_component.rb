@@ -21,7 +21,7 @@ class Desktop::AppComponent < ApplicationComponent
   def template
     div(
       id: @app_id,
-      class: "grow flex flex-col absolute",
+      class: "grow flex flex-col absolute shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]",
       style: @container_style,
       data: {
         controller: "app-window",
@@ -39,7 +39,7 @@ class Desktop::AppComponent < ApplicationComponent
 
   def header_bar
     div(
-      class: "flex rounded-t bg-base-200 py-2 px-4 border-b border-base-100 items-center",
+      class: "flex rounded-t py-1 px-2 items-center bg-gradient-to-t from-stone-900 to-stone-800",
       data: {
         app_window_target: "titleBar",
         action: "mousedown->app-window#dragMouseDown mousemove@document->app-window#drag mouseup@document->app-window#closeDrag"
@@ -47,7 +47,7 @@ class Desktop::AppComponent < ApplicationComponent
     ) {
       span { @app }
       button(
-        class: "ml-auto bg-error text-error-content p-2 rounded-full w-5 h-5",
+        class: "ml-auto bg-gradient-to-t from-red-900 hover:from-red-800 hover:to-red-900 to-red-800 text-error-content p-1 rounded-full w-4 h-4 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] border-solid border-1 border-black",
         data_id: @app_id,
         data_action: "click->app-window#close"
       )
@@ -56,7 +56,7 @@ class Desktop::AppComponent < ApplicationComponent
 
   def window_body
     div(
-      class: "rounded-b p-4 bg-base-200 grow",
+      class: "rounded-b p-4 bg-black/80 grow",
       data_app_window_target: "window",
       data_action: "mousemove->app-window#checkResize mousemove@document->app-window#resetCursor mousemove@document->app-window#resize mousedown->app-window#startResize mouseup@document->app-window#stopResize"
     ) {

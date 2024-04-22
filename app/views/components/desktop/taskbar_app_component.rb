@@ -9,7 +9,7 @@ class Desktop::TaskbarAppComponent < ApplicationComponent
       id: @app_id + "-taskbar",
       data_id: @app_id,
       data_reflex: "click->DesktopReflex#focus",
-      class: "p-2 bg-white/10"
+      class: "px-1 py-1 bg-white/10"
     ) do
       @name
     end

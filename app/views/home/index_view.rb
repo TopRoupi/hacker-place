@@ -9,7 +9,7 @@ class Home::IndexView < ApplicationView
     div(
       id: "de",
       class: "flex flex-col min-h-screen",
-      style: "background-image: url(\"#{image_url("wallpaper.png")}\"); background-size: cover;",
+      style: "background-image: url(\"#{image_url("wallpaper")}\"); background-position: center; background-size: cover;",
       data: {
         controller: "de",
         de_computer_id_value: @computer.id,
@@ -42,17 +42,16 @@ class Home::IndexView < ApplicationView
       }
     ) {
       div(class: "dropdown dropdown-top") {
-        button(class: "bg-primary text-primary-content px-2 py-2") { "Apps" }
+        button(class: "bg-primary text-primary-content px-2 py-1") { "Apps" }
         ul(
           tabindex: "0",
           class:
-          "dropdown-content z-[1] menu p-2 shadow bg-base-200 w-52"
+          "dropdown-content z-[1] menu px-2 py-1 shadow bg-base-200 w-52"
         ) {
           Desktop::AppFactory::APPS.each { |app|
             li {
               button(
                 data: {
-                  # reflex: "click->DesktopReflex#open",
                   action: "click->taskbar#openApp",
                   app: app
                 }

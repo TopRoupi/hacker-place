@@ -12,11 +12,11 @@ And Hacker Experience 2? Well, it never saw the light of day, but it had a prett
 
 ### Demo
 
-the current state of the game is very very VERY basic
+Screenshot of the current state of the game:
 
-[![Demo](https://i.imgur.com/BLuFcNG.gif)](https://youtu.be/VftUaKUQNSQ)
+[![Demo](https://i.imgur.com/eV04Oil.png)](https://youtu.be/VftUaKUQNSQ)
 
-click the gif to watch the video
+click the you can click the image to watch a video demo of the game
 
 # Requirements
 

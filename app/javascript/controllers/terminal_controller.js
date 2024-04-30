@@ -21,26 +21,20 @@ export default class extends ApplicationController {
       }
     )
 
-
-    var args = [
-      this.appIdValue,
-      this.codeTarget.value,
-      this.paramsTarget.value
-    ]
-    console.log("AAAAAAAAAAAAAAAAAAAAAA")
-    console.log(args)
     setTimeout(() => {
-      this.terminalChannel.send({
-        command: "run",
-        args: args
+      this.terminalChannel.perform("run", {
+        appId: this.appIdValue,
+        code: this.codeTarget.value,
+        params: this.paramsTarget.value
       })
-    }, "500");
+    }, "500")
   }
 
   send_input() {
-    this.terminalChannel.send({ command: "input", args: [this.stdinputTarget.value] })
+    this.terminalChannel.perform("input", {input: this.stdinputTarget.value})
   }
 
-  disconnect() {
+  disconnect () {
+    this.terminalChannel.unsubscribe()
   }
 }

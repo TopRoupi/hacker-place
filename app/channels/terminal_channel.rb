@@ -8,20 +8,17 @@ class TerminalChannel < ApplicationCable::Channel
     stream_for @app_id
   end
 
-  def receive(data)
-    send("command_#{data["command"]}", data["args"])
-  end
+  def input(args)
+    str = args["input"]
+    @lgo.send_result(str)
 
-  def command_input(str)
-    @lgo.send_result(str[0])
-
-    terminal_broadcaster.disable_input(str[0])
+    terminal_broadcaster.disable_input(str)
 
     exec_until_user_input
   end
 
-  def command_run(args)
-    app_id, code, params = args
+  def run(args)
+    args.transform_keys(&:underscore).symbolize_keys => {app_id:, code:, params:}
 
     @terminal_broadcaster = Broadcast::Terminal.new(app_id, app_id)
     terminal_broadcaster.clear_terminal

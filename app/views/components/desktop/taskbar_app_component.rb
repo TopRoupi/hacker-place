@@ -4,7 +4,7 @@ class Desktop::TaskbarAppComponent < ApplicationComponent
     @app_id = app_id
   end
 
-  def template
+  def view_template
     button(
       id: @app_id + "-taskbar",
       data_id: @app_id,

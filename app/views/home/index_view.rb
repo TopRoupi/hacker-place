@@ -5,7 +5,7 @@ class Home::IndexView < ApplicationView
     @computer = computer
   end
 
-  def template
+  def view_template
     render DesktopEnvironmentComponent.new(computer: @computer)
   end
 end

@@ -10,7 +10,7 @@ class IdeComponent < ApplicationComponent
     @app = :ide
   end
 
-  def template
+  def view_template
     div(
       data: {
         controller: "ide",

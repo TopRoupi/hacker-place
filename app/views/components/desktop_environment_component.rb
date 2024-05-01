@@ -3,7 +3,7 @@ class DesktopEnvironmentComponent < ApplicationComponent
     @computer = computer
   end
 
-  def template
+  def view_template
     div(
       id: "de",
       class: "flex flex-col min-h-screen",

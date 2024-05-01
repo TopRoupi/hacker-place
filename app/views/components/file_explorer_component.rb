@@ -9,7 +9,7 @@ class FileExplorerComponent < ApplicationComponent
     @app = :files
   end
 
-  def template
+  def view_template
     div(class: "grid grid-cols-4 gap-4") {
       @computer.v_files.each { |f|
         content_tag(:button, class: "bg-secondary p-2 rounded", onclick: "f#{f.id}.showModal()") {

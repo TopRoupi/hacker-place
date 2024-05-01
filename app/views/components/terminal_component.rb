@@ -11,7 +11,7 @@ class TerminalComponent < ApplicationComponent
     @code, @args = args
   end
 
-  def template
+  def view_template
     div(
       class: "h-full flex flex-col",
       data: {

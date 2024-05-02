@@ -8,13 +8,18 @@ class TerminalChannel < ApplicationCable::Channel
     stream_for @app_id
   end
 
+  def unsubscribed
+    puts "killing lgo", @lgo.pid
+    p `kill #{@lgo.pid}`
+  end
+
   def input(args)
     str = args["input"]
     @lgo.send_result(str)
 
     terminal_broadcaster.disable_input(str)
 
-    exec_until_user_input
+    @lgoserver.receive_input(str)
   end
 
   def run(args)
@@ -24,27 +29,14 @@ class TerminalChannel < ApplicationCable::Channel
     terminal_broadcaster.clear_terminal
 
     @lgo = Lgo.new(code, params: params, intrinsics_args: {broadcaster: terminal_broadcaster})
-    exec_until_user_input
+
+    @lgo_fork = fork { @lgo.run }
+    Process.detach(@lgo_fork)
+
+    DRb.start_service
+    @lgoserver = DRbObject.new_with_uri(@lgo.intrinsics.uri)
   rescue => error
     p error.message
     puts error.backtrace.join("\n")
-  end
-
-  def exec_until_user_input
-    loop do
-      r = @lgo.step_eval
-      return :end if r.nil?
-      if r.last_cmd.cmd == "input"
-        input_text = ""
-        if @lgo.last_cmd.args.length > 0
-          input_text = @lgo.last_cmd.args[0]["value"].to_s
-        end
-
-        terminal_broadcaster.enable_input(input_text)
-
-        return :input
-      end
-      r.send_result(r.last_cmd.run)
-    end
   end
 end

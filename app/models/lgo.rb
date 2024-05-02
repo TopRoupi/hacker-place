@@ -1,5 +1,5 @@
 class Lgo
-  attr_reader :write_io, :read_io
+  attr_reader :write_io, :read_io, :pid
   attr_reader :intrinsics
 
   attr_accessor :code, :params, :script_path
@@ -28,6 +28,9 @@ class Lgo
   end
 
   def run
+    if @intrinsics.instance_of?(@@intrinsics[:cable])
+      @intrinsics.initialize_server
+    end
     loop do
       break if step_eval.nil?
       send_result last_cmd.run

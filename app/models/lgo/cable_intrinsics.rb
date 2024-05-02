@@ -2,10 +2,19 @@ class Lgo::CableIntrinsics
   include CableReady::Broadcaster
   include Lgo::Apis::File
 
-  attr_reader :broadcaster
+  attr_reader :broadcaster, :uri
+
+  @@id = 99
 
   def initialize(broadcaster:)
     @broadcaster = broadcaster
+
+    @@id -= 1
+    @uri = "druby://localhost:87#{@@id}"
+  end
+
+  def initialize_server
+    DRb.start_service(uri, self)
   end
 
   def cmd_print(*args)
@@ -23,13 +32,24 @@ class Lgo::CableIntrinsics
   end
 
   def cmd_input(str)
-    # active_cable input uses a bunch of internals hacking
-    # so the normal input command is not used
-    # should probably fix it later.... TODO
-    raise
+    broadcaster.enable_input(str)
+
+    @received_input = false
+    loop do
+      sleep 0.5
+      if @received_input == true
+        break
+      end
+    end
+    @input
   end
 
   def cmd_params(params)
     params
+  end
+
+  def receive_input(str)
+    @received_input = true
+    @input = str
   end
 end

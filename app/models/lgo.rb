@@ -48,6 +48,8 @@ class Lgo
 
     @read_io, @write_io, @pid = PTY.spawn("./app/lgo/lgo #{@script_path}")
 
+    fork { exec("cpulimit -p #{@pid} --limit 5") }
+
     @exection_fiber = Fiber.new do |lgo|
       loop do
         last_line = lgo.read_io.gets

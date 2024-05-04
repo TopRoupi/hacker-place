@@ -22,8 +22,20 @@ module Lgo::Apis::File
   def cmd_deletefile(name)
     computer = Computer.default_pc
 
-    VFile.find_by(name: name, computer: computer).destroy
+    file = VFile.find_by(name: name, computer: computer)
 
-    ""
+    if file.nil?
+      "ERROR: file already exists"
+    else
+      file.destroy
+
+      ""
+    end
+  end
+
+  def cmd_getfile(name)
+    computer = Computer.default_pc
+
+    VFile.find_by(name: name, computer: computer).content
   end
 end

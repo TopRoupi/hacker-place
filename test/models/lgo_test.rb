@@ -142,4 +142,29 @@ class LgoTest < ActiveSupport::TestCase
 
     assert_equal VFile.count, file_count_before - 1
   end
+
+  test "deletefile should error if file does not exist" do
+    code = <<~EOS
+      deletefile("lllllll")
+    EOS
+
+    lgo = Lgo.new(code, intrinsics: :unit_test)
+    lgo.run
+
+    assert lgo.intrinsics.out.include? "ERROR"
+  end
+
+  test "getfile should get the content the file with the same name on the default(last) computer" do
+    comp = Computer.create
+    VFile.create(name: "test", content: "111", computer: comp)
+
+    code = <<~EOS
+      print(getfile("test"))
+    EOS
+
+    lgo = Lgo.new(code, intrinsics: :unit_test)
+    lgo.run
+
+    assert lgo.intrinsics.out.include? "111"
+  end
 end

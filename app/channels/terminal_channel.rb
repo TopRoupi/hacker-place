@@ -15,7 +15,6 @@ class TerminalChannel < ApplicationCable::Channel
 
   def input(args)
     str = args["input"]
-    @lgo.send_result(str)
 
     terminal_broadcaster.disable_input(str)
 

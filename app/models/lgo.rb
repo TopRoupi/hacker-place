@@ -48,12 +48,13 @@ class Lgo
 
     @read_io, @write_io, @pid = PTY.spawn("./app/lgo/lgo #{@script_path}")
 
-    fork { exec("cpulimit -p #{@pid} --limit 5") }
+    fork { `cpulimit -p #{@pid} --limit 1` }
 
     @exection_fiber = Fiber.new do |lgo|
       loop do
         last_line = lgo.read_io.gets
         if last_line[0...2] == "->"
+          puts last_line
           lgo.last_line = last_line[2..]
         else
           puts "go: #{last_line}"

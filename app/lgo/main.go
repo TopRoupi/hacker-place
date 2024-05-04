@@ -49,6 +49,7 @@ func runHscriptFromFile(fname string) {
   L.SetGlobal("createfile", L.NewFunction(intrinsics.CreateFile))
   L.SetGlobal("editfile", L.NewFunction(intrinsics.EditFile))
   L.SetGlobal("deletefile", L.NewFunction(intrinsics.DeleteFile))
+  L.SetGlobal("getfile", L.NewFunction(intrinsics.GetFile))
 
   if err := DoScriptInSandbox(L, luaCode); err != nil {
     args := []bridge.LuaArg{}

@@ -78,7 +78,23 @@ func DeleteFile(L *lua.LState) int {
   args := []bridge.LuaArg{}
   args = append(args, bridge.LuaArg{Value: name, Type: "string"})
 
-  bridge.RubyAction("deletefile", args)
+  result := bridge.RubyAction("deletefile", args)[0].Value
+
+  if(len(result) > 0) {
+    L.RaiseError(result)
+  }
 
   return 0
+}
+
+func GetFile(L *lua.LState) int {
+  name := L.CheckString(1)
+
+  args := []bridge.LuaArg{}
+  args = append(args, bridge.LuaArg{Value: name, Type: "string"})
+
+  result := bridge.RubyAction("getfile", args)
+
+  L.Push(lua.LString(result[0].Value))
+  return 1
 }

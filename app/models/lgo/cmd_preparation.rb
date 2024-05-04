@@ -36,4 +36,8 @@ module Lgo::CmdPreparation
   def pre_cmd_deletefile(args)
     @lgo.intrinsics.send(:cmd_deletefile, args[0]["value"])
   end
+
+  def pre_cmd_getfile(args)
+    @lgo.intrinsics.send(:cmd_getfile, args[0]["value"])
+  end
 end

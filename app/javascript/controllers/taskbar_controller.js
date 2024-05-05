@@ -12,4 +12,10 @@ export default class extends ApplicationController {
 
     this.deController.open({app: app, args: {}})
   }
+
+  focus(e) {
+    var app = e.target.dataset.app
+
+    this.deController.focus({app: app})
+  }
 }

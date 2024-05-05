@@ -7,8 +7,8 @@ class Desktop::TaskbarAppComponent < ApplicationComponent
   def view_template
     button(
       id: @app_id + "-taskbar",
-      data_id: @app_id,
-      data_reflex: "click->DesktopReflex#focus",
+      data_app: @app_id,
+      data_action: "click->taskbar#focus",
       class: "px-1 py-1 bg-white/10"
     ) do
       @name

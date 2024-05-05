@@ -50,6 +50,38 @@ export default class extends ApplicationController {
     this.dragging = false
     this.resizeD = ""
     this.resizing = false
+
+    this.maximized = false
+  }
+
+
+  minimize() {
+    this.deController.minimize({app : this.element.id})
+  }
+
+  maximize() {
+    if(this.maximized == true) {
+      this.maximized = false
+      this.element.style.height = this.unmaximizedHeight + "px"
+      this.element.style.width = this.unmaximizedWidth + "px"
+
+      this.element.style.top = this.unmaximizedTop
+      this.element.style.left = this.unmaximizedLeft
+    } else {
+      this.maximized = true
+      this.unmaximizedHeight = this.element.offsetHeight
+      this.unmaximizedWidth = this.element.offsetWidth
+
+      console.log(this.element.style.top)
+      this.unmaximizedTop = this.element.style.top
+      this.unmaximizedLeft = this.element.style.left
+
+      this.element.style.top = "0px"
+      this.element.style.left = "0px"
+
+      this.element.style.height = this.deOutlet.desktopTarget.offsetHeight + "px"
+      this.element.style.width = this.deOutlet.desktopTarget.offsetWidth + "px"
+    }
   }
 
   focus() {

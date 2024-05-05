@@ -41,11 +41,22 @@ export default class extends ApplicationController {
     })
   }
 
+  minimize({ app }) {
+    document.getElementById(app).classList.add("hidden")
+    // TODO make a toggleable class
+    document.getElementById(app + "-taskbar").classList.add("bg-white/2")
+    document.getElementById(app + "-taskbar").classList.remove("bg-white/10")
+  }
+
   focus({ app }) {
     this.appIdStack.slice(this.appIdStack.indexOf(app))
     this.appIdStack.push(app)
 
     this.setAppStackStyles()
+
+    document.getElementById(app + "-taskbar").classList.add("bg-white/10")
+    document.getElementById(app + "-taskbar").classList.remove("bg-white/2")
+    document.getElementById(app).classList.remove("hidden")
   }
 
   open({ app, args }) {

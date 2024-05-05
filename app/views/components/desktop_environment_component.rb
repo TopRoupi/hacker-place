@@ -44,7 +44,7 @@ class DesktopEnvironmentComponent < ApplicationComponent
         ul(
           tabindex: "0",
           class:
-          "dropdown-content z-[100] menu p-0 shadow bg-black w-52"
+          "dropdown-content z-[9999] menu p-0 shadow bg-black w-52"
         ) {
           Desktop::AppFactory::APPS.each { |app|
             li {

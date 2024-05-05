@@ -46,12 +46,36 @@ class Desktop::AppComponent < ApplicationComponent
       }
     ) {
       span { @app }
-      button(
-        class: "ml-auto bg-gradient-to-t from-red-900 hover:from-red-800 hover:to-red-900 to-red-800 text-error-content p-1 rounded-full w-4 h-4 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] border-solid border-1 border-black",
-        data_id: @app_id,
-        data_action: "click->app-window#close"
-      )
+      div(class: "ml-auto grid grid-cols-3 grid-rows-1 gap-1") {
+        minimize_button
+        maximize_button
+        close_button
+      }
     }
+  end
+
+  def minimize_button
+    button(
+      class: "ml-auto bg-gradient-to-t from-orange-900 hover:from-orange-800 hover:to-orange-900 to-orange-800 p-1 rounded-full w-4 h-4 border-solid border-1 border-black",
+      data_id: @app_id,
+      data_action: "click->app-window#minimize"
+    )
+  end
+
+  def maximize_button
+    button(
+      class: "ml-auto bg-gradient-to-t from-green-900 hover:from-green-800 hover:to-green-900 to-green-800 p-1 rounded-full w-4 h-4 border-solid border-1 border-black",
+      data_id: @app_id,
+      data_action: "click->app-window#maximize"
+    )
+  end
+
+  def close_button
+    button(
+      class: "ml-auto bg-gradient-to-t from-red-900 hover:from-red-800 hover:to-red-900 to-red-800 p-1 rounded-full w-4 h-4 border-solid border-1 border-black",
+      data_id: @app_id,
+      data_action: "click->app-window#close"
+    )
   end
 
   def window_body

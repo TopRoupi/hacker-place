@@ -20,6 +20,7 @@ gem "phlex-rails", "~> 1.1"
 gem "phlex", ">= 1.9.2"
 gem "devise", "~> 4.9"
 gem "importmap-rails", "~> 2.0"
+gem "anycable-rails", "~> 1.5"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"

@@ -77,6 +77,21 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
+    anycable (1.5.0)
+      anycable-core (= 1.5.0)
+      grpc (~> 1.53)
+    anycable-core (1.5.0)
+      anyway_config (~> 2.2)
+      google-protobuf (~> 3.25)
+    anycable-rails (1.5.1)
+      anycable (~> 1.5.0)
+      anycable-rails-core (= 1.5.1)
+    anycable-rails-core (1.5.1)
+      actioncable (>= 6.0)
+      anycable-core (~> 1.5.0)
+      globalid
+    anyway_config (2.6.4)
+      ruby-next-core (~> 1.0)
     base64 (0.2.0)
     bcrypt (3.1.20)
     bigdecimal (3.1.6)
@@ -116,6 +131,12 @@ GEM
     erubi (1.12.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    google-protobuf (3.25.3-x86_64-linux)
+    googleapis-common-protos-types (1.14.0)
+      google-protobuf (~> 3.18)
+    grpc (1.63.0-x86_64-linux)
+      google-protobuf (~> 3.25)
+      googleapis-common-protos-types (~> 1.0)
     i18n (1.14.4)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.0.1)
@@ -222,6 +243,7 @@ GEM
       actionpack (>= 5.2)
       railties (>= 5.2)
     rexml (3.2.6)
+    ruby-next-core (1.0.3)
     rubyzip (2.3.2)
     selenium-webdriver (4.18.1)
       base64 (~> 0.2)
@@ -284,6 +306,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  anycable-rails (~> 1.5)
   bootsnap
   capybara
   debug

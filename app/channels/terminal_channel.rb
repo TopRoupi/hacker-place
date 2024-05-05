@@ -3,9 +3,7 @@ class TerminalChannel < ApplicationCable::Channel
   attr_reader :terminal_broadcaster, :de_broadcaster
 
   def subscribed
-    @computer_id = params["computerId"]
-    @app_id = params["appId"]
-    stream_for @app_id
+    stream_for params["appId"]
   end
 
   def unsubscribed

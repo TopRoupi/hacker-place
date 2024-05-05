@@ -1,15 +1,11 @@
 class DEChannel < ApplicationCable::Channel
   def subscribed
-    @computer_id = params["computerId"]
-    stream_for @computer_id
-
-    @broadcaster = Broadcast::DE.new(@computer_id)
-  end
-
-  def receive(data)
+    stream_for params["computerId"]
   end
 
   def open(args)
+    broadcaster = Broadcast::DE.new(params["computerId"])
+
     args.symbolize_keys => {app:, args:}
 
     # HACK opening terminal is hard coded
@@ -17,13 +13,13 @@ class DEChannel < ApplicationCable::Channel
     component = Desktop::AppFactory.get_app_component(
       app,
       {
-        computer_id: @computer_id,
+        computer_id: params["computerId"],
         args: [args["code"], args["args"]]
       }
     )
     app_component = Desktop::AppComponent.new(component: component)
 
-    @broadcaster.open_app(app_component)
+    broadcaster.open_app(app_component)
   end
 
   def close(args)

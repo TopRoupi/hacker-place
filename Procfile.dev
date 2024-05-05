@@ -1,3 +1,5 @@
 web: bin/rails s -p 3000
 sidekiq: bundle exec sidekiq
 css: bin/rails tailwindcss:watch
+anycable: bundle exec anycable
+ws: bin/anycable-go --port=8080

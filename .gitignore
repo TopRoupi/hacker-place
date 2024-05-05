@@ -47,3 +47,4 @@ node_modules
 *.local
 
 app/lgo/lgo
+bin/dist

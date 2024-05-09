@@ -1,4 +1,4 @@
-class TerminalComponent < ApplicationComponent
+class Apps::Terminal < ApplicationComponent
   include Phlex::Rails::Helpers::TextArea
   include Phlex::Rails::Helpers::TextField
 

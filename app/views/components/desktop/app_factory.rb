@@ -6,21 +6,21 @@ class Desktop::AppFactory
   end
 
   def self.ide_factory(args)
-    IdeComponent.new(
+    Apps::Ide.new(
       computer_id: args[:computer_id],
       app_id: args[:app_id]
     )
   end
 
   def self.files_factory(args)
-    FileExplorerComponent.new(
+    Apps::FileExplorer.new(
       computer_id: args[:computer_id],
       app_id: args[:app_id]
     )
   end
 
   def self.terminal_factory(args)
-    TerminalComponent.new(
+    Apps::Terminal.new(
       computer_id: args[:computer_id],
       app_id: args[:app_id],
       args: args[:args]

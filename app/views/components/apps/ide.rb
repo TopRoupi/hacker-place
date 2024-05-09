@@ -1,4 +1,4 @@
-class IdeComponent < ApplicationComponent
+class Apps::Ide < ApplicationComponent
   include Phlex::Rails::Helpers::TextArea
   include Phlex::Rails::Helpers::TextField
 

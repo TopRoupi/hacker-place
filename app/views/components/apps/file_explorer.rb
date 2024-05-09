@@ -1,4 +1,4 @@
-class FileExplorerComponent < ApplicationComponent
+class Apps::FileExplorer < ApplicationComponent
   include Phlex::Rails::Helpers::ContentTag
 
   attr_reader :app, :app_id

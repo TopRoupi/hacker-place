@@ -54,9 +54,17 @@ export default class extends ApplicationController {
 
     this.setAppStackStyles()
 
+    // TODO use taskbar target
     document.getElementById(app + "-taskbar").classList.add("bg-white/10")
     document.getElementById(app + "-taskbar").classList.remove("bg-white/2")
     document.getElementById(app).classList.remove("hidden")
+  }
+
+  launchApp(e){
+    this.open({
+      app: e.target.dataset.app,
+      args: JSON.parse (e.target.dataset.args)
+    })
   }
 
   open({ app, args }) {

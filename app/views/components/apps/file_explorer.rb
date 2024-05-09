@@ -10,9 +10,16 @@ class Apps::FileExplorer < ApplicationComponent
   end
 
   def view_template
-    div(class: "grid grid-cols-4 gap-4") {
+    div(
+      class: "grid grid-cols-4 gap-4"
+    ) {
       @computer.v_files.each { |f|
-        content_tag(:button, class: "bg-secondary p-2 rounded", onclick: "f#{f.id}.showModal()") {
+        button(
+          class: "bg-secondary p-2 rounded",
+          data_action: "click->de#launchApp",
+          data_app: "file",
+          data_args: JSON.generate({name: f.name, content: f.content})
+        ) {
           f.name
         }
       }

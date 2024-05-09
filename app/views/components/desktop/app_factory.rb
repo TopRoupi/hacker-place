@@ -19,6 +19,14 @@ class Desktop::AppFactory
     )
   end
 
+  def self.file_factory(args)
+    Apps::FileViewer.new(
+      computer_id: args[:computer_id],
+      app_id: args[:app_id],
+      args: args[:args]
+    )
+  end
+
   def self.terminal_factory(args)
     Apps::Terminal.new(
       computer_id: args[:computer_id],

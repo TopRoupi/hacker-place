@@ -1,6 +1,7 @@
 class Lgo
   attr_reader :write_io, :read_io, :pid
   attr_reader :intrinsics
+  attr_reader :verbose
 
   attr_accessor :code, :params, :script_path
   attr_accessor :last_line, :last_cmd, :last_cmd_result
@@ -11,13 +12,16 @@ class Lgo
     unit_test: Lgo::UnitTestIntrinsics
   }
 
-  def initialize(code, params: "", intrinsics: :cable, intrinsics_args: {})
+  def initialize(code, params: "", intrinsics: :cable, intrinsics_args: {}, verbose: true)
+    @verbose = Rails.env.test? ? false : verbose
     @code = code
     @params = params
     @intrinsics = @@intrinsics[intrinsics].new(**intrinsics_args)
 
-    run_script(code)
+    initiate_lua_script(code)
   end
+
+  def verbose? = verbose
 
   def step_eval
     @exection_fiber.resume(self)
@@ -28,8 +32,8 @@ class Lgo
   end
 
   def run
-    if @intrinsics.instance_of?(@@intrinsics[:cable])
-      @intrinsics.initialize_server
+    if intrinsics.instance_of?(@@intrinsics[:cable])
+      intrinsics.initialize_server
     end
     loop do
       break if step_eval.nil?
@@ -39,7 +43,7 @@ class Lgo
 
   private
 
-  def run_script(code)
+  def initiate_lua_script(code)
     # TODO make the paths random
     @script_path = "/tmp/in.lua"
     f = File.open(@script_path, "w")
@@ -54,10 +58,10 @@ class Lgo
       loop do
         last_line = lgo.read_io.gets
         if last_line[0...2] == "->"
-          puts last_line
+          puts last_line if verbose?
           lgo.last_line = last_line[2..]
         else
-          puts "go: #{last_line}"
+          puts "go: #{last_line}" if verbose?
           next
         end
 

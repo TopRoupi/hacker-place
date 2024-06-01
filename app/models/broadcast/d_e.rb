@@ -16,11 +16,6 @@ module Broadcast
       )
 
       cable_ready[DEChannel]
-        .set_attribute(
-          selector: "#de",
-          name: "data-de-active-app-value",
-          value: app_component.app_id
-        )
         .append(
           selector: "#taskbar-open-apps",
           html: render(app_taskbar_component)

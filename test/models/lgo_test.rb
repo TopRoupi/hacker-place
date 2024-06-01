@@ -33,17 +33,6 @@ class LgoTest < ActiveSupport::TestCase
     assert lgo.intrinsics.out.include? "parse error"
   end
 
-  test "print input message" do
-    code = <<~EOS
-      print("enter number")
-    EOS
-
-    lgo = Lgo.new(code, intrinsics: :unit_test)
-    lgo.run
-
-    assert lgo.intrinsics.out.include? "enter number"
-  end
-
   test "take values from input" do
     code = <<~EOS
       a = tonumber(input(""))

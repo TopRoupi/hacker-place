@@ -1,9 +1,13 @@
 require "test_helper"
 
 class LgoTest < ActiveSupport::TestCase
+  setup do
+    @computer = Computer.create!()
+  end
+
   test "prints" do
     code = "print(4)"
-    lgo = Lgo.new(code, intrinsics: :unit_test)
+    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
 
     lgo.run
     assert_equal lgo.intrinsics.out, "4\n"
@@ -15,7 +19,7 @@ class LgoTest < ActiveSupport::TestCase
       print(a + 1)
     EOS
 
-    lgo = Lgo.new(code, intrinsics: :unit_test)
+    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
     lgo.run
 
     assert_equal lgo.intrinsics.out, "3\n"
@@ -27,7 +31,7 @@ class LgoTest < ActiveSupport::TestCase
       d..
     EOS
 
-    lgo = Lgo.new(code, intrinsics: :unit_test)
+    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
     lgo.run
 
     assert lgo.intrinsics.out.include? "parse error"
@@ -40,7 +44,7 @@ class LgoTest < ActiveSupport::TestCase
       print(a + b)
     EOS
 
-    lgo = Lgo.new(code, intrinsics: :unit_test)
+    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
     lgo.intrinsics.in = "5\n3\n"
     lgo.run
 
@@ -53,7 +57,7 @@ class LgoTest < ActiveSupport::TestCase
       print(a)
     EOS
 
-    lgo = Lgo.new(code, intrinsics: :unit_test)
+    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
     lgo.intrinsics.in = "ttt"
     lgo.run
 
@@ -67,48 +71,44 @@ class LgoTest < ActiveSupport::TestCase
       end
     EOS
 
-    lgo = Lgo.new(code, params: "-v --lol", intrinsics: :unit_test)
+    lgo = Lgo.new(code, computer: @computer, params: "-v --lol", intrinsics: :unit_test)
     lgo.run
 
     assert lgo.intrinsics.out.include? "-v"
     assert lgo.intrinsics.out.include? "--lol"
   end
 
-  # TODO: using the last computer as default is a hack bc im lazy to implement remote obj management
-  test "createfile should create a new file on the default(last) computer" do
-    comp = Computer.create
+  test "createfile should create a new file" do
+    code = <<~EOS
+      createfile("test", "111")
+    EOS
+
+    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+    lgo.run
+
+    assert_equal @computer.v_files.count, 1
+    assert_equal @computer.v_files.last.name, "test"
+    assert_equal @computer.v_files.last.content, "111"
 
     code = <<~EOS
       createfile("test", "111")
     EOS
 
-    lgo = Lgo.new(code, intrinsics: :unit_test)
+    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
     lgo.run
 
-    assert_equal comp.v_files.count, 1
-    assert_equal comp.v_files.last.name, "test"
-    assert_equal comp.v_files.last.content, "111"
-
-    code = <<~EOS
-      createfile("test", "111")
-    EOS
-
-    lgo = Lgo.new(code, intrinsics: :unit_test)
-    lgo.run
-
-    assert_equal comp.v_files.count, 1
+    assert_equal @computer.v_files.count, 1
     assert lgo.intrinsics.out.include? "ERROR"
   end
 
-  test "editfile should edit the file with the same name on the default(last) computer" do
-    comp = Computer.create
-    file = VFile.create(name: "test", content: "111", computer: comp)
+  test "editfile should edit the file with the same name" do
+    file = VFile.create(name: "test", content: "111", computer: @computer)
 
     code = <<~EOS
       editfile("test", "222")
     EOS
 
-    lgo = Lgo.new(code, intrinsics: :unit_test)
+    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
     lgo.run
 
     file.reload
@@ -116,9 +116,8 @@ class LgoTest < ActiveSupport::TestCase
     assert_equal file.content, "222"
   end
 
-  test "deletefile should delete the file with the same name on the default(last) computer" do
-    comp = Computer.create
-    VFile.create(name: "test", content: "111", computer: comp)
+  test "deletefile should delete the file with the same name" do
+    VFile.create(name: "test", content: "111", computer: @computer)
 
     code = <<~EOS
       deletefile("test")
@@ -126,7 +125,7 @@ class LgoTest < ActiveSupport::TestCase
 
     file_count_before = VFile.count
 
-    lgo = Lgo.new(code, intrinsics: :unit_test)
+    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
     lgo.run
 
     assert_equal VFile.count, file_count_before - 1
@@ -137,21 +136,20 @@ class LgoTest < ActiveSupport::TestCase
       deletefile("lllllll")
     EOS
 
-    lgo = Lgo.new(code, intrinsics: :unit_test)
+    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
     lgo.run
 
     assert lgo.intrinsics.out.include? "ERROR"
   end
 
-  test "getfile should get the content the file with the same name on the default(last) computer" do
-    comp = Computer.create
-    VFile.create(name: "test", content: "111", computer: comp)
+  test "getfile should get the content the file with the same name" do
+    VFile.create(name: "test", content: "111", computer: @computer)
 
     code = <<~EOS
       print(getfile("test"))
     EOS
 
-    lgo = Lgo.new(code, intrinsics: :unit_test)
+    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
     lgo.run
 
     assert lgo.intrinsics.out.include? "111"

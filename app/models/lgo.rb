@@ -2,6 +2,7 @@ class Lgo
   attr_reader :write_io, :read_io, :pid
   attr_reader :intrinsics
   attr_reader :verbose
+  attr_reader :computer
 
   attr_accessor :code, :params, :script_path
   attr_accessor :last_line, :last_cmd, :last_cmd_result
@@ -12,10 +13,13 @@ class Lgo
     unit_test: Lgo::UnitTestIntrinsics
   }
 
-  def initialize(code, params: "", intrinsics: :cable, intrinsics_args: {}, verbose: true)
+  def initialize(code, computer:, params: "", intrinsics: :cable, intrinsics_args: {}, verbose: true)
     @verbose = Rails.env.test? ? false : verbose
     @code = code
     @params = params
+    @computer = computer
+
+    intrinsics_args[:lgo] = self
     @intrinsics = @@intrinsics[intrinsics].new(**intrinsics_args)
 
     initiate_lua_script(code)

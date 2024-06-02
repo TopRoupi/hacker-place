@@ -27,7 +27,7 @@ class TerminalChannel < ApplicationCable::Channel
     @terminal_broadcaster = Broadcast::Terminal.new(app_id, app_id)
     terminal_broadcaster.clear_terminal
 
-    @lgo = Lgo.new(code, params: params, intrinsics_args: {broadcaster: terminal_broadcaster})
+    @lgo = Lgo.new(code, computer: Computer.find(@computer_id), params: params, intrinsics_args: {broadcaster: terminal_broadcaster})
 
     @lgo_fork = fork { @lgo.run }
     Process.detach(@lgo_fork)

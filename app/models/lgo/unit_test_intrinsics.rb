@@ -1,7 +1,8 @@
 class Lgo::UnitTestIntrinsics
   include Lgo::Apis::File
 
-  def initialize
+  def initialize(lgo:)
+    @lgo = lgo
     @out = ""
     @in = ""
   end

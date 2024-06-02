@@ -1,6 +1,6 @@
 module Lgo::Apis::File
   def cmd_createfile(name, content)
-    computer = Computer.default_pc
+    computer = @lgo.computer
 
     if VFile.find_by(name: name, computer: computer)
       return "ERROR: file already exists"
@@ -12,7 +12,7 @@ module Lgo::Apis::File
   end
 
   def cmd_editfile(name, content)
-    computer = Computer.default_pc
+    computer = @lgo.computer
 
     VFile.find_by(name: name, computer: computer).update(content: content)
 
@@ -20,7 +20,7 @@ module Lgo::Apis::File
   end
 
   def cmd_deletefile(name)
-    computer = Computer.default_pc
+    computer = @lgo.computer
 
     file = VFile.find_by(name: name, computer: computer)
 
@@ -34,7 +34,7 @@ module Lgo::Apis::File
   end
 
   def cmd_getfile(name)
-    computer = Computer.default_pc
+    computer = @lgo.computer
 
     VFile.find_by(name: name, computer: computer).content
   end

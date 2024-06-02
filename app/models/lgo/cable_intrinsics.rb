@@ -6,8 +6,9 @@ class Lgo::CableIntrinsics
 
   @@id = 99
 
-  def initialize(broadcaster:)
+  def initialize(lgo:, broadcaster:)
     @broadcaster = broadcaster
+    @lgo = lgo
 
     @@id -= 1
     @uri = "druby://localhost:87#{@@id}"

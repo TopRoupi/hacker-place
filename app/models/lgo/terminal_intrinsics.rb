@@ -1,4 +1,8 @@
 class Lgo::TerminalIntrinsics
+  def initialize(lgo:)
+    @lgo = lgo
+  end
+
   def cmd_print(*args)
     text = args.join(" ")
 

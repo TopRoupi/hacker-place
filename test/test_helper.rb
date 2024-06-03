@@ -2,17 +2,13 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 
-module ActiveSupport
-  class TestCase
-    # Run tests in parallel with specified workers
-    parallelize(workers: :number_of_processors)
+class ActiveSupport::TestCase
+  parallelize(workers: :number_of_processors)
 
-    # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-    # fixtures :all
+  include FactoryBot::Syntax::Methods
 
-    # Add more helper methods to be used by all tests here...
-
-    include Devise::Test::IntegrationHelpers
-    include Warden::Test::Helpers
+  def sign_in_as(player)
+    post(sign_in_url, params: { email: player.email, password: "123456" })
+    player
   end
 end

@@ -1,6 +1,7 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
   config.session_store :redis_session_store,
     serializer: :json,
     on_redis_down: ->(*a) { Rails.logger.error("Redis down! #{a.inspect}") },

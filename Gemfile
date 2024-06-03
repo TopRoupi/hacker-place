@@ -18,7 +18,7 @@ gem "redis-session-store", "~> 0.11.5"
 gem "sidekiq", "~> 7.2"
 gem "phlex-rails", "~> 1.1"
 gem "phlex", ">= 1.9.2"
-gem "devise", "~> 4.9"
+# gem "devise", "~> 4.9"
 gem "importmap-rails", "~> 2.0"
 
 gem "sys-proctable"
@@ -36,6 +36,7 @@ gem "tzinfo-data", platforms: %i[windows jruby]
 
 group :development, :test do
   gem "debug", platforms: %i[mri windows]
+  gem 'factory_bot_rails'
 end
 
 group :development do
@@ -54,3 +55,7 @@ end
 gem "tailwindcss-rails", "~> 2.3"
 
 gem "drb", "~> 2.2"
+
+gem "authentication-zero", "~> 3.0"
+# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+gem "bcrypt", "~> 3.1.7"

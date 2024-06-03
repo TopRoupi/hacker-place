@@ -7,17 +7,11 @@ class Lgo::UnitTestIntrinsics
     @in = ""
   end
 
-  def out
-    @out
-  end
+  attr_reader :out
 
-  def out=(str)
-    @out = str
-  end
+  attr_writer :out
 
-  def in=(str)
-    @in = str
-  end
+  attr_writer :in
 
   def cmd_print(*args)
     text = args.join(" ")

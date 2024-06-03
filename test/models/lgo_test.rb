@@ -2,7 +2,7 @@ require "test_helper"
 
 class LgoTest < ActiveSupport::TestCase
   setup do
-    @computer = Computer.create!()
+    @computer = Computer.create!
   end
 
   test "prints" do

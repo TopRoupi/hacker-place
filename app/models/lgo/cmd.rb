@@ -13,7 +13,7 @@ class Lgo::Cmd
   end
 
   def run
-    send("pre_cmd_#{cmd}", args)
+    send(:"pre_cmd_#{cmd}", args)
   end
 
   def self.is_cmd?(text)

@@ -15,12 +15,12 @@ class Player < ApplicationRecord
     :email,
     presence: true,
     uniqueness: true,
-    format: { with: URI::MailTo::EMAIL_REGEXP }
+    format: {with: URI::MailTo::EMAIL_REGEXP}
   )
   validates(
     :password,
     allow_nil: true,
-    length: { minimum: 6 }
+    length: {minimum: 6}
   )
 
   normalizes :email, with: -> { _1.strip.downcase }

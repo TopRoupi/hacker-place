@@ -8,7 +8,7 @@ class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 
   def sign_in_as(player)
-    post(sign_in_url, params: { email: player.email, password: "123456" })
+    post(sign_in_url, params: {email: player.email, password: "123456"})
     player
   end
 end

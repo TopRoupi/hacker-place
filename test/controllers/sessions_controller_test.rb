@@ -18,7 +18,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should sign in" do
-    post sign_in_url, params: { email: @player.email, password: "123456" }
+    post sign_in_url, params: {email: @player.email, password: "123456"}
     assert_redirected_to root_url
 
     get root_url
@@ -26,7 +26,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not sign in with wrong credentials" do
-    post sign_in_url, params: { email: @player.email, password: "1234567" }
+    post sign_in_url, params: {email: @player.email, password: "1234567"}
     assert_redirected_to sign_in_url(email_hint: @player.email)
     assert_equal "That email or password is incorrect", flash[:alert]
 

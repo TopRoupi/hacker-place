@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_03_080939) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_08_102356) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -49,5 +49,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_03_080939) do
     t.index ["computer_id"], name: "index_v_files_on_computer_id"
   end
 
+  create_table "v_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "computer_id", null: false
+    t.string "name"
+    t.integer "cpu_usage", default: 0, null: false
+    t.integer "ram_usage", default: 0, null: false
+    t.date "started_at", null: false
+    t.string "pid", null: false
+    t.string "command", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["computer_id"], name: "index_v_processes_on_computer_id"
+  end
+
   add_foreign_key "sessions", "players"
+  add_foreign_key "v_processes", "computers"
 end

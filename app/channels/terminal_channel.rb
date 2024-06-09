@@ -9,8 +9,7 @@ class TerminalChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    puts "killing lgo", @lgo.pid
-    p `kill #{@lgo.pid}`
+    @lgo.kill
   end
 
   def input(args)

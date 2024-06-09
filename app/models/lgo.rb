@@ -23,6 +23,8 @@ class Lgo
     @intrinsics = @@intrinsics[intrinsics].new(**intrinsics_args)
 
     initiate_lua_script(code)
+
+    puts "lgo running on pid #{@pid}"
   end
 
   def verbose? = verbose
@@ -36,16 +38,42 @@ class Lgo
   end
 
   def run
+    setup
+
+    # TODO: there should be a better place to run this
     if intrinsics.instance_of?(@@intrinsics[:cable])
       intrinsics.initialize_server
     end
-    loop do
-      break if step_eval.nil?
+
+    while step_eval.nil? == false
       send_result last_cmd.run
     end
+
+    cleanup
+  end
+
+  def kill
+    puts "killing lgo", @pid
+    p `kill #{@pid}`
+    cleanup
   end
 
   private
+
+  def setup
+    @v_process = VProcess.new.tap do |p|
+      p.computer = @computer
+      p.command = "lgoscript"
+      p.name = "lgoscript"
+      p.lgo_process = LgoProcess.new(pid: @pid)
+    end
+    @v_process.save!
+  end
+
+  def cleanup
+    @v_process.update(state: "dead")
+    @v_process.lgo_process.update(state: "dead")
+  end
 
   def initiate_lua_script(code)
     # TODO make the paths random

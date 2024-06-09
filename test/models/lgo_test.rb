@@ -5,6 +5,16 @@ class LgoTest < ActiveSupport::TestCase
     @computer = Computer.create!
   end
 
+  test "should create lgo_process in the set computer" do
+    code = "print(4)"
+    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+    lgo.run
+    @computer.reload
+    assert_equal @computer.lgo_processes.count, 1
+    assert_equal @computer.lgo_processes.last.state, "dead"
+    assert_equal @computer.v_processes.last.state, "dead"
+  end
+
   test "prints" do
     code = "print(4)"
     lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)

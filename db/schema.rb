@@ -29,6 +29,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_09_142932) do
     t.date "started_at"
     t.date "ended_at"
     t.date "waited_at"
+    t.string "code", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["v_process_id"], name: "index_lgo_processes_on_v_process_id"

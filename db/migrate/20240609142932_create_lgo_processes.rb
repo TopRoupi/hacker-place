@@ -10,6 +10,7 @@ class CreateLgoProcesses < ActiveRecord::Migration[7.1]
       t.date :started_at, null: true
       t.date :ended_at, null: true
       t.date :waited_at, null: true
+      t.string :code, null: false
 
       t.timestamps
     end

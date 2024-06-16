@@ -3,6 +3,7 @@
 # Table name: lgo_processes
 #
 #  id            :uuid             not null, primary key
+#  code          :string           not null
 #  ended_at      :date
 #  job_server_ip :string
 #  pid           :string           not null
@@ -27,5 +28,6 @@ FactoryBot.define do
   factory :lgo_process do
     association :v_process
     pid { "1" }
+    code { "print(2)" }
   end
 end

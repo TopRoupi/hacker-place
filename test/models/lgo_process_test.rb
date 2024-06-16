@@ -3,6 +3,7 @@
 # Table name: lgo_processes
 #
 #  id            :uuid             not null, primary key
+#  code          :string           not null
 #  ended_at      :date
 #  job_server_ip :string
 #  pid           :string           not null
@@ -26,6 +27,13 @@
 require "test_helper"
 
 class LgoProcessTest < ActiveSupport::TestCase
+  test "validations" do
+    p = build :lgo_process
+    p.code = nil
+    p.save
+    refute_empty p.errors[:code]
+  end
+
   test "should be valid with waiting_to_run state and no control dates set" do
     p = build :lgo_process, state: "waiting_to_run"
     p.save

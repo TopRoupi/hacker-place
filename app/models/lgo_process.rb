@@ -3,6 +3,7 @@
 # Table name: lgo_processes
 #
 #  id            :uuid             not null, primary key
+#  code          :string           not null
 #  ended_at      :date
 #  job_server_ip :string
 #  pid           :string           not null
@@ -44,4 +45,5 @@ class LgoProcess < ApplicationRecord
 
   belongs_to :v_process
   enum :state, [:waiting_to_run, :running, :dead, :waiting]
+  validates :code, presence: true
 end

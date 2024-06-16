@@ -67,7 +67,12 @@ class Lgo
       p.name = "lgoscript"
       p.state = "running"
       p.started_at = Time.now
-      p.lgo_process = LgoProcess.new(pid: @pid, state: :running, started_at: Time.now)
+      p.lgo_process = LgoProcess.new(
+        pid: @pid,
+        state: :running,
+        started_at: Time.now,
+        code: @code
+      )
     end
     @v_process.save
   end

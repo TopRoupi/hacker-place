@@ -5,6 +5,7 @@
 #  id          :uuid             not null, primary key
 #  command     :string           not null
 #  cpu_usage   :integer          default(0), not null
+#  ended_at    :date
 #  name        :string
 #  pid         :string           not null
 #  ram_usage   :integer          default(0), not null
@@ -31,5 +32,12 @@ class VProcessTest < ActiveSupport::TestCase
     assert_equal p.ram_usage, 0
     assert p.pid.size > 0
     refute p.started_at.nil?
+  end
+
+  test "should be invalid if in the dead state without an ended_at value" do
+    p = VProcess.new(state: "dead")
+    p.save
+
+    refute_empty p.errors[:ended_at]
   end
 end

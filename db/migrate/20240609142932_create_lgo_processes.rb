@@ -7,6 +7,9 @@ class CreateLgoProcesses < ActiveRecord::Migration[7.1]
       t.string :job_id
       t.string :job_server_ip
       t.integer :state, null: false, default: 0
+      t.date :started_at, null: true
+      t.date :ended_at, null: true
+      t.date :waited_at, null: true
 
       t.timestamps
     end

@@ -39,7 +39,7 @@ class Lgo::UnitTestIntrinsics
   private
 
   def write_to_out(str)
-    @out << str + "\n"
+    @out += str + "\n"
   end
 
   def read_from_in

@@ -5,6 +5,7 @@
 #  id          :uuid             not null, primary key
 #  command     :string           not null
 #  cpu_usage   :integer          default(0), not null
+#  ended_at    :date
 #  name        :string
 #  pid         :string           not null
 #  ram_usage   :integer          default(0), not null
@@ -24,7 +25,7 @@
 #
 FactoryBot.define do
   factory :v_process do
-    # name { nil }
+    association :computer
     cpu_usage { 0 }
     ram_usage { 0 }
     command { "lgo" }

@@ -22,9 +22,9 @@ class Lgo
     intrinsics_args[:lgo] = self
     @intrinsics = @@intrinsics[intrinsics].new(**intrinsics_args)
 
+    # TODO : its not a good idea to run the script right after its created
     initiate_lua_script(code)
-
-    puts "lgo running on pid #{@pid}"
+    puts("lgo running on pid #{@pid}") if verbose?
   end
 
   def verbose? = verbose
@@ -65,14 +65,16 @@ class Lgo
       p.computer = @computer
       p.command = "lgoscript"
       p.name = "lgoscript"
-      p.lgo_process = LgoProcess.new(pid: @pid)
+      p.state = "running"
+      p.started_at = Time.now
+      p.lgo_process = LgoProcess.new(pid: @pid, state: :running, started_at: Time.now)
     end
-    @v_process.save!
+    @v_process.save
   end
 
   def cleanup
-    @v_process.update(state: "dead")
-    @v_process.lgo_process.update(state: "dead")
+    @v_process.update(state: "dead", ended_at: Time.now)
+    @v_process.lgo_process.update(state: "dead", ended_at: Time.now)
   end
 
   def initiate_lua_script(code)

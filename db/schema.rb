@@ -63,6 +63,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_09_142932) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["computer_id"], name: "index_v_files_on_computer_id"
+    t.index ["name", "computer_id"], name: "index_v_files_on_name_and_computer_id", unique: true
   end
 
   create_table "v_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

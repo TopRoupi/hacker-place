@@ -15,15 +15,10 @@
 #  index_v_files_on_computer_id           (computer_id)
 #  index_v_files_on_name_and_computer_id  (name,computer_id) UNIQUE
 #
-require "test_helper"
-
-class VFileTest < ActiveSupport::TestCase
-  test "should be invalid if name is not uniq inside the computer scope" do
-    computer = create :computer
-    create :v_file, computer: computer, name: "test"
-
-    file = build :v_file, computer: computer, name: "test"
-    file.save
-    refute_empty file.errors[:name]
+FactoryBot.define do
+  factory :v_file do
+    association :computer
+    content { "content" }
+    name { "name" }
   end
 end

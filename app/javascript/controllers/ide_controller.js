@@ -22,6 +22,17 @@ export default class extends ApplicationController {
     })
   }
 
+  saveScript() {
+    this.deController.open({
+      app: "files",
+      args: {
+        portal: "create_file",
+        path: "",
+        content: this.codeTarget.editor.getValue(),
+      }
+    })
+  }
+
   disconnect() {
   }
 }

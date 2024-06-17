@@ -22,6 +22,9 @@ class DEChannel < ApplicationCable::Channel
     app_component = Desktop::AppComponent.new(component: component)
 
     @broadcaster.open_app(app_component)
+  rescue => error
+    p error.message
+    puts error.backtrace.join("\n")
   end
 
   def close(args)

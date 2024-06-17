@@ -55,6 +55,11 @@ class Apps::Ide < ApplicationComponent
         class: "ml-auto btn btn-sm btn-primary",
         data_action: " click->ide#runScript"
       ) { "run" }
+
+      button(
+        class: "ml-auto btn btn-sm btn-primary",
+        data_action: " click->ide#saveScript"
+      ) { "save" }
     }
   end
 end

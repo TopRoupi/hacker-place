@@ -8,5 +8,7 @@ class CreateVFiles < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
+
+    add_index :v_files, [:name, :computer_id], unique: true
   end
 end

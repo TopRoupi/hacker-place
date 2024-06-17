@@ -23,12 +23,19 @@ export default class extends ApplicationController {
     )
 
     document.addEventListener('register-app-window', this.registerAppWindow)
+    document.addEventListener('close-app', this.closeApp)
   }
 
   registerAppWindow = (e) => {
     var { appId } = e.detail
     this.appIdStack.push(appId)
     this.setAppStackStyles()
+  }
+
+  closeApp = (e) => {
+    console.log("lol")
+    var { appId } = e.detail
+    this.close({app: appId})
   }
 
   setAppStackStyles() {

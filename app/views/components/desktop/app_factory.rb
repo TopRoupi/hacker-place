@@ -15,7 +15,8 @@ class Desktop::AppFactory
   def self.files_factory(args)
     Apps::FileExplorer.new(
       computer_id: args[:computer_id],
-      app_id: args[:app_id]
+      app_id: args[:app_id],
+      args: args[:args]
     )
   end
 

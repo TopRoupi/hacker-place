@@ -12,8 +12,10 @@
 #
 # Indexes
 #
-#  index_v_files_on_computer_id  (computer_id)
+#  index_v_files_on_computer_id           (computer_id)
+#  index_v_files_on_name_and_computer_id  (name,computer_id) UNIQUE
 #
 class VFile < ApplicationRecord
   belongs_to :computer
+  validates :name, uniqueness: { scope: :computer_id }
 end

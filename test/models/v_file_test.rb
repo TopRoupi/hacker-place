@@ -18,6 +18,17 @@
 require "test_helper"
 
 class VFileTest < ActiveSupport::TestCase
+  test "validations" do
+    file = build :v_file
+    file.name = ""
+    file.save
+    refute_empty file.errors[:name]
+
+    file.name = "s"
+    file.save
+    assert_empty file.errors[:name]
+  end
+
   test "should be invalid if name is not uniq inside the computer scope" do
     computer = create :computer
     create :v_file, computer: computer, name: "test"

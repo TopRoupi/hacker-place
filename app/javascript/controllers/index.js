@@ -26,6 +26,8 @@ import ResponsiveBoxController from "./responsive_box_controller"
 application.register("responsive-box", ResponsiveBoxController)
 import MonitoringController from "./monitoring_controller"
 application.register("monitoring", MonitoringController)
+import FileController from "./file_controller"
+application.register("file", FileController)
 
 application.consumer = consumer
 

@@ -80,7 +80,7 @@ class Desktop::AppComponent < ApplicationComponent
 
   def window_body
     div(
-      class: "rounded-b p-4 bg-black/80 grow",
+      class: "rounded-b p-4 bg-black/80 grow window-body",
       data_app_window_target: "window",
       data_action: "mousemove->app-window#checkResize mousemove@document->app-window#resetCursor mousemove@document->app-window#resize mousedown->app-window#startResize mouseup@document->app-window#stopResize"
     ) {

@@ -2,8 +2,6 @@
 
 class FilesReflex < ApplicationReflex
   def create_file
-    p "AAAAAAAAAA"
-    p params
     file = VFile.new(computer_id: params["computer_id"], name: params["name"], content: params["content"])
     if !file.save
       morph "##{params["app_id"]} .errors", file.errors.to_a.inspect

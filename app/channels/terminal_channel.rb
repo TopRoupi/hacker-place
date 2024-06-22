@@ -9,7 +9,7 @@ class TerminalChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    @lgo.kill
+    @cable_intrinsics_server.kill
   end
 
   def input(args)
@@ -17,7 +17,7 @@ class TerminalChannel < ApplicationCable::Channel
 
     terminal_broadcaster.disable_input(str)
 
-    @lgoserver.receive_input(str)
+    @cable_intrinsics_server.receive_input(str)
   end
 
   def run(args)
@@ -26,15 +26,20 @@ class TerminalChannel < ApplicationCable::Channel
     @terminal_broadcaster = Broadcast::Terminal.new(app_id, app_id)
     terminal_broadcaster.clear_terminal
 
-    @lgo = Lgo.new(code, computer: Computer.find(@computer_id), params: params, intrinsics_args: {broadcaster: terminal_broadcaster})
+    @lgo = Lgo.new(
+      code,
+      computer: Computer.find(@computer_id),
+      params: params,
+      intrinsics_args: {broadcaster: terminal_broadcaster}
+    )
 
-    @lgo_fork = fork { @lgo.run }
-    Process.detach(@lgo_fork)
+    pid = fork {
+      @lgo.intrinsics.initialize_server
+      @lgo.run
+    }
+    Process.detach(pid)
 
     DRb.start_service
-    @lgoserver = DRbObject.new_with_uri(@lgo.intrinsics.uri)
-  rescue => error
-    p error.message
-    puts error.backtrace.join("\n")
+    @cable_intrinsics_server = DRbObject.new_with_uri(@lgo.intrinsics.uri)
   end
 end

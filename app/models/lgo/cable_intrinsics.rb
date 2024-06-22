@@ -4,14 +4,15 @@ class Lgo::CableIntrinsics
 
   attr_reader :broadcaster, :uri
 
-  @@id = 99
+  @@id = 999
 
   def initialize(lgo:, broadcaster:)
     @broadcaster = broadcaster
     @lgo = lgo
 
+    @@id = 999 if @@id.zero?
     @@id -= 1
-    @uri = "druby://localhost:87#{@@id}"
+    @uri = "druby://localhost:9#{@@id}"
   end
 
   def initialize_server
@@ -52,5 +53,10 @@ class Lgo::CableIntrinsics
   def receive_input(str)
     @received_input = true
     @input = str
+  end
+
+  def kill
+    DRb.stop_service
+    @lgo.kill
   end
 end

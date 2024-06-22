@@ -22,7 +22,6 @@ class Lgo
     intrinsics_args[:lgo] = self
     @intrinsics = @@intrinsics[intrinsics].new(**intrinsics_args)
 
-    # TODO : its not a good idea to run the script right after its created
     initiate_lua_script(code)
     puts("lgo running on pid #{@pid}") if verbose?
   end
@@ -40,11 +39,6 @@ class Lgo
   def run
     setup
 
-    # TODO: there should be a better place to run this
-    if intrinsics.instance_of?(@@intrinsics[:cable])
-      intrinsics.initialize_server
-    end
-
     while step_eval.nil? == false
       send_result last_cmd.run
     end
@@ -54,8 +48,10 @@ class Lgo
 
   def kill
     puts "killing lgo", @pid
-    p `kill #{@pid}`
-    cleanup
+    `kill #{@pid}`
+    # kill doest need to call clean up since
+    # when the sub process is killed the fiber will be
+    # unblocked and the clean up on the main flow is called
   end
 
   private
@@ -80,18 +76,22 @@ class Lgo
   def cleanup
     @v_process.update(state: "dead", ended_at: Time.now)
     @v_process.lgo_process.update(state: "dead", ended_at: Time.now)
+
+    puts "killing cpulimit for #{@pid} #{@cpu_limit_pid}"
+    `kill #{@cpu_limit_pid}`
   end
 
   def initiate_lua_script(code)
-    # TODO make the paths random
-    @script_path = "/tmp/in.lua"
+    file_name = SecureRandom.alphanumeric(15)
+    @script_path = "/tmp/#{file_name}.lua"
     f = File.open(@script_path, "w")
     f.puts code
     f.close
 
     @read_io, @write_io, @pid = PTY.spawn("./app/lgo/lgo #{@script_path}")
-
-    fork { `cpulimit -p #{@pid} --limit 1` }
+    Process.detach(@pid)
+    _, _, @cpu_limit_pid = PTY.spawn("cpulimit -p #{@pid} --limit 0.1")
+    Process.detach(@cpu_limit_pid)
 
     @exection_fiber = Fiber.new do |lgo|
       loop do

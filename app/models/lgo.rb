@@ -3,6 +3,7 @@ class Lgo
   attr_reader :intrinsics
   attr_reader :verbose
   attr_reader :computer
+  attr_reader :status
 
   attr_accessor :code, :params, :script_path
   attr_accessor :last_line, :last_cmd, :last_cmd_result
@@ -18,12 +19,10 @@ class Lgo
     @code = code
     @params = params
     @computer = computer
+    @status = :idle
 
     intrinsics_args[:lgo] = self
     @intrinsics = @@intrinsics[intrinsics].new(**intrinsics_args)
-
-    initiate_lua_script(code)
-    puts("lgo running on pid #{@pid}") if verbose?
   end
 
   def verbose? = verbose
@@ -37,13 +36,21 @@ class Lgo
   end
 
   def run
+    @status = :running
+    initiate_lua_script(code)
+    puts("lgo running on pid #{@pid}") if verbose?
+
+    thr = mem_monitoring_thread
+
     setup
 
     while step_eval.nil? == false
       send_result last_cmd.run
     end
 
+    thr.exit
     cleanup
+    @status = :dead
   end
 
   def kill
@@ -110,6 +117,19 @@ class Lgo
         end
       rescue Errno::EIO
         break
+      end
+    end
+  end
+
+  def mem_monitoring_thread
+    Thread.new do
+      loop do
+        ram_usage = `grep VmRSS /proc/#{@pid}/status | grep -o '[0-9]\\+' | awk '{print $1/1024}'`.to_f
+
+        if ram_usage > 50
+          kill
+        end
+        sleep 3
       end
     end
   end

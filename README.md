@@ -26,7 +26,7 @@ click the you can click the image to watch a video demo of the game
  go 1.21.4
 ```
 
-* **Dev setup**
+# Dev setup
 
 * **With podman-compose**
 ```bash

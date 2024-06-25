@@ -28,6 +28,16 @@ click the you can click the image to watch a video demo of the game
 
 * **Dev setup**
 
+* **With podman-compose**
+```bash
+  podman-compose build
+  podman-compose up
+```
+
+access 0.0.0.0:3000 to test the game
+
+* **Without podman-compose**
+
 ```bash
   cd ~
   mkdir .postgres_docker
@@ -38,13 +48,13 @@ click the you can click the image to watch a video demo of the game
   podman run -d --name redis_server -p 6379:6379 redis
 ```
 
-* **Run**
+**Run**
 
 ```bash
   foreman start -f Procfile.dev 
 ```
 
-* **Build go bindings**
+**Build go bindings**
 
 ```bash
   cd app/lgo

@@ -8,18 +8,15 @@ FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 WORKDIR /rails
 
 # Set production environment
-ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
-
+ENV BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_PATH="/usr/local/bundle"
 
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential curl git libvips node-gyp pkg-config python-is-python3
+    apt-get install --no-install-recommends -y build-essential libpq-dev curl git libvips node-gyp pkg-config python-is-python3
 
 # Install JavaScript dependencies
 ARG NODE_VERSION=18.2.0
@@ -49,18 +46,29 @@ RUN bundle exec bootsnap precompile app/ lib/
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
+FROM docker.io/library/golang:1.23rc1-alpine AS lgo
+
+WORKDIR /lgo
+
+COPY app/lgo ./
+
+RUN go mod download
+
+RUN go build .
 
 # Final stage for app image
 FROM base
 
 # Install packages needed for deployment
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libsqlite3-0 libvips && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    apt-get install --no-install-recommends -y curl libpq-dev libvips && \
+    apt-get install cpulimit && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives 
 
 # Copy built artifacts: gems, application
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
+COPY --from=lgo /lgo/lgo /rails/app/lgo
 
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \

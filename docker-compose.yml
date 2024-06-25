@@ -1,0 +1,42 @@
+version: '3.9'  # Specify the version of Docker Compose
+
+services:
+  web:
+    build: .
+    command: bundle exec rails s -b '0.0.0.0' -p 3000
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/hacker_place_production
+      REDIS_URL: redis://redis:6379/1
+      RAILS_MASTER_KEY: $RAILS_MASTER_KEY
+      RAILS_ENV: "development"
+    networks:
+      - app_network
+
+  db:
+    image: docker.io/library/postgres:15
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: hacker_place_production
+    networks:
+      - app_network
+
+  redis:
+    image: docker.io/library/redis:7
+    networks:
+      - app_network
+
+volumes:
+  pgdata:
+
+networks:
+  app_network:
+    driver: bridge

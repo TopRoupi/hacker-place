@@ -17,5 +17,5 @@
 #
 class VFile < ApplicationRecord
   belongs_to :computer
-  validates :name, uniqueness: {scope: :computer_id}, length: {minimum: 1}
+  validates :name, uniqueness: {scope: :computer_id}, length: {minimum: 1, maximum: 100}
 end

@@ -27,6 +27,14 @@ class VFileTest < ActiveSupport::TestCase
     file.name = "s"
     file.save
     assert_empty file.errors[:name]
+
+    file.name = "s" * 100
+    file.save
+    assert_empty file.errors[:name]
+
+    file.name = "s" * 101
+    file.save
+    refute_empty file.errors[:name]
   end
 
   test "should be invalid if name is not uniq inside the computer scope" do

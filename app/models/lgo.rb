@@ -3,7 +3,6 @@ class Lgo
   attr_reader :intrinsics
   attr_reader :verbose
   attr_reader :computer
-  attr_reader :status
 
   attr_accessor :code, :params, :script_path
   attr_accessor :last_line, :last_cmd, :last_cmd_result
@@ -19,7 +18,6 @@ class Lgo
     @code = code
     @params = params
     @computer = computer
-    @status = :idle
 
     intrinsics_args[:lgo] = self
     @intrinsics = @@intrinsics[intrinsics].new(**intrinsics_args)
@@ -36,7 +34,6 @@ class Lgo
   end
 
   def run
-    @status = :running
     initiate_lua_script(code)
     puts("lgo running on pid #{@pid}") if verbose?
 
@@ -50,7 +47,6 @@ class Lgo
 
     thr.exit
     cleanup
-    @status = :dead
   end
 
   def kill
@@ -84,7 +80,7 @@ class Lgo
     @v_process.update(state: "dead", ended_at: Time.now)
     @v_process.lgo_process.update(state: "dead", ended_at: Time.now)
 
-    puts "killing cpulimit for #{@pid} #{@cpu_limit_pid}"
+    puts "killing cpulimit for #{@pid} #{@cpu_limit_pid}" if verbose?
     `kill #{@cpu_limit_pid}`
   end
 

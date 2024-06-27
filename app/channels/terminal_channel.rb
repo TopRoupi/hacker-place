@@ -10,6 +10,7 @@ class TerminalChannel < ApplicationCable::Channel
 
   def unsubscribed
     @cable_intrinsics_server.kill
+  rescue DRb::DRbConnError
   end
 
   def input(args)

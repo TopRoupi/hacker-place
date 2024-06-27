@@ -16,7 +16,6 @@ export default class extends ApplicationController {
   }
 
   openFileViewer(e) {
-    console.log(this.contentValue)
     this.deController.open({
       app: "file",
       args: {
@@ -27,10 +26,19 @@ export default class extends ApplicationController {
   }
 
   deleteFile(e) {
-    console.log("delte")
     this.stimulate("FilesReflex#delete_file", {
       fileId: this.fileIdValue,
       appId: this.appIdValue
+    })
+  }
+
+  runFile(e) {
+    this.deController.open({
+      app: "terminal",
+      args: {
+        code: this.contentValue,
+        args: ""
+      }
     })
   }
 }

@@ -79,7 +79,7 @@ class Apps::FileExplorer < ApplicationComponent
                   class: "select-none"
                 ) { f.name }
                 th {
-                  div(class:"flex justify-end") {
+                  div(class: "flex justify-end") {
                     button(
                       class: "btn btn-sm block mr-2",
                       data_action: "click->file#runFile"

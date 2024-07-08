@@ -6,7 +6,7 @@
 # ActionCable.server.config.logger = Logger.new(nil)
 
 StimulusReflex.configure do |config|
-  config.on_failed_sanity_checks = :warn
+  config.on_failed_sanity_checks = Rails.env.test? ? :ignore : :warn
 
   # Enable/disable exiting / warning when the sanity checks fail:
   # `:exit` or `:warn` or `:ignore`

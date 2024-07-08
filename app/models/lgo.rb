@@ -4,7 +4,7 @@ class Lgo
   attr_reader :verbose
   attr_reader :computer
 
-  attr_accessor :code, :params, :script_path
+  attr_reader :code, :params, :script_path
   attr_accessor :last_line, :last_cmd, :last_cmd_result
 
   @@intrinsics = {
@@ -18,6 +18,20 @@ class Lgo
     @code = code
     @params = params
     @computer = computer
+    @calls_count = 0
+
+    @v_process = VProcess.new.tap do |p|
+      p.computer = @computer
+      p.command = "lgoscript"
+      p.name = "lgoscript"
+      p.state = :waiting
+      p.lgo_process = LgoProcess.new(
+        pid: nil,
+        state: :waiting,
+        code: @code
+      )
+    end
+    @v_process.save
 
     intrinsics_args[:lgo] = self
     @intrinsics = @@intrinsics[intrinsics].new(**intrinsics_args)
@@ -33,20 +47,33 @@ class Lgo
     @write_io.printf("->#{Lgo::ArgParser.dump(params)}\n")
   end
 
-  def run
-    initiate_lua_script(code)
-    puts("lgo running on pid #{@pid}") if verbose?
+  ## steps flag is unstable dont use it
+  def run(steps: false)
+    if @v_process.state == "waiting"
+      initiate_lua_script(code)
+      puts("lgo running on pid #{@pid}") if verbose?
 
-    thr = mem_monitoring_thread
+      @thr = mem_monitoring_thread
 
-    setup
-
-    while step_eval.nil? == false
-      send_result last_cmd.run
+      setup
     end
 
-    thr.exit
-    cleanup
+    if steps
+      step = step_eval
+      if step.nil? == false
+        send_result last_cmd.run
+        @calls_count += 1
+      end
+    else
+      while step_eval.nil? == false
+        send_result last_cmd.run
+      end
+    end
+
+    if steps == false || steps && step.nil? == true
+      @thr.exit
+      cleanup
+    end
   end
 
   def kill
@@ -60,25 +87,13 @@ class Lgo
   private
 
   def setup
-    @v_process = VProcess.new.tap do |p|
-      p.computer = @computer
-      p.command = "lgoscript"
-      p.name = "lgoscript"
-      p.state = "running"
-      p.started_at = Time.now
-      p.lgo_process = LgoProcess.new(
-        pid: @pid,
-        state: :running,
-        started_at: Time.now,
-        code: @code
-      )
-    end
-    @v_process.save
+    @v_process.update!(state: :running, started_at: Time.now)
+    @v_process.lgo_process.update!(state: :running, started_at: Time.now)
   end
 
   def cleanup
-    @v_process.update(state: "dead", ended_at: Time.now)
-    @v_process.lgo_process.update(state: "dead", ended_at: Time.now)
+    @v_process.update!(state: "dead", ended_at: Time.now)
+    @v_process.lgo_process.update!(state: "dead", ended_at: Time.now)
 
     puts "killing cpulimit for #{@pid} #{@cpu_limit_pid}" if verbose?
     `kill #{@cpu_limit_pid}`

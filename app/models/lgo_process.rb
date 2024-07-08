@@ -6,11 +6,11 @@
 #  code          :string           not null
 #  ended_at      :date
 #  job_server_ip :string
-#  pid           :string           not null
+#  pid           :string
+#  slept_at      :date
 #  started_at    :date
-#  state         :integer          default("waiting_to_run"), not null
+#  state         :integer          default("waiting"), not null
 #  tcp_port      :string
-#  waited_at     :date
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  job_id        :string
@@ -30,8 +30,8 @@ class LgoProcessValidator < ActiveModel::Validator
       record.errors.add :started_at, "Running process should have started_at set"
     end
 
-    if record.waiting? && record.waited_at.nil?
-      record.errors.add :waited_at, "Waiting process should have waited_at set"
+    if record.sleeping? && record.slept_at.nil?
+      record.errors.add :slept_at, "Sleeping process should have slept_at set"
     end
 
     if record.dead? && record.ended_at.nil?
@@ -44,6 +44,6 @@ class LgoProcess < ApplicationRecord
   validates_with LgoProcessValidator
 
   belongs_to :v_process
-  enum :state, [:waiting_to_run, :running, :dead, :waiting]
+  enum :state, [:waiting, :running, :dead, :sleeping]
   validates :code, presence: true
 end

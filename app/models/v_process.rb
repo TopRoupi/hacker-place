@@ -9,8 +9,8 @@
 #  name        :string
 #  pid         :string           not null
 #  ram_usage   :integer          default(0), not null
-#  started_at  :date             not null
-#  state       :integer          default("running"), not null
+#  started_at  :date
+#  state       :integer          default("waiting"), not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  computer_id :uuid             not null
@@ -37,7 +37,7 @@ class VProcess < ApplicationRecord
   belongs_to :computer
   has_one :lgo_process
 
-  enum :state, [:running, :dead]
+  enum :state, [:waiting, :running, :dead]
 
   attribute :started_at, default: -> { Time.now }
   attribute :pid, default: -> { rand(9999).to_s }

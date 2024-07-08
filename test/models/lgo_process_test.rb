@@ -6,11 +6,11 @@
 #  code          :string           not null
 #  ended_at      :date
 #  job_server_ip :string
-#  pid           :string           not null
+#  pid           :string
+#  slept_at      :date
 #  started_at    :date
-#  state         :integer          default("waiting_to_run"), not null
+#  state         :integer          default("waiting"), not null
 #  tcp_port      :string
-#  waited_at     :date
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  job_id        :string
@@ -34,8 +34,8 @@ class LgoProcessTest < ActiveSupport::TestCase
     refute_empty p.errors[:code]
   end
 
-  test "should be valid with waiting_to_run state and no control dates set" do
-    p = build :lgo_process, state: "waiting_to_run"
+  test "should be valid with waiting state and no control dates set" do
+    p = build :lgo_process, state: "waiting"
     p.save
 
     assert_empty p.errors[:ended_at]
@@ -50,11 +50,11 @@ class LgoProcessTest < ActiveSupport::TestCase
     refute_empty p.errors[:ended_at]
   end
 
-  test "should be invalid if in the waiting state without an waited_at value" do
-    p = LgoProcess.new(state: "waiting")
+  test "should be invalid if in the sleeping state without an slept_at value" do
+    p = LgoProcess.new(state: "sleeping")
     p.save
 
-    refute_empty p.errors[:waited_at]
+    refute_empty p.errors[:slept_at]
   end
 
   test "should be invalid if in the running state without an started_at value" do

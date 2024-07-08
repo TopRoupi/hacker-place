@@ -8,11 +8,100 @@ class LgoTest < ActiveSupport::TestCase
   test "should create lgo_process in the set computer" do
     code = "print(4)"
     lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
-    lgo.run
+
     @computer.reload
-    assert_equal @computer.lgo_processes.count, 1
-    assert_equal @computer.lgo_processes.last.state, "dead"
-    assert_equal @computer.v_processes.last.state, "dead"
+    assert_equal 1, @computer.lgo_processes.count
+    assert_equal "waiting", @computer.lgo_processes.last.state
+    assert_equal "waiting", @computer.v_processes.last.state
+
+    lgo.run
+
+    assert_equal 1, @computer.lgo_processes.count
+    assert_equal "dead", @computer.lgo_processes.last.state
+    assert_equal "dead", @computer.v_processes.last.state
+  end
+
+  #
+  # test "should be kill running scripts" do
+  #   code = <<~EOS
+  #     while true do
+  #     end
+  #   EOS
+  #
+  #   broadcaster = Broadcast::Terminal.new("uwu", "uwu")
+  #   lgo = Lgo.new(
+  #     code,
+  #     computer: @computer,
+  #     intrinsics: :cable,
+  #     intrinsics_args: {broadcaster: broadcaster}
+  #   )
+  #
+  #   assert_equal 1, @computer.lgo_processes.count
+  #   assert_equal "waiting", @computer.lgo_processes.last.state
+  #   assert_equal "waiting", @computer.v_processes.last.state
+  #
+  #   pid = fork {
+  #     lgo.intrinsics.initialize_server
+  #     lgo.run
+  #   }
+  #   Process.detach(pid)
+  #
+  #   # sleep 5
+  #   # assert_equal 1, @computer.lgo_processes.count
+  #   # assert_equal "running", @computer.lgo_processes.last.state
+  #   # assert_equal "running", @computer.v_processes.last.state
+  #
+  #   DRb.start_service
+  #   cable_intrinsics_server = DRbObject.new_with_uri(lgo.intrinsics.uri)
+  #
+  #   cable_intrinsics_server.kill
+  #
+  #   assert_equal 1, @computer.lgo_processes.count
+  #   assert_equal "dead", @computer.lgo_processes.last.state
+  #   assert_equal "dead", @computer.v_processes.last.state
+  # end
+
+  test "should be able to step run" do
+    code = <<~EOS
+      print("1")
+      print("2")
+      print("3")
+    EOS
+
+    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+
+    @computer.reload
+    assert_equal 1, @computer.lgo_processes.count
+    assert_equal "waiting", @computer.lgo_processes.last.state
+    assert_equal "waiting", @computer.v_processes.last.state
+
+    lgo.run(steps: true) # setting up params
+    # assert_equal 1, @computer.lgo_processes.count
+    # assert_equal "sleeping", @computer.lgo_processes.last.state
+    # assert_equal "sleeping", @computer.v_processes.last.state
+
+    lgo.run(steps: true)
+    assert_equal "1\n", lgo.intrinsics.out
+
+    lgo.run(steps: true)
+    assert_equal "1\n2\n", lgo.intrinsics.out
+
+    lgo.run(steps: true)
+    assert_equal "1\n2\n3\n", lgo.intrinsics.out
+
+    lgo.run(steps: true) # should kill process
+    assert_equal "1\n2\n3\n", lgo.intrinsics.out
+    assert_equal 1, @computer.lgo_processes.count
+    assert_equal "dead", @computer.lgo_processes.last.state
+    assert_equal "dead", @computer.v_processes.last.state
+
+    assert_raises do
+      lgo.run(steps: true)
+    end
+
+    assert_equal 1, @computer.lgo_processes.count
+    assert_equal "dead", @computer.lgo_processes.last.state
+    assert_equal "dead", @computer.v_processes.last.state
   end
 
   test "prints" do

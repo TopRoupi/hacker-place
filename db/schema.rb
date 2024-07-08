@@ -21,14 +21,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_09_142932) do
 
   create_table "lgo_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "v_process_id", null: false
-    t.string "pid", null: false
+    t.string "pid"
     t.string "tcp_port"
     t.string "job_id"
     t.string "job_server_ip"
     t.integer "state", default: 0, null: false
     t.date "started_at"
     t.date "ended_at"
-    t.date "waited_at"
+    t.date "slept_at"
     t.string "code", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -72,7 +72,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_09_142932) do
     t.integer "cpu_usage", default: 0, null: false
     t.integer "ram_usage", default: 0, null: false
     t.integer "state", default: 0, null: false
-    t.date "started_at", null: false
+    t.date "started_at"
     t.date "ended_at"
     t.string "pid", null: false
     t.string "command", null: false

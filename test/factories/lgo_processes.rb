@@ -6,11 +6,11 @@
 #  code          :string           not null
 #  ended_at      :date
 #  job_server_ip :string
-#  pid           :string           not null
+#  pid           :string
+#  slept_at      :date
 #  started_at    :date
-#  state         :integer          default("waiting_to_run"), not null
+#  state         :integer          default("waiting"), not null
 #  tcp_port      :string
-#  waited_at     :date
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  job_id        :string

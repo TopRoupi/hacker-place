@@ -13,8 +13,9 @@ class Lgo
     unit_test: Lgo::UnitTestIntrinsics
   }
 
-  def initialize(code, computer:, params: "", intrinsics: :cable, intrinsics_args: {}, verbose: true)
-    @verbose = Rails.env.test? ? false : verbose
+  def initialize(code, computer:, params: "", intrinsics: :cable, intrinsics_args: {}, verbose: nil)
+    # @verbose = Rails.env.test? ? false : verbose
+    @verbose = verbose || !Rails.env.test?
     @code = code
     @params = params
     @computer = computer
@@ -43,8 +44,8 @@ class Lgo
     @exection_fiber.resume(self)
   end
 
-  def send_result(*params)
-    @write_io.printf("->#{Lgo::ArgParser.dump(params)}\n")
+  def send_result(return_value)
+    @write_io.printf("->#{Lgo::ArgParser.dump(return_value)}\n")
   end
 
   ## steps flag is unstable dont use it

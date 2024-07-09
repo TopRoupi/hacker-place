@@ -21,23 +21,35 @@ module Lgo::CmdPreparation
     @lgo.intrinsics.send(:cmd_params, @lgo.params)
   end
 
-  def pre_cmd_createfile(args)
-    name, content = args.map { |o| o["value"] }
+  def pre_cmd_getcomputer(args)
+    @lgo.intrinsics.send(:cmd_getcomputer)
+  end
 
-    @lgo.intrinsics.send(:cmd_createfile, name, content)
+  def pre_cmd_createfile(args)
+    computer_sig, name, content = args.map { |o| o["value"] }
+    computer = GlobalID::Locator.locate_signed computer_sig
+
+    @lgo.intrinsics.send(:cmd_createfile, computer, name, content)
   end
 
   def pre_cmd_editfile(args)
-    name, content = args.map { |o| o["value"] }
+    computer_sig, name, content = args.map { |o| o["value"] }
+    computer = GlobalID::Locator.locate_signed computer_sig
 
-    @lgo.intrinsics.send(:cmd_editfile, name, content)
+    @lgo.intrinsics.send(:cmd_editfile, computer, name, content)
   end
 
   def pre_cmd_deletefile(args)
-    @lgo.intrinsics.send(:cmd_deletefile, args[0]["value"])
+    computer_sig, name = args.map { |o| o["value"] }
+    computer = GlobalID::Locator.locate_signed computer_sig
+
+    @lgo.intrinsics.send(:cmd_deletefile, computer, name)
   end
 
   def pre_cmd_getfile(args)
-    @lgo.intrinsics.send(:cmd_getfile, args[0]["value"])
+    computer_sig, name = args.map { |o| o["value"] }
+    computer = GlobalID::Locator.locate_signed computer_sig
+
+    @lgo.intrinsics.send(:cmd_getfile, computer, name)
   end
 end

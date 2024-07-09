@@ -1,4 +1,5 @@
 class Lgo::UnitTestIntrinsics
+  include Lgo::Apis::Computer
   include Lgo::Apis::File
 
   def initialize(lgo:)

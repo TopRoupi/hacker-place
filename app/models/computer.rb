@@ -10,8 +10,4 @@ class Computer < ApplicationRecord
   has_many :v_files
   has_many :v_processes
   has_many :lgo_processes, through: :v_processes
-
-  def self.default_pc
-    order(:created_at).last
-  end
 end

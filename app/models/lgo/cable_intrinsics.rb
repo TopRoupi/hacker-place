@@ -1,5 +1,6 @@
 class Lgo::CableIntrinsics
   include CableReady::Broadcaster
+  include Lgo::Apis::Computer
   include Lgo::Apis::File
 
   attr_reader :broadcaster, :uri

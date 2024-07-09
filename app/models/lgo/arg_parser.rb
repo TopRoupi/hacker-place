@@ -8,6 +8,8 @@ end
 
 class Lgo::ArgParser
   def self.dump(data)
+    data = [data] if !data.is_a? Array
+
     data.map do |obj|
       {value: obj, type: obj.lua_type}
     end.to_json

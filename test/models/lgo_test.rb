@@ -179,7 +179,8 @@ class LgoTest < ActiveSupport::TestCase
 
   test "createfile should create a new file" do
     code = <<~EOS
-      createfile("test", "111")
+      c = get_computer()
+      createfile(c, "test", "111")
     EOS
 
     lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
@@ -188,10 +189,6 @@ class LgoTest < ActiveSupport::TestCase
     assert_equal @computer.v_files.count, 1
     assert_equal @computer.v_files.last.name, "test"
     assert_equal @computer.v_files.last.content, "111"
-
-    code = <<~EOS
-      createfile("test", "111")
-    EOS
 
     lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
     lgo.run
@@ -204,7 +201,8 @@ class LgoTest < ActiveSupport::TestCase
     file = VFile.create(name: "test", content: "111", computer: @computer)
 
     code = <<~EOS
-      editfile("test", "222")
+      c = get_computer()
+      editfile(c, "test", "222")
     EOS
 
     lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
@@ -212,27 +210,27 @@ class LgoTest < ActiveSupport::TestCase
 
     file.reload
 
-    assert_equal file.content, "222"
+    assert_equal "222", file.content
   end
 
   test "deletefile should delete the file with the same name" do
     VFile.create(name: "test", content: "111", computer: @computer)
 
     code = <<~EOS
-      deletefile("test")
+      c = get_computer()
+      deletefile(c, "test")
     EOS
 
-    file_count_before = VFile.count
-
-    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
-    lgo.run
-
-    assert_equal VFile.count, file_count_before - 1
+    assert_difference("VFile.count", -1) do
+      lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+      lgo.run
+    end
   end
 
   test "deletefile should error if file does not exist" do
     code = <<~EOS
-      deletefile("lllllll")
+      c = get_computer()
+      deletefile(c, "lllllll")
     EOS
 
     lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
@@ -245,7 +243,8 @@ class LgoTest < ActiveSupport::TestCase
     VFile.create(name: "test", content: "111", computer: @computer)
 
     code = <<~EOS
-      print(getfile("test"))
+      c = get_computer()
+      print(getfile(c, "test"))
     EOS
 
     lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)

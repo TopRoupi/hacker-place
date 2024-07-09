@@ -1,7 +1,5 @@
 module Lgo::Apis::File
-  def cmd_createfile(name, content)
-    computer = @lgo.computer
-
+  def cmd_createfile(computer, name, content)
     if VFile.find_by(name: name, computer: computer)
       return "ERROR: file already exists"
     end
@@ -11,17 +9,13 @@ module Lgo::Apis::File
     ""
   end
 
-  def cmd_editfile(name, content)
-    computer = @lgo.computer
-
+  def cmd_editfile(computer, name, content)
     VFile.find_by(name: name, computer: computer).update(content: content)
 
     ""
   end
 
-  def cmd_deletefile(name)
-    computer = @lgo.computer
-
+  def cmd_deletefile(computer, name)
     file = VFile.find_by(name: name, computer: computer)
 
     if file.nil?
@@ -33,9 +27,7 @@ module Lgo::Apis::File
     end
   end
 
-  def cmd_getfile(name)
-    computer = @lgo.computer
-
+  def cmd_getfile(computer, name)
     VFile.find_by(name: name, computer: computer).content
   end
 end

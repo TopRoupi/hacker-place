@@ -43,6 +43,9 @@ func runHscriptFromFile(fname string) {
     L.RawSet(L.GetGlobal("params").(*lua.LTable), lua.LNumber(i + 1), lua.LString(paramsList[i]))
   }
 
+  intrinsics.RegisterComputerType(L)
+  L.SetGlobal("get_computer", L.NewFunction(intrinsics.GetComputer))
+
   L.SetGlobal("print", L.NewFunction(intrinsics.CustomPrint))
   L.SetGlobal("input", L.NewFunction(intrinsics.Input))
 

@@ -17,10 +17,9 @@ hosted demo https://alpha-hackerplace.xyz
 ### Demo
 
 Screenshot of the current state of the game:
+you can click the image to watch a video demo of the game
 
 [![Demo](https://i.imgur.com/eV04Oil.png)](https://youtu.be/VftUaKUQNSQ)
-
-click the you can click the image to watch a video demo of the game
 
 # Requirements
 

@@ -4,7 +4,7 @@ export default class extends ApplicationController {
   static targets = [ "desktop", "taskbar", "desktopApp" ]
   static values = {
     activeApp: {type: String},
-    computerId: {type: String}
+    machineId: {type: String}
   }
 
   connect () {
@@ -13,7 +13,7 @@ export default class extends ApplicationController {
     this.deChannel = this.application.consumer.subscriptions.create(
       {
         channel: "DEChannel",
-        computerId: this.computerIdValue
+        machineId: this.machineIdValue
       },
       {
         received (data) {

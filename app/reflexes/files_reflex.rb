@@ -2,7 +2,7 @@
 
 class FilesReflex < ApplicationReflex
   def create_file
-    file = VFile.new(computer_id: params["computer_id"], name: params["name"], content: params["content"])
+    file = VFile.new(machine_id: params["machine_id"], name: params["name"], content: params["content"])
     if !file.save
       morph "##{params["app_id"]} .errors", file.errors.to_a.inspect
     else
@@ -29,8 +29,8 @@ class FilesReflex < ApplicationReflex
 
   def refresh
     app_id = element.dataset[:app_id]
-    computer_id = element.dataset[:computer_id]
+    machine_id = element.dataset[:machine_id]
 
-    morph "##{app_id} .window-body", render(Apps::FileExplorer.new(app_id: app_id, computer_id: computer_id))
+    morph "##{app_id} .window-body", render(Apps::FileExplorer.new(app_id: app_id, machine_id: machine_id))
   end
 end

@@ -7,7 +7,7 @@ export default class extends ApplicationController {
     content: String,
     appId: String,
     fileId: String,
-    computerId: String
+    machineId: String
   }
 
   connect() {

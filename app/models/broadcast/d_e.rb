@@ -1,9 +1,9 @@
 module Broadcast
   class DE < ApplicationBroadcast
-    attr_reader :computer_id
+    attr_reader :machine_id
 
-    def initialize(computer_id)
-      @computer_id = computer_id
+    def initialize(machine_id)
+      @machine_id = machine_id
     end
 
     def open_app(app_component)
@@ -30,7 +30,7 @@ module Broadcast
             appId: app_component.app_id
           }
         )
-        .broadcast_to(computer_id)
+        .broadcast_to(machine_id)
     end
 
     def close_app(app_id)

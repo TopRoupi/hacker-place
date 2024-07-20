@@ -10,7 +10,7 @@ class DesktopEnvironmentComponent < ApplicationComponent
       style: "background-image: url(\"#{image_url("wallpaper")}\"); background-position: center; background-size: cover;",
       data: {
         controller: "de",
-        de_computer_id_value: @machine.id,
+        de_machine_id_value: @machine.id,
         de_active_app_value: ""
       }
     ) {

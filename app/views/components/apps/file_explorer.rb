@@ -21,7 +21,7 @@ class Apps::FileExplorer < ApplicationComponent
           :app_id, value: @app_id
         )
         f.hidden_field(
-          :computer_id, value: @machine.id
+          :machine_id, value: @machine.id
         )
         f.hidden_field(
           :content, value: @args[:content]
@@ -51,7 +51,7 @@ class Apps::FileExplorer < ApplicationComponent
         button(
           class: "btn",
           data_reflex: "click->FilesReflex#refresh",
-          data_computer_id: @machine.id,
+          data_machine_id: @machine.id,
           data_app_id: @app_id
         ) {
           "refresh"
@@ -71,7 +71,7 @@ class Apps::FileExplorer < ApplicationComponent
                   file_content_value: f.content,
                   file_app_id_value: @app_id,
                   file_file_id_value: f.id,
-                  file_computer_id_value: @machine.id,
+                  file_machine_id_value: @machine.id,
                   action: "dblclick->file#openFileViewer"
                 }
               ) {

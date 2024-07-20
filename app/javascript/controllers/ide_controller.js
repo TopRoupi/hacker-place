@@ -3,7 +3,7 @@ import ApplicationController from "./application_controller"
 export default class extends ApplicationController {
   static targets = [ "code", "codeparams", "stdinput", "programDialog" ]
   static values = {
-    computerId: String,
+    machineId: String,
     appId: String
   }
   static outlets = [ "de" ]

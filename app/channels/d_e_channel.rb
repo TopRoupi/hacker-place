@@ -1,9 +1,9 @@
 class DEChannel < ApplicationCable::Channel
   def subscribed
-    @computer_id = params["computerId"]
-    stream_for @computer_id
+    @machine_id = params["machineId"]
+    stream_for @machine_id
 
-    @broadcaster = Broadcast::DE.new(@computer_id)
+    @broadcaster = Broadcast::DE.new(@machine_id)
   end
 
   def receive(data)
@@ -15,7 +15,7 @@ class DEChannel < ApplicationCable::Channel
     component = Desktop::AppFactory.get_app_component(
       app,
       {
-        computer_id: @computer_id,
+        machine_id: @machine_id,
         args: args
       }
     )

@@ -7,14 +7,14 @@ class Desktop::AppFactory
 
   def self.ide_factory(args)
     Apps::Ide.new(
-      computer_id: args[:computer_id],
+      machine_id: args[:machine_id],
       app_id: args[:app_id]
     )
   end
 
   def self.files_factory(args)
     Apps::FileExplorer.new(
-      computer_id: args[:computer_id],
+      machine_id: args[:machine_id],
       app_id: args[:app_id],
       args: args[:args]
     )
@@ -22,7 +22,7 @@ class Desktop::AppFactory
 
   def self.file_factory(args)
     Apps::FileViewer.new(
-      computer_id: args[:computer_id],
+      machine_id: args[:machine_id],
       app_id: args[:app_id],
       args: args[:args]
     )
@@ -30,7 +30,7 @@ class Desktop::AppFactory
 
   def self.terminal_factory(args)
     Apps::Terminal.new(
-      computer_id: args[:computer_id],
+      machine_id: args[:machine_id],
       app_id: args[:app_id],
       args: args[:args]
     )

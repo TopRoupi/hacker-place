@@ -3,7 +3,7 @@ import ApplicationController from "./application_controller"
 export default class extends ApplicationController {
   static targets = [ "code", "params", "stdinput" ]
   static values = {
-    computerId: String,
+    machineId: String,
     appId: String
   }
 
@@ -11,7 +11,7 @@ export default class extends ApplicationController {
     this.terminalChannel = this.application.consumer.subscriptions.create(
       {
         channel: "TerminalChannel",
-        computerId: this.computerIdValue,
+        machineId: this.machineIdValue,
         appId: this.appIdValue
       },
       {

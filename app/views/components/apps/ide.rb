@@ -14,7 +14,7 @@ class Apps::Ide < ApplicationComponent
     div(
       data: {
         controller: "ide",
-        ide_computer_id_value: @machine_id,
+        ide_machine_id_value: @machine_id,
         ide_app_id_value: @app_id,
         ide_de_outlet: "#de"
       },

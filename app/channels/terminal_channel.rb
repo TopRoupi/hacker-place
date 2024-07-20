@@ -3,7 +3,7 @@ class TerminalChannel < ApplicationCable::Channel
   attr_reader :terminal_broadcaster, :de_broadcaster
 
   def subscribed
-    @computer_id = params["computerId"]
+    @machine_id = params["machineId"]
     @app_id = params["appId"]
     stream_for @app_id
   end
@@ -29,7 +29,7 @@ class TerminalChannel < ApplicationCable::Channel
 
     @lgo = Lgo.new(
       code,
-      computer: Machine.find(@computer_id),
+      machine: Machine.find(@machine_id),
       params: params,
       intrinsics_args: {broadcaster: terminal_broadcaster}
     )

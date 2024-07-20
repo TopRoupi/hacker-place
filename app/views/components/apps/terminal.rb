@@ -18,7 +18,7 @@ class Apps::Terminal < ApplicationComponent
       class: "h-full flex flex-col",
       data: {
         controller: "terminal",
-        terminal_computer_id_value: @machine_id,
+        terminal_machine_id_value: @machine_id,
         terminal_app_id_value: @app_id
       }
     ) do

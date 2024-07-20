@@ -11,12 +11,15 @@ The main problem is that Greyhack lacks multiplayer features to make the game mo
 And Hacker Experience 2? Well, it never saw the light of day, but it had a pretty good vision for a multiplayer hacker game, and I plan to improve and use them in Hacker Place.
 
 ### Links
+
 discord server: https://discord.gg/9Ra4AmWT5Q
+
 hosted demo https://alpha-hackerplace.xyz
 
 ### Demo
 
 Screenshot of the current state of the game:
+
 you can click the image to watch a video demo of the game
 
 [![Demo](https://i.imgur.com/eV04Oil.png)](https://youtu.be/VftUaKUQNSQ)

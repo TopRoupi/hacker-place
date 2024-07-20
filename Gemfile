@@ -23,6 +23,7 @@ gem "drb", "~> 2.2"
 gem "redis-session-store", "~> 0.11.5"
 gem "sys-proctable"
 gem "sidekiq", "~> 7.2"
+gem "pghero"
 
 # gem "jbuilder"
 # gem "redis", ">= 4.0.1"

@@ -20,7 +20,8 @@ services:
       - app_network
 
   db:
-    image: docker.io/library/postgres:15
+    image: ./database
+    # image: ./databasedocker.io/library/postgres:15
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:

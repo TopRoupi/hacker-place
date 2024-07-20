@@ -2,23 +2,23 @@ require "test_helper"
 
 class LgoTest < ActiveSupport::TestCase
   setup do
-    @computer = Computer.create!
+    @machine = Machine.create!
   end
 
-  test "should create lgo_process in the set computer" do
+  test "should create lgo_process in the set machine" do
     code = "print(4)"
-    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+    lgo = Lgo.new(code, machine: @machine, intrinsics: :unit_test)
 
-    @computer.reload
-    assert_equal 1, @computer.lgo_processes.count
-    assert_equal "waiting", @computer.lgo_processes.last.state
-    assert_equal "waiting", @computer.v_processes.last.state
+    @machine.reload
+    assert_equal 1, @machine.lgo_processes.count
+    assert_equal "waiting", @machine.lgo_processes.last.state
+    assert_equal "waiting", @machine.v_processes.last.state
 
     lgo.run
 
-    assert_equal 1, @computer.lgo_processes.count
-    assert_equal "dead", @computer.lgo_processes.last.state
-    assert_equal "dead", @computer.v_processes.last.state
+    assert_equal 1, @machine.lgo_processes.count
+    assert_equal "dead", @machine.lgo_processes.last.state
+    assert_equal "dead", @machine.v_processes.last.state
   end
 
   #
@@ -68,17 +68,17 @@ class LgoTest < ActiveSupport::TestCase
       print("3")
     EOS
 
-    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+    lgo = Lgo.new(code, machine: @machine, intrinsics: :unit_test)
 
-    @computer.reload
-    assert_equal 1, @computer.lgo_processes.count
-    assert_equal "waiting", @computer.lgo_processes.last.state
-    assert_equal "waiting", @computer.v_processes.last.state
+    @machine.reload
+    assert_equal 1, @machine.lgo_processes.count
+    assert_equal "waiting", @machine.lgo_processes.last.state
+    assert_equal "waiting", @machine.v_processes.last.state
 
     lgo.run(steps: true) # setting up params
-    # assert_equal 1, @computer.lgo_processes.count
-    # assert_equal "sleeping", @computer.lgo_processes.last.state
-    # assert_equal "sleeping", @computer.v_processes.last.state
+    # assert_equal 1, @machine.lgo_processes.count
+    # assert_equal "sleeping", @machine.lgo_processes.last.state
+    # assert_equal "sleeping", @machine.v_processes.last.state
 
     lgo.run(steps: true)
     assert_equal "1\n", lgo.intrinsics.out
@@ -91,22 +91,22 @@ class LgoTest < ActiveSupport::TestCase
 
     lgo.run(steps: true) # should kill process
     assert_equal "1\n2\n3\n", lgo.intrinsics.out
-    assert_equal 1, @computer.lgo_processes.count
-    assert_equal "dead", @computer.lgo_processes.last.state
-    assert_equal "dead", @computer.v_processes.last.state
+    assert_equal 1, @machine.lgo_processes.count
+    assert_equal "dead", @machine.lgo_processes.last.state
+    assert_equal "dead", @machine.v_processes.last.state
 
     assert_raises do
       lgo.run(steps: true)
     end
 
-    assert_equal 1, @computer.lgo_processes.count
-    assert_equal "dead", @computer.lgo_processes.last.state
-    assert_equal "dead", @computer.v_processes.last.state
+    assert_equal 1, @machine.lgo_processes.count
+    assert_equal "dead", @machine.lgo_processes.last.state
+    assert_equal "dead", @machine.v_processes.last.state
   end
 
   test "prints" do
     code = "print(4)"
-    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+    lgo = Lgo.new(code, machine: @machine, intrinsics: :unit_test)
 
     lgo.run
     assert_equal lgo.intrinsics.out, "4\n"
@@ -118,7 +118,7 @@ class LgoTest < ActiveSupport::TestCase
       print(a + 1)
     EOS
 
-    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+    lgo = Lgo.new(code, machine: @machine, intrinsics: :unit_test)
     lgo.run
 
     assert_equal lgo.intrinsics.out, "3\n"
@@ -130,7 +130,7 @@ class LgoTest < ActiveSupport::TestCase
       d..
     EOS
 
-    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+    lgo = Lgo.new(code, machine: @machine, intrinsics: :unit_test)
     lgo.run
 
     assert lgo.intrinsics.out.include? "parse error"
@@ -143,7 +143,7 @@ class LgoTest < ActiveSupport::TestCase
       print(a + b)
     EOS
 
-    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+    lgo = Lgo.new(code, machine: @machine, intrinsics: :unit_test)
     lgo.intrinsics.in = "5\n3\n"
     lgo.run
 
@@ -156,7 +156,7 @@ class LgoTest < ActiveSupport::TestCase
       print(a)
     EOS
 
-    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+    lgo = Lgo.new(code, machine: @machine, intrinsics: :unit_test)
     lgo.intrinsics.in = "ttt"
     lgo.run
 
@@ -170,7 +170,7 @@ class LgoTest < ActiveSupport::TestCase
       end
     EOS
 
-    lgo = Lgo.new(code, computer: @computer, params: "-v --lol", intrinsics: :unit_test)
+    lgo = Lgo.new(code, machine: @machine, params: "-v --lol", intrinsics: :unit_test)
     lgo.run
 
     assert lgo.intrinsics.out.include? "-v"
@@ -183,29 +183,29 @@ class LgoTest < ActiveSupport::TestCase
       createfile(c, "test", "111")
     EOS
 
-    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+    lgo = Lgo.new(code, machine: @machine, intrinsics: :unit_test)
     lgo.run
 
-    assert_equal @computer.v_files.count, 1
-    assert_equal @computer.v_files.last.name, "test"
-    assert_equal @computer.v_files.last.content, "111"
+    assert_equal @machine.v_files.count, 1
+    assert_equal @machine.v_files.last.name, "test"
+    assert_equal @machine.v_files.last.content, "111"
 
-    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+    lgo = Lgo.new(code, machine: @machine, intrinsics: :unit_test)
     lgo.run
 
-    assert_equal @computer.v_files.count, 1
+    assert_equal @machine.v_files.count, 1
     assert lgo.intrinsics.out.include? "ERROR"
   end
 
   test "editfile should edit the file with the same name" do
-    file = VFile.create(name: "test", content: "111", computer: @computer)
+    file = VFile.create(name: "test", content: "111", machine: @machine)
 
     code = <<~EOS
       c = get_computer()
       editfile(c, "test", "222")
     EOS
 
-    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+    lgo = Lgo.new(code, machine: @machine, intrinsics: :unit_test)
     lgo.run
 
     file.reload
@@ -214,7 +214,7 @@ class LgoTest < ActiveSupport::TestCase
   end
 
   test "deletefile should delete the file with the same name" do
-    VFile.create(name: "test", content: "111", computer: @computer)
+    VFile.create(name: "test", content: "111", machine: @machine)
 
     code = <<~EOS
       c = get_computer()
@@ -222,7 +222,7 @@ class LgoTest < ActiveSupport::TestCase
     EOS
 
     assert_difference("VFile.count", -1) do
-      lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+      lgo = Lgo.new(code, machine: @machine, intrinsics: :unit_test)
       lgo.run
     end
   end
@@ -233,21 +233,21 @@ class LgoTest < ActiveSupport::TestCase
       deletefile(c, "lllllll")
     EOS
 
-    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+    lgo = Lgo.new(code, machine: @machine, intrinsics: :unit_test)
     lgo.run
 
     assert lgo.intrinsics.out.include? "ERROR"
   end
 
   test "getfile should get the content the file with the same name" do
-    VFile.create(name: "test", content: "111", computer: @computer)
+    VFile.create(name: "test", content: "111", machine: @machine)
 
     code = <<~EOS
       c = get_computer()
       print(getfile(c, "test"))
     EOS
 
-    lgo = Lgo.new(code, computer: @computer, intrinsics: :unit_test)
+    lgo = Lgo.new(code, machine: @machine, intrinsics: :unit_test)
     lgo.run
 
     assert lgo.intrinsics.out.include? "111"

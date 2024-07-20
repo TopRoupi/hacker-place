@@ -1,6 +1,6 @@
 class DesktopEnvironmentComponent < ApplicationComponent
-  def initialize computer:
-    @computer = computer
+  def initialize machine:
+    @machine = machine
   end
 
   def view_template
@@ -10,7 +10,7 @@ class DesktopEnvironmentComponent < ApplicationComponent
       style: "background-image: url(\"#{image_url("wallpaper")}\"); background-position: center; background-size: cover;",
       data: {
         controller: "de",
-        de_computer_id_value: @computer.id,
+        de_computer_id_value: @machine.id,
         de_active_app_value: ""
       }
     ) {

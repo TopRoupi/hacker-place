@@ -29,7 +29,7 @@ class TerminalChannel < ApplicationCable::Channel
 
     @lgo = Lgo.new(
       code,
-      computer: Computer.find(@computer_id),
+      computer: Machine.find(@computer_id),
       params: params,
       intrinsics_args: {broadcaster: terminal_broadcaster}
     )

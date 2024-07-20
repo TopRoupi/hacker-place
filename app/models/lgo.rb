@@ -2,7 +2,7 @@ class Lgo
   attr_reader :write_io, :read_io, :pid
   attr_reader :intrinsics
   attr_reader :verbose
-  attr_reader :computer
+  attr_reader :machine
 
   attr_reader :code, :params, :script_path
   attr_accessor :last_line, :last_cmd, :last_cmd_result
@@ -13,16 +13,15 @@ class Lgo
     unit_test: Lgo::UnitTestIntrinsics
   }
 
-  def initialize(code, computer:, params: "", intrinsics: :cable, intrinsics_args: {}, verbose: nil)
-    # @verbose = Rails.env.test? ? false : verbose
-    @verbose = verbose || !Rails.env.test?
+  def initialize(code, machine:, params: "", intrinsics: :cable, intrinsics_args: {}, verbose: true)
+    @verbose = Rails.env.test? ? false : verbose
     @code = code
     @params = params
-    @computer = computer
+    @machine = machine
     @calls_count = 0
 
     @v_process = VProcess.new.tap do |p|
-      p.computer = @computer
+      p.machine = @machine
       p.command = "lgoscript"
       p.name = "lgoscript"
       p.state = :waiting

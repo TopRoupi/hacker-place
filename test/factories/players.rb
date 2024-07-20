@@ -8,16 +8,16 @@
 #  verified        :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  computer_id     :uuid
+#  machine_id      :uuid
 #
 # Indexes
 #
-#  index_players_on_computer_id  (computer_id)
-#  index_players_on_email        (email) UNIQUE
+#  index_players_on_email       (email) UNIQUE
+#  index_players_on_machine_id  (machine_id)
 #
 FactoryBot.define do
   factory :player do
-    association :computer
+    association :machine
 
     email { "lol@lol.com" }
     password { "123456" }

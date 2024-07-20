@@ -5,8 +5,8 @@ class Apps::FileExplorer < ApplicationComponent
 
   attr_reader :app, :app_id
 
-  def initialize(computer_id:, app_id: nil, args: {})
-    @computer = Computer.find(computer_id)
+  def initialize(machine_id:, app_id: nil, args: {})
+    @machine = Machine.find(machine_id)
     @app_id = app_id || "app-#{SecureRandom.hex}"
     @app = :files
     @args = args.symbolize_keys
@@ -21,7 +21,7 @@ class Apps::FileExplorer < ApplicationComponent
           :app_id, value: @app_id
         )
         f.hidden_field(
-          :computer_id, value: @computer.id
+          :computer_id, value: @machine.id
         )
         f.hidden_field(
           :content, value: @args[:content]
@@ -51,14 +51,14 @@ class Apps::FileExplorer < ApplicationComponent
         button(
           class: "btn",
           data_reflex: "click->FilesReflex#refresh",
-          data_computer_id: @computer.id,
+          data_computer_id: @machine.id,
           data_app_id: @app_id
         ) {
           "refresh"
         }
         table(class: "table") {
           tbody {
-            @computer.v_files.each { |f|
+            @machine.v_files.each { |f|
               tr(
                 id: "#{@app_id}-file-#{f.id}",
                 class: "hover",
@@ -71,7 +71,7 @@ class Apps::FileExplorer < ApplicationComponent
                   file_content_value: f.content,
                   file_app_id_value: @app_id,
                   file_file_id_value: f.id,
-                  file_computer_id_value: @computer.id,
+                  file_computer_id_value: @machine.id,
                   action: "dblclick->file#openFileViewer"
                 }
               ) {

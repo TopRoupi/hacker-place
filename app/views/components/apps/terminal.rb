@@ -4,8 +4,8 @@ class Apps::Terminal < ApplicationComponent
 
   attr_reader :app, :app_id
 
-  def initialize(computer_id:, app_id: nil, args: {})
-    @computer_id = computer_id
+  def initialize(machine_id:, app_id: nil, args: {})
+    @machine_id = machine_id
     @app_id = app_id || "app-#{SecureRandom.hex}"
     @app = :terminal
     args.symbolize_keys => {code:, args:}
@@ -18,7 +18,7 @@ class Apps::Terminal < ApplicationComponent
       class: "h-full flex flex-col",
       data: {
         controller: "terminal",
-        terminal_computer_id_value: @computer_id,
+        terminal_computer_id_value: @machine_id,
         terminal_app_id_value: @app_id
       }
     ) do

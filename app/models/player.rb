@@ -8,12 +8,12 @@
 #  verified        :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  computer_id     :uuid
+#  machine_id      :uuid
 #
 # Indexes
 #
-#  index_players_on_computer_id  (computer_id)
-#  index_players_on_email        (email) UNIQUE
+#  index_players_on_email       (email) UNIQUE
+#  index_players_on_machine_id  (machine_id)
 #
 class Player < ApplicationRecord
   has_secure_password
@@ -26,7 +26,7 @@ class Player < ApplicationRecord
   end
 
   has_many :sessions, dependent: :destroy
-  belongs_to :computer, optional: true
+  belongs_to :machine, optional: true
 
   validates(
     :email,
@@ -50,9 +50,9 @@ class Player < ApplicationRecord
     sessions.where.not(id: Current.session).delete_all
   end
 
-  after_commit :create_computer, on: [:create]
+  after_commit :create_machine, on: [:create]
 
-  def create_computer
-    update!(computer: Computer.create)
+  def create_machine
+    update!(machine: Machine.create)
   end
 end

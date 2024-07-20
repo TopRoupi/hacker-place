@@ -4,8 +4,8 @@ class Apps::Ide < ApplicationComponent
 
   attr_reader :app, :app_id
 
-  def initialize(computer_id:, app_id: nil, args: [])
-    @computer_id = computer_id
+  def initialize(machine_id:, app_id: nil, args: [])
+    @machine_id = machine_id
     @app_id = app_id || "app-#{SecureRandom.hex}"
     @app = :ide
   end
@@ -14,7 +14,7 @@ class Apps::Ide < ApplicationComponent
     div(
       data: {
         controller: "ide",
-        ide_computer_id_value: @computer_id,
+        ide_computer_id_value: @machine_id,
         ide_app_id_value: @app_id,
         ide_de_outlet: "#de"
       },

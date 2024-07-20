@@ -14,11 +14,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_09_142932) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "computers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "lgo_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "v_process_id", null: false
     t.string "pid"
@@ -35,15 +30,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_09_142932) do
     t.index ["v_process_id"], name: "index_lgo_processes_on_v_process_id"
   end
 
+  create_table "machines", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "players", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
     t.boolean "verified", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "computer_id"
-    t.index ["computer_id"], name: "index_players_on_computer_id"
+    t.uuid "machine_id"
     t.index ["email"], name: "index_players_on_email", unique: true
+    t.index ["machine_id"], name: "index_players_on_machine_id"
   end
 
   create_table "sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -56,18 +56,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_09_142932) do
   end
 
   create_table "v_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "computer_id", null: false
+    t.uuid "machine_id", null: false
     t.string "name"
     t.string "content"
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["computer_id"], name: "index_v_files_on_computer_id"
-    t.index ["name", "computer_id"], name: "index_v_files_on_name_and_computer_id", unique: true
+    t.index ["machine_id"], name: "index_v_files_on_machine_id"
+    t.index ["name", "machine_id"], name: "index_v_files_on_name_and_machine_id", unique: true
   end
 
   create_table "v_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "computer_id", null: false
+    t.uuid "machine_id", null: false
     t.string "name"
     t.integer "cpu_usage", default: 0, null: false
     t.integer "ram_usage", default: 0, null: false
@@ -78,10 +78,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_09_142932) do
     t.string "command", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["computer_id"], name: "index_v_processes_on_computer_id"
+    t.index ["machine_id"], name: "index_v_processes_on_machine_id"
   end
 
   add_foreign_key "lgo_processes", "v_processes"
   add_foreign_key "sessions", "players"
-  add_foreign_key "v_processes", "computers"
+  add_foreign_key "v_processes", "machines"
 end

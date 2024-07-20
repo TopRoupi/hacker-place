@@ -2,18 +2,18 @@
 #
 # Table name: v_files
 #
-#  id          :uuid             not null, primary key
-#  content     :string
-#  name        :string
-#  type        :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  computer_id :uuid             not null
+#  id         :uuid             not null, primary key
+#  content    :string
+#  name       :string
+#  type       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  machine_id :uuid             not null
 #
 # Indexes
 #
-#  index_v_files_on_computer_id           (computer_id)
-#  index_v_files_on_name_and_computer_id  (name,computer_id) UNIQUE
+#  index_v_files_on_machine_id           (machine_id)
+#  index_v_files_on_name_and_machine_id  (name,machine_id) UNIQUE
 #
 require "test_helper"
 
@@ -37,11 +37,11 @@ class VFileTest < ActiveSupport::TestCase
     refute_empty file.errors[:name]
   end
 
-  test "should be invalid if name is not uniq inside the computer scope" do
-    computer = create :computer
-    create :v_file, computer: computer, name: "test"
+  test "should be invalid if name is not uniq inside the mahcine scope" do
+    machine = create :machine
+    create :v_file, machine: machine, name: "test"
 
-    file = build :v_file, computer: computer, name: "test"
+    file = build :v_file, machine: machine, name: "test"
     file.save
     refute_empty file.errors[:name]
   end

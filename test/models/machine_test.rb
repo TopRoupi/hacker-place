@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: computers
+# Table name: machines
 #
 #  id         :uuid             not null, primary key
 #  created_at :datetime         not null
@@ -8,7 +8,7 @@
 #
 require "test_helper"
 
-class ComputerTest < ActiveSupport::TestCase
+class MachineTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

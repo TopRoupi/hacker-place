@@ -10,9 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_09_142932) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_21_193546) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "hard_drive_hardwares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "hard_drive_id", null: false
+    t.uuid "mother_board_hardware_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hard_drive_id"], name: "index_hard_drive_hardwares_on_hard_drive_id"
+    t.index ["mother_board_hardware_id"], name: "index_hard_drive_hardwares_on_mother_board_hardware_id"
+  end
+
+  create_table "hard_drives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "capacity_megabytes", null: false
+    t.integer "read_speed_megabytes", null: false
+    t.integer "write_speed_megabytes", null: false
+    t.integer "durability", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "lgo_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "v_process_id", null: false
@@ -33,6 +51,35 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_09_142932) do
   create_table "machines", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "mother_board_hardwares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "machine_id", null: false
+    t.uuid "mother_board_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["machine_id"], name: "index_mother_board_hardwares_on_machine_id"
+    t.index ["mother_board_id"], name: "index_mother_board_hardwares_on_mother_board_id"
+  end
+
+  create_table "mother_boards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "config", null: false
+    t.integer "durability", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "partitions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "hard_drive_hardware_id", null: false
+    t.integer "size_megabytes", null: false
+    t.integer "start_position", null: false
+    t.integer "type", null: false
+    t.boolean "bootable", null: false
+    t.boolean "encrypted", default: false, null: false
+    t.boolean "password"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hard_drive_hardware_id"], name: "index_partitions_on_hard_drive_hardware_id"
   end
 
   create_table "players", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -81,7 +128,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_09_142932) do
     t.index ["machine_id"], name: "index_v_processes_on_machine_id"
   end
 
+  add_foreign_key "hard_drive_hardwares", "hard_drives", column: "hard_drive_id"
+  add_foreign_key "hard_drive_hardwares", "mother_board_hardwares"
   add_foreign_key "lgo_processes", "v_processes"
+  add_foreign_key "mother_board_hardwares", "machines"
+  add_foreign_key "mother_board_hardwares", "mother_boards"
+  add_foreign_key "partitions", "hard_drive_hardwares"
   add_foreign_key "sessions", "players"
   add_foreign_key "v_processes", "machines"
 end

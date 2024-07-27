@@ -6,9 +6,8 @@ class CreatePartitions < ActiveRecord::Migration[7.1]
       t.integer :start_position, null: false
       t.integer :type, null: false
       t.boolean :bootable, null: false
-      t.boolean :encrypted, null: false, default: false
+      t.string :encryption_password
       t.boolean :password, null: true
-      # t.string :mount_path, null: false
 
       t.timestamps
     end

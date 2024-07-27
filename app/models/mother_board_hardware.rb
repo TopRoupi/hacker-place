@@ -19,4 +19,5 @@
 #  fk_rails_...  (mother_board_id => mother_boards.id)
 #
 class MotherBoardHardware < ApplicationRecord
+  has_many :hard_drive_hardwares
 end

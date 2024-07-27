@@ -4,7 +4,7 @@
 #
 #  id                     :uuid             not null, primary key
 #  bootable               :boolean          not null
-#  encrypted              :boolean          default(FALSE), not null
+#  encryption_password    :string
 #  password               :boolean
 #  size_megabytes         :integer          not null
 #  start_position         :integer          not null

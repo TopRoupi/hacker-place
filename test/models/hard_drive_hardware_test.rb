@@ -3,6 +3,9 @@
 # Table name: hard_drive_hardwares
 #
 #  id                       :uuid             not null, primary key
+#  bootable                 :boolean          not null
+#  name                     :string           not null
+#  path_mount_table         :jsonb
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #  hard_drive_id            :uuid             not null

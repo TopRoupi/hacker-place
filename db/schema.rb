@@ -17,6 +17,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_193546) do
   create_table "hard_drive_hardwares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "hard_drive_id", null: false
     t.uuid "mother_board_hardware_id", null: false
+    t.boolean "bootable", null: false
+    t.jsonb "path_mount_table"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["hard_drive_id"], name: "index_hard_drive_hardwares_on_hard_drive_id"
@@ -28,6 +31,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_193546) do
     t.integer "read_speed_megabytes", null: false
     t.integer "write_speed_megabytes", null: false
     t.integer "durability", null: false
+    t.integer "socket_type", null: false
+    t.string "model_name", null: false
+    t.string "model_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -65,6 +71,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_193546) do
   create_table "mother_boards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "config", null: false
     t.integer "durability", null: false
+    t.string "model_name", null: false
+    t.string "model_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -75,7 +83,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_193546) do
     t.integer "start_position", null: false
     t.integer "type", null: false
     t.boolean "bootable", null: false
-    t.boolean "encrypted", default: false, null: false
+    t.string "encryption_password"
     t.boolean "password"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

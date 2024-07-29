@@ -2,7 +2,7 @@ class Apps::FileViewer < ApplicationComponent
   attr_reader :app, :app_id
 
   def initialize(machine_id:, app_id: nil, args: {})
-    @machine = Machine.find(mechine_id)
+    @machine = Machine.find(machine_id)
     @app_id = app_id || "app-#{SecureRandom.hex}"
     @name = args["name"]
     @content = args["content"]

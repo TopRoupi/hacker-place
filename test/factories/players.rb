@@ -15,6 +15,10 @@
 #  index_players_on_email       (email) UNIQUE
 #  index_players_on_machine_id  (machine_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (machine_id => machines.id)
+#
 FactoryBot.define do
   factory :player do
     association :machine

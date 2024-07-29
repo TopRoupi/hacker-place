@@ -22,6 +22,11 @@
 #  fk_rails_...  (mother_board_hardware_id => mother_board_hardwares.id)
 #
 class HardDriveHardware < ApplicationRecord
+  self.implicit_order_column = "created_at"
+
   belongs_to :hard_drive
   belongs_to :mother_board_hardware
+
+  validates :name, presence: true
+  validates :bootable, presence: true
 end

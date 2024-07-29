@@ -28,8 +28,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_193546) do
 
   create_table "hard_drives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "capacity_megabytes", null: false
-    t.integer "read_speed_megabytes", null: false
-    t.integer "write_speed_megabytes", null: false
+    t.integer "speed_megabytes", null: false
     t.float "durability_loss", null: false
     t.integer "socket_type", null: false
     t.string "product_model_name", null: false
@@ -51,7 +50,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_193546) do
     t.string "code", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["v_process_id"], name: "index_lgo_processes_on_v_process_id"
+    t.index ["v_process_id"], name: "index_lgo_processes_on_v_process_id", unique: true
   end
 
   create_table "machines", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -84,7 +83,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_193546) do
     t.integer "type", null: false
     t.boolean "bootable", null: false
     t.string "encryption_password"
-    t.boolean "password"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["hard_drive_hardware_id"], name: "index_partitions_on_hard_drive_hardware_id"
@@ -142,6 +140,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_193546) do
   add_foreign_key "mother_board_hardwares", "machines"
   add_foreign_key "mother_board_hardwares", "mother_boards"
   add_foreign_key "partitions", "hard_drive_hardwares"
+  add_foreign_key "players", "machines"
   add_foreign_key "sessions", "players"
   add_foreign_key "v_processes", "machines"
 end

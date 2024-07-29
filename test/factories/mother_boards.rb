@@ -12,7 +12,13 @@
 #
 FactoryBot.define do
   factory :mother_board do
-    config { {} }
+    config do
+      [
+        {socket: :usb, connected: nil},
+        {socket: :sata, connected: nil},
+        {socket: :msata, connected: nil}
+      ]
+    end
     durability_loss { 0.001 }
     product_model_id { SecureRandom.uuid }
     product_model_name { "mother board #{product_model_id}" }

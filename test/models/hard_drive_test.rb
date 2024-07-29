@@ -2,16 +2,15 @@
 #
 # Table name: hard_drives
 #
-#  id                    :uuid             not null, primary key
-#  capacity_megabytes    :integer          not null
-#  durability_loss       :float            not null
-#  product_model_name    :string           not null
-#  read_speed_megabytes  :integer          not null
-#  socket_type           :integer          not null
-#  write_speed_megabytes :integer          not null
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  product_model_id      :string           not null
+#  id                 :uuid             not null, primary key
+#  capacity_megabytes :integer          not null
+#  durability_loss    :float            not null
+#  product_model_name :string           not null
+#  socket_type        :integer          not null
+#  speed_megabytes    :integer          not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  product_model_id   :string           not null
 #
 require "test_helper"
 

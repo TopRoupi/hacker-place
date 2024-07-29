@@ -32,7 +32,7 @@ class VProcessValidator < ActiveModel::Validator
 end
 
 class VProcess < ApplicationRecord
-  validates_with VProcessValidator
+  self.implicit_order_column = "created_at"
 
   belongs_to :machine
   has_one :lgo_process
@@ -41,4 +41,8 @@ class VProcess < ApplicationRecord
 
   attribute :started_at, default: -> { Time.now }
   attribute :pid, default: -> { rand(9999).to_s }
+
+  validates_with VProcessValidator
+  validates :pid, presence: true
+  validates :command, presence: true
 end

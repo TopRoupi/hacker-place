@@ -15,7 +15,13 @@
 #  index_players_on_email       (email) UNIQUE
 #  index_players_on_machine_id  (machine_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (machine_id => machines.id)
+#
 class Player < ApplicationRecord
+  self.implicit_order_column = "created_at"
+
   has_secure_password
 
   generates_token_for :email_verification, expires_in: 2.days do
@@ -39,6 +45,7 @@ class Player < ApplicationRecord
     allow_nil: true,
     length: {minimum: 6}
   )
+  validates :password_digest, presence: true
 
   normalizes :email, with: -> { _1.strip.downcase }
 

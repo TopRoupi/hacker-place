@@ -11,5 +11,9 @@
 #  product_model_id   :string           not null
 #
 class MotherBoard < ApplicationRecord
+  self.implicit_order_column = "created_at"
+
   include BuyableConcern
+
+  validates :config, presence: true
 end

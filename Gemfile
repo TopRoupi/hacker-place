@@ -36,6 +36,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "database_consistency", require: false
   gem "web-console"
   gem "annotate", git: "https://github.com/ctran/annotate_models.git"
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
@@ -52,3 +53,5 @@ end
 
 gem "tzinfo-data", platforms: %i[windows jruby]
 gem "bootsnap", require: false
+
+gem "model_probe", "~> 1.1"

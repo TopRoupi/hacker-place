@@ -18,7 +18,7 @@
 #
 # Indexes
 #
-#  index_lgo_processes_on_v_process_id  (v_process_id)
+#  index_lgo_processes_on_v_process_id  (v_process_id) UNIQUE
 #
 # Foreign Keys
 #

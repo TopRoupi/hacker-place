@@ -18,7 +18,7 @@
 #
 # Indexes
 #
-#  index_lgo_processes_on_v_process_id  (v_process_id)
+#  index_lgo_processes_on_v_process_id  (v_process_id) UNIQUE
 #
 # Foreign Keys
 #
@@ -41,9 +41,12 @@ class LgoProcessValidator < ActiveModel::Validator
 end
 
 class LgoProcess < ApplicationRecord
+  self.implicit_order_column = "created_at"
+
   validates_with LgoProcessValidator
 
   belongs_to :v_process
+  validates :v_process_id, uniqueness: true
   enum :state, [:waiting, :running, :dead, :sleeping]
   validates :code, presence: true
 end

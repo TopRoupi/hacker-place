@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_21_193546) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_03_236006) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,8 +20,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_193546) do
     t.boolean "bootable", null: false
     t.jsonb "path_mount_table"
     t.string "name", null: false
+    t.uuid "connected_socket_id"
+    t.string "connected_socket_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["connected_socket_id", "connected_socket_type"], name: "idx_on_connected_socket_id_connected_socket_type_435eb5da67"
     t.index ["hard_drive_id"], name: "index_hard_drive_hardwares_on_hard_drive_id"
     t.index ["mother_board_hardware_id"], name: "index_hard_drive_hardwares_on_mother_board_hardware_id"
   end
@@ -30,11 +33,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_193546) do
     t.integer "capacity_megabytes", null: false
     t.integer "speed_megabytes", null: false
     t.float "durability_loss", null: false
-    t.integer "socket_type", null: false
     t.string "product_model_name", null: false
     t.string "product_model_id", null: false
+    t.uuid "socket_id", null: false
+    t.string "socket_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["socket_type", "socket_id"], name: "index_hard_drives_on_socket_type_and_socket_id"
   end
 
   create_table "lgo_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -99,6 +104,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_193546) do
     t.index ["machine_id"], name: "index_players_on_machine_id"
   end
 
+  create_table "sata_socket_hardwares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "mother_board_hardware_id", null: false
+    t.uuid "sata_socket_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mother_board_hardware_id"], name: "index_sata_socket_hardwares_on_mother_board_hardware_id"
+    t.index ["sata_socket_id"], name: "index_sata_socket_hardwares_on_sata_socket_id"
+  end
+
+  create_table "sata_sockets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "mother_board_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mother_board_id"], name: "index_sata_sockets_on_mother_board_id"
+  end
+
   create_table "sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "player_id", null: false
     t.string "user_agent"
@@ -141,6 +162,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_193546) do
   add_foreign_key "mother_board_hardwares", "mother_boards"
   add_foreign_key "partitions", "hard_drive_hardwares"
   add_foreign_key "players", "machines"
+  add_foreign_key "sata_socket_hardwares", "mother_board_hardwares"
+  add_foreign_key "sata_socket_hardwares", "sata_sockets"
+  add_foreign_key "sata_sockets", "mother_boards"
   add_foreign_key "sessions", "players"
   add_foreign_key "v_processes", "machines"
 end

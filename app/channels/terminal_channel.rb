@@ -24,7 +24,7 @@ class TerminalChannel < ApplicationCable::Channel
   def run(args)
     args.transform_keys(&:underscore).symbolize_keys => {app_id:, code:, params:}
 
-    @terminal_broadcaster = Broadcast::Terminal.new(app_id, app_id)
+    @terminal_broadcaster = TerminalBroadcast.new(app_id, app_id)
     terminal_broadcaster.clear_terminal
 
     @lgo = Lgo.new(

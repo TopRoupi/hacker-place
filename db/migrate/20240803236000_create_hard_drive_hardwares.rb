@@ -7,7 +7,12 @@ class CreateHardDriveHardwares < ActiveRecord::Migration[7.1]
       t.jsonb :path_mount_table
       t.string :name, null: false
 
+      t.uuid  :connected_socket_id
+      t.string  :connected_socket_type
+
       t.timestamps
     end
+
+    add_index :hard_drive_hardwares, [:connected_socket_id, :connected_socket_type]
   end
 end

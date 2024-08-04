@@ -21,7 +21,7 @@
 require "test_helper"
 
 class MotherBoardHardwareTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  # should be invalid if any sockets of config is missing
+  test "idunno" do
+  end
 end

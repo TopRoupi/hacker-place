@@ -16,4 +16,17 @@ class MotherBoard < ApplicationRecord
   include BuyableConcern
 
   validates :config, presence: true
+
+  # has_many :sata_socktes
+  # has_many :usb_socktes
+  # ...
+  Dir.entries("#{Rails.root}/app/models/hardwares/sockets").each do |file|
+    if file[-9..] == "socket.rb"
+      has_many file.split(".").first.pluralize.to_sym
+    end
+  end
+
+  # return the list of available sockets for this model
+  def sockets
+  end
 end

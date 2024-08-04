@@ -13,11 +13,18 @@
 FactoryBot.define do
   factory :mother_board do
     config do
-      [
-        {socket: :usb, connected: nil},
-        {socket: :sata, connected: nil},
-        {socket: :msata, connected: nil}
-      ]
+      {
+        mem_max_speed_limit: 1000,
+        mem_max_capacity_limit: 1000,
+        sockets: [
+          :usb,
+          :sata,
+          :msata,
+          :ddr3,
+          :ddr3,
+          :am2
+        ]
+      }
     end
     durability_loss { 0.001 }
     product_model_id { SecureRandom.uuid }

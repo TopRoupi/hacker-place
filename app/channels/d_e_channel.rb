@@ -3,7 +3,7 @@ class DEChannel < ApplicationCable::Channel
     @machine_id = params["machineId"]
     stream_for @machine_id
 
-    @broadcaster = Broadcast::DE.new(@machine_id)
+    @broadcaster = DEBroadcast.new(@machine_id)
   end
 
   def receive(data)

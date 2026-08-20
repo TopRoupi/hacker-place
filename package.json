@@ -2,13 +2,14 @@
   "name": "app",
   "private": "true",
   "dependencies": {
+    "playwright-core": "^1.62.1"
   },
   "devDependencies": {
-    "playwright": "^1.49.1",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/typography": "^0.5.9",
     "daisyui": "^3.9.4",
     "install": "^0.13.0",
+    "playwright": "^1.49.1",
     "postcss": "^8.4.23",
     "rollup-plugin-gzip": "^3.1.0",
     "tailwindcss": "^3.3.2"

@@ -14,9 +14,9 @@ pin "@rails/activestorage", to: "activestorage.esm.js"
 pin "@rails/actiontext", to: "actiontext.esm.js"
 pin "@rails/request.js", to: "actiontext.esm.js"
 
-pin "stimulus_reflex" # @3.5.0
-pin "cable_ready" # @5.0.3
-pin "morphdom" # @2.6.1
+pin "stimulus_reflex" # @3.5.5
+pin "cable_ready" # @5.0.6
+pin "morphdom" # @2.7.8
 
 pin_all_from "app/javascript/config", under: "config"
 pin_all_from "app/javascript/controllers", under: "controllers"

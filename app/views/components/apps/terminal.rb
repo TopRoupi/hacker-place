@@ -1,5 +1,5 @@
 class Apps::Terminal < ApplicationComponent
-  include Phlex::Rails::Helpers::TextArea
+  include Phlex::Rails::Helpers::TextAreaTag
   include Phlex::Rails::Helpers::TextField
 
   attr_reader :app, :app_id
@@ -22,14 +22,22 @@ class Apps::Terminal < ApplicationComponent
         terminal_app_id_value: @app_id
       }
     ) do
-      textarea(
+      text_area_tag(
+        :code,
+        @code,
         class: "hidden",
-        data_terminal_target: "code"
-      ) { @code }
-      textarea(
+        data: {
+          terminal_target: "code"
+        }
+      )
+      text_area_tag(
+        :params,
+        @params,
         class: "hidden",
-        data_terminal_target: "params"
-      ) { @args }
+        data: {
+          terminal_target: "params"
+        }
+      )
 
       div(class: "h-full", data_controller: "responsive-box") {
         pre(

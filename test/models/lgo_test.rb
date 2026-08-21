@@ -194,6 +194,7 @@ class LgoTest < ActiveSupport::TestCase
     lgo.run
 
     assert_equal @machine.v_files.count, 1
+    assert lgo.intrinsics.out.include? "file already exists"
     assert lgo.intrinsics.out.include? "ERROR"
   end
 

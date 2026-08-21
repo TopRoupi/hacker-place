@@ -32,7 +32,7 @@ class Apps::Terminal < ApplicationComponent
       )
       text_area_tag(
         :params,
-        @params,
+        @args,
         class: "hidden",
         data: {
           terminal_target: "params"
